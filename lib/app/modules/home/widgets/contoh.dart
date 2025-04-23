@@ -63,6 +63,7 @@ class Contoh extends GetView<HomeController> {
                   ),
                 ),
               ),
+              drawer: Drawer(),
               body: Stack(
                 children: [
                   ClipPath(

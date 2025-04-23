@@ -52,6 +52,20 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                               Get.toNamed(Routes.DAFTAR_NILAI, arguments: doc);
                             },
                           ),
+                          IconButton(
+                            tooltip: 'pindah',
+                            icon: const Icon(Icons.change_circle_outlined),
+                            onPressed: () {
+                              // Get.toNamed(Routes.DAFTAR_NILAI, arguments: doc);
+                            },
+                          ),
+                          IconButton(
+                            tooltip: 'pindah',
+                            icon: const Icon(Icons.cancel_outlined),
+                            onPressed: () {
+                              // Get.toNamed(Routes.DAFTAR_NILAI, arguments: doc);
+                            },
+                          ),
                         ],
                       ),
                     );

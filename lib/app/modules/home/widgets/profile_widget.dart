@@ -11,6 +11,53 @@ class ProfileWidget extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
+      drawer: Drawer(
+        shadowColor: Colors.red,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(30),
+                topRight: Radius.circular(30))),
+        width: 230,
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.all(15),
+              height: 150,
+              width: 230,
+              color: Colors.grey,
+              alignment: Alignment.bottomLeft,
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  'Menu',
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
+                ),
+              ),
+            ),
+            ListTile(
+              onTap: () =>  Get.toNamed(Routes.UPDATE_PASSWORD),
+              leading: Icon(Icons.key),
+              title: Text('Ubah Password'),
+                        ),
+            StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              stream: controller.getProfileBaru(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ListTile(
+                    onTap: () => Get.toNamed(
+                      Routes.UPDATE_PEGAWAI,
+                      arguments: snapshot.data!.data(),
+                    ),
+                    leading: Icon(Icons.person),
+                    title: Text('Update Profile'),
+                  );
+                }
+                return SizedBox.shrink(); // Return an empty widget if no data
+              },
+            ),
+          ],
+        ),
+      ),
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: controller.getProfileBaru(),
         builder: (context, snapshot) {
@@ -22,7 +69,7 @@ class ProfileWidget extends GetView<HomeController> {
             Map<String, dynamic> data = snapshot.data!.data()!;
             return _buildProfileContent(data);
           }
-          
+
           return const Center(child: Text('Data tidak ditemukan'));
         },
       ),
@@ -89,7 +136,8 @@ class ProfileWidget extends GetView<HomeController> {
           decoration: BoxDecoration(
             color: Colors.grey[400],
             image: DecorationImage(
-              image: NetworkImage("https://ui-avatars.com/api/?name=${data['nama']}"),
+              image: NetworkImage(
+                  "https://ui-avatars.com/api/?name=${data['nama']}"),
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.circular(50),
@@ -120,7 +168,7 @@ class ProfileWidget extends GetView<HomeController> {
       child: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 5),
           _buildInfoHeader(data),
           const SizedBox(height: 5),
           _buildInfoCard(data),
@@ -139,18 +187,20 @@ class ProfileWidget extends GetView<HomeController> {
           "Info Pegawai",
           style: TextStyle(fontSize: 20),
         ),
-        IconButton(
-          onPressed: () => Get.toNamed(Routes.UPDATE_PASSWORD),
-          icon: const Icon(Icons.vpn_key_outlined, size: 25, color: Colors.grey),
-        ),
-        IconButton(
-          onPressed: () => Get.toNamed(Routes.FORGOT_PASSWORD),
-          icon: const Icon(Icons.abc, size: 25, color: Colors.grey),
-        ),
-        IconButton(
-          onPressed: () => Get.toNamed(Routes.UPDATE_PEGAWAI, arguments: data),
-          icon: const Icon(Icons.change_circle_outlined, size: 25, color: Colors.grey),
-        ),
+        // IconButton(
+        //   onPressed: () => Get.toNamed(Routes.UPDATE_PASSWORD),
+        //   icon:
+        //       const Icon(Icons.vpn_key_outlined, size: 25, color: Colors.grey),
+        // ),
+        // IconButton(
+        //   onPressed: () => Get.toNamed(Routes.FORGOT_PASSWORD),
+        //   icon: const Icon(Icons.abc, size: 25, color: Colors.grey),
+        // ),
+        // IconButton(
+        //   onPressed: () => Get.toNamed(Routes.UPDATE_PEGAWAI, arguments: data),
+        //   icon: const Icon(Icons.change_circle_outlined,
+        //       size: 25, color: Colors.grey),
+        // ),
       ],
     );
   }
@@ -179,7 +229,8 @@ class ProfileWidget extends GetView<HomeController> {
       _buildInfoTile(Icons.email_outlined, "Email", data['email']),
       _buildInfoTile(Icons.male_outlined, "Jenis Kelamin", "Laki-Laki"),
       _buildInfoTile(Icons.bloodtype_rounded, "Gol. Darah", "O"),
-      _buildInfoTile(Icons.my_location, "Alamat Domisili", "Pringgolayan RT.08 Banguntapan"),
+      _buildInfoTile(Icons.my_location, "Alamat Domisili",
+          "Pringgolayan RT.08 Banguntapan"),
       _buildInfoTile(Icons.phone_android_outlined, "No Hp", data['noHp']),
       _buildInfoTile(Icons.man_3_outlined, "Nama Ayah", "Saefudin"),
       _buildInfoTile(Icons.woman_outlined, "Nama Ibu", "Jumariyah"),

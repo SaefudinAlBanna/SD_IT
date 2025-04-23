@@ -68,7 +68,7 @@ class TambahSiswaKelompokView extends GetView<TambahSiswaKelompokController> {
                         Text(data['namapengampu'].toString()),
                         
                         SizedBox(height: 10),
-                        // Text(data['tempatmengaji'].toString()),
+                        Text('tempat xx : ${data['tempatmengaji'].toString()}'),
                         // Text('Tahun Ajaran : '),
                   FutureBuilder<String>(
                       future: controller.getDataTempat(),
@@ -260,14 +260,17 @@ class TambahSiswaKelompokView extends GetView<TambahSiswaKelompokController> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   IconButton(
-                                      onPressed: () {}, icon: Icon(Icons.checklist_rtl_outlined)),
-                                  IconButton(
-                                    onPressed: () {
-                                      Get.toNamed(Routes.CONTOH, arguments: namaSiswa);
-                                    },
-                                    icon: Icon(Icons.add_box),
-                                  ),
-                                  Checkbox(value: false, onChanged: (value) => true),
+                                      onPressed: () {
+                                        // controller.hapusSiswa(snapshotKelompok.data!.docs[index].id);
+                                        Get.snackbar('Informasi', 'Siswa terhapus');
+                                      }, icon: Icon(Icons.cancel_outlined)),
+                                  // IconButton(
+                                  //   onPressed: () {
+                                  //     Get.toNamed(Routes.CONTOH, arguments: namaSiswa);
+                                  //   },
+                                  //   icon: Icon(Icons.add_box),
+                                  // ),
+                                  // Checkbox(value: false, onChanged: (value) => true),
                                 ],
                               ),
                             );
