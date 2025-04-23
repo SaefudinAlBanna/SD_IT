@@ -28,7 +28,7 @@ Future<void> main() async {
             ),
           );
         }
-        // print(snapshot.data);
+        // print(snapshot.data); // XXX
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: "Application",
