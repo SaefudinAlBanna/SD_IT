@@ -1,0 +1,2 @@
+C:/Users/Saefu/OneDrive/Desktop/guru_project/android/app/.cxx/Debug/39626os3/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/Saefu/OneDrive/Desktop/guru_project/android/app/.cxx/Debug/39626os3/armeabi-v7a/CMakeFiles/rebuild_cache.dir

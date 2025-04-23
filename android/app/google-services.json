@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "459669186229",
+    "firebase_url": "https://sekolah1-e6a6f-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "sekolah1-e6a6f",
+    "storage_bucket": "sekolah1-e6a6f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459669186229:android:f541e3522881f3433c80fc",
+        "android_client_info": {
+          "package_name": "com.banasari.guru_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDy0U1TeJn5MR5qur4zcIgF9kcNssAVnuU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459669186229:android:028bb3c5e66bcb383c80fc",
+        "android_client_info": {
+          "package_name": "com.banasari.second_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDy0U1TeJn5MR5qur4zcIgF9kcNssAVnuU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
