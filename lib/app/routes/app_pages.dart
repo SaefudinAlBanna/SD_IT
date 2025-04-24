@@ -131,7 +131,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.TAMBAH_SISWA_KELOMPOK,
-      page: () => const TambahSiswaKelompokView(),
+      page: () => TambahSiswaKelompokView(),
       binding: TambahSiswaKelompokBinding(),
     ),
     GetPage(

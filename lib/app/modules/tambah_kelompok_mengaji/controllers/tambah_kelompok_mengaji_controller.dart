@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guru_project/app/routes/app_pages.dart';
+import 'package:intl/intl.dart';
 
 class TambahKelompokMengajiController extends GetxController {
   TextEditingController idPegawaiC = TextEditingController();
@@ -166,6 +167,9 @@ class TambahKelompokMengajiController extends GetxController {
 
   Future<void> buatKelompok() async {
 
+    DateTime now = DateTime.now();
+    String docIdNilai = DateFormat.yMd().format(now).replaceAll('/', '-');
+
     String tahunajaranya = await getTahunAjaranTerakhir();
     String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
     String semesterNya = 
@@ -233,15 +237,16 @@ class TambahKelompokMengajiController extends GetxController {
           'idpengampu': idPengampu,
           'emailpenginput': emailAdmin,
           'idpenginput': idUser,
-          'tanggalinput': DateTime.now(),
+          'tanggalinput': DateTime.now().toIso8601String(),
+          'tanggalinputx': docIdNilai,
         });
 
         Get.snackbar('Sukses', 'Kelompok mengaji berhasil dibuat');
 
-        Get.offAllNamed(Routes.TAMBAH_SISWA_KELOMPOK,
-                        arguments: pengampuC.text);
+        // Get.offAllNamed(Routes.TAMBAH_SISWA_KELOMPOK,
+        //                 arguments: await ambilDataHalaqoh());
 
-        refresh();
+        // refresh();
 
        
       } catch (e) {
@@ -252,6 +257,47 @@ class TambahKelompokMengajiController extends GetxController {
     }
         refresh();
     
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> ambilDataHalaqoh() async {
+
+    DateTime now = DateTime.now();
+    String docIdNilai = DateFormat.yMd().format(now).replaceAll('/', '-');
+
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+    String semesterNya = 
+    (semesterC.text == 'semester1') ? "Semester I" : "Semester II";
+
+    // print('idSekolah = $idSekolah');
+    return await firestore
+            .collection('Sekolah')
+            .doc(idSekolah)
+            .collection('tahunajaran')
+            .doc(idTahunAjaran)
+            .collection('semester')
+            .doc(semesterNya)
+            .collection('kelompokmengaji')
+            .doc(faseC.text)
+            .collection('pengampu')
+            .doc(pengampuC.text)
+            .collection('tempat')
+        .where('tanggalinputx', isEqualTo: docIdNilai)
+        .get();
+  }
+
+  Future<void> dataxx() async {
+    QuerySnapshot<Map<String, dynamic>> datanxx = await ambilDataHalaqoh();
+    List<Map<String, dynamic>> datanya = datanxx.docs.map((doc) => doc.data()).toList();
+
+    Get.offAllNamed(Routes.TAMBAH_SISWA_KELOMPOK,
+                        arguments: datanya);
+    print('ini data argumen = $datanya');
+    if (datanya.isNotEmpty) {
+      print('ini data argumen = ${datanya[0]['tanggalinputx']}');
+    } else {
+      print('Data is empty');
+    }
   }
 
   // --> C7 --> di dalam Get.bottomSheet --> simpan siswa kelompok yang dipilih

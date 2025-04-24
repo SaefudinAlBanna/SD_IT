@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:guru_project/app/routes/app_pages.dart';
-// import '../widgets/home_widget.dart';
 import '../widgets/contoh.dart';
 import '../widgets/profile_widget.dart';
 
@@ -121,13 +118,9 @@ class HomeController extends GetxController {
   }
 
   Stream<DocumentSnapshot<Map<String, dynamic>>> userStreamBaru() async* {
-    // String tahunajaranya = await getTahunAjaranTerakhir();
-    // String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
     yield* firestore
         .collection('Sekolah')
         .doc(idSekolah)
-        // .collection('tahunajaran')
-        // .doc(idTahunAjaran)
         .collection('pegawai')
         .doc(idUser)
         .snapshots();

@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// import 'package:guru_project/app/routes/app_pages.dart';
+import 'package:intl/intl.dart';
 
 class TambahSiswaKelompokController extends GetxController {
-  var argumenPengampu = Get.arguments;
+  var argumenData = Get.arguments;
   TextEditingController kelasSiswaC = TextEditingController();
 
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -18,15 +21,18 @@ class TambahSiswaKelompokController extends GetxController {
 
   // Removed duplicate declaration of getTahunAjaranTerakhir
 
-  Stream<DocumentSnapshot<Map<String, dynamic>>> getIsiBaru() async* {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getIsiBaru() async* {
     String tahunajaranya = await getTahunAjaranTerakhir();
     String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+
+    DateTime now = DateTime.now();
+    String docIdNilai = DateFormat.yMd().format(now).replaceAll('/', '-');
 
     QuerySnapshot<Map<String, dynamic>> querySnapshotKelompok = await firestore
         .collection('Sekolah')
         .doc(idSekolah)
         .collection('pegawai')
-        .where('alias', isEqualTo: argumenPengampu)
+        .where('alias', isEqualTo: argumenData[0]['namapengampu'])
         .get();
     if (querySnapshotKelompok.docs.isNotEmpty) {
       Map<String, dynamic> dataGuru = querySnapshotKelompok.docs.first.data();
@@ -62,46 +68,56 @@ class TambahSiswaKelompokController extends GetxController {
           Map<String, dynamic> dataFase = querySnapshotFase.docs.last.data();
           String faseNya = dataFase['fase'];
 
-          QuerySnapshot<Map<String, dynamic>> querySnapshotTempat =
-              await firestore
-                  .collection('Sekolah')
-                  .doc(idSekolah)
-                  .collection('pegawai')
-                  .doc(idPengampu)
-                  .collection('tahunajarankelompok')
-                  .doc(idTahunAjaran)
-                  .collection('semester')
-                  .doc(semesterNya)
-                  .collection('kelompokmengaji')
-                  .doc(faseNya)
-                  .collection('tempat')
-                  .orderBy('tanggalinput')
-                  .get();
-          if (querySnapshotTempat.docs.isNotEmpty) {
-            Map<String, dynamic> dataTempat =
-                querySnapshotTempat.docs.last.data();
-            String tempatNya = dataTempat['tempatmengaji'];
+          // QuerySnapshot<Map<String, dynamic>> querySnapshotTempat =
+          //     await firestore
+          //         .collection('Sekolah')
+          //         .doc(idSekolah)
+          //         .collection('pegawai')
+          //         .doc(idPengampu)
+          //         .collection('tahunajarankelompok')
+          //         .doc(idTahunAjaran)
+          //         .collection('semester')
+          //         .doc(semesterNya)
+          //         .collection('kelompokmengaji')
+          //         .doc(faseNya)
+          //         .collection('tempat')
+          //         .orderBy('tanggalinput')
+          //         .get();
+          // if (querySnapshotTempat.docs.isNotEmpty) {
+          //   Map<String, dynamic> dataTempat =
+          //       querySnapshotTempat.docs.last.data();
+          //   String tempatNya = dataTempat['tempatmengaji'];
 
-            yield* firestore
-                .collection('Sekolah')
-                .doc(idSekolah)
-                .collection('tahunajaran')
-                .doc(idTahunAjaran)
-                .collection('semester')
-                .doc(semesterNya)
-                .collection('kelompokmengaji')
-                .doc(faseNya)
-                .collection('pengampu')
-                .doc(argumenPengampu)
-                .collection('tempat')
-                .doc(tempatNya)
-                .snapshots();
+          yield* firestore
+              .collection('Sekolah')
+              .doc(idSekolah)
+              .collection('tahunajaran')
+              .doc(idTahunAjaran)
+              .collection('semester')
+              .doc(semesterNya)
+              .collection('kelompokmengaji')
+              .doc(faseNya)
+              .collection('pengampu')
+              .doc(argumenData[0]['namapengampu'])
+              .collection('tempat')
+              .orderBy('tanggalinput')
+              // .where('tanggalinputx', isEqualTo: docIdNilai)
+              // .doc(tempatNya)
+              .snapshots();
 
-            refresh();
-          }
+          // refresh();
+          // }
         }
       }
     }
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getIsiBaruBanget() async* {
+    // String tahunajaranya = await getTahunAjaranTerakhir();
+    // String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+
+    DateTime now = DateTime.now();
+    // String docIdNilai = DateFormat.().format(now).replaceAll('/', '-');
   }
 
   Future<String> getDataTempat() async {
@@ -112,7 +128,7 @@ class TambahSiswaKelompokController extends GetxController {
         .collection('Sekolah')
         .doc(idSekolah)
         .collection('pegawai')
-        .where('alias', isEqualTo: argumenPengampu)
+        .where('alias', isEqualTo: argumenData[0]['namapengampu'])
         .get();
     if (querySnapshotKelompok.docs.isNotEmpty) {
       Map<String, dynamic> dataGuru = querySnapshotKelompok.docs.first.data();
@@ -176,10 +192,8 @@ class TambahSiswaKelompokController extends GetxController {
     throw Exception('No data found for testAmbilTempat');
   }
 
-  
-
   Future<String> getPengampu() {
-    String pengampuNya = argumenPengampu.toString();
+    String pengampuNya = argumenData[0]['namapengampu'].toString();
     // print('ini pengampunya dari get : $pengampuNya');
     return Future.value(pengampuNya.isNotEmpty
         ? pengampuNya
@@ -228,7 +242,7 @@ class TambahSiswaKelompokController extends GetxController {
         .collection('Sekolah')
         .doc(idSekolah)
         .collection('pegawai')
-        .where('alias', isEqualTo: argumenPengampu)
+        .where('alias', isEqualTo: argumenData[0]['namapengampu'])
         .get();
     String idPengampu = querySnapshot.docs.first.data()['uid'];
 
@@ -243,7 +257,7 @@ class TambahSiswaKelompokController extends GetxController {
         .collection('semester')
         .doc('Semester I') // nanti ini dicari getNya
         .collection('kelompokmengaji')
-        .doc(argumenPengampu)
+        .doc(argumenData[0]['namapengampu'])
         .collection('tempat')
         .get()
         .then((querySnapshot) {
@@ -284,7 +298,7 @@ class TambahSiswaKelompokController extends GetxController {
         .collection('Sekolah')
         .doc(idSekolah)
         .collection('pegawai')
-        .where('alias', isEqualTo: argumenPengampu)
+        .where('alias', isEqualTo: argumenData[0]['namapengampu'])
         .get();
     if (querySnapshotGuru.docs.isNotEmpty) {
       Map<String, dynamic> dataGuru = querySnapshotGuru.docs.first.data();
@@ -330,7 +344,7 @@ class TambahSiswaKelompokController extends GetxController {
         .collection('Sekolah')
         .doc(idSekolah)
         .collection('pegawai')
-        .where('alias', isEqualTo: argumenPengampu)
+        .where('alias', isEqualTo: argumenData[0]['namapengampu'])
         .get();
     String idPengampu = querySnapshot.docs.first.data()['uid'];
 
@@ -344,15 +358,15 @@ class TambahSiswaKelompokController extends GetxController {
         .collection('semester')
         .doc(semesterNya)
         .collection('kelompokmengaji')
-        .doc(argumenPengampu)
+        .doc(argumenData[0]['namapengampu'])
         .collection('tempat')
         .doc(tempatNya)
         .set({
       'tempatmengaji': tempatNya,
       'tahunajaran': tahunajaranya,
-      'kelompokmengaji': argumenPengampu,
+      'kelompokmengaji': argumenData[0]['namapengampu'],
       'namasemester': semesterNya,
-      'namapengampu': argumenPengampu,
+      'namapengampu': argumenData[0]['namapengampu'],
       'idpengampu': idPengampu,
       'emailpenginput': emailAdmin,
       'idpenginput': idUser,
@@ -367,12 +381,12 @@ class TambahSiswaKelompokController extends GetxController {
         .collection('semester')
         .doc(semesterNya)
         .collection('kelompokmengaji')
-        .doc(argumenPengampu)
+        .doc(argumenData[0]['namapengampu'])
         .set({
       'namasemester': semesterNya,
-      'kelompokmengaji': argumenPengampu,
+      'kelompokmengaji': argumenData[0]['namapengampu'],
       'idpengampu': idPengampu,
-      'namapengampu': argumenPengampu,
+      'namapengampu': argumenData[0]['namapengampu'],
       'tempatmengaji': tempatNya,
       'tahunajaran': tahunajaranya,
       'emailpenginput': emailAdmin,
@@ -416,7 +430,7 @@ class TambahSiswaKelompokController extends GetxController {
         .collection('Sekolah')
         .doc(idSekolah)
         .collection('pegawai')
-        .where('alias', isEqualTo: argumenPengampu)
+        .where('alias', isEqualTo: argumenData[0]['namapengampu'])
         .get();
     if (querySnapshotGuru.docs.isNotEmpty) {
       Map<String, dynamic> dataGuru = querySnapshotGuru.docs.first.data();
@@ -432,12 +446,12 @@ class TambahSiswaKelompokController extends GetxController {
           .collection('semester')
           .doc(semesterNya)
           .collection('kelompokmengaji')
-          .doc(argumenPengampu)
+          .doc(argumenData[0]['namapengampu'])
           .set({
         'tahunajaran': tahunajaranya,
-        'kelompokmengaji': argumenPengampu,
+        'kelompokmengaji': argumenData[0]['namapengampu'],
         'namasemester': semesterNya,
-        'namapengampu': argumenPengampu,
+        'namapengampu': argumenData[0]['namapengampu'],
         'idpengampu': idPengampu,
         'emailpenginput': emailAdmin,
         'idpenginput': idUser,
@@ -455,14 +469,14 @@ class TambahSiswaKelompokController extends GetxController {
           .collection('semester')
           .doc(semesterNya)
           .collection('kelompokmengaji')
-          .doc(argumenPengampu)
+          .doc(argumenData[0]['namapengampu'])
           .collection('tempat')
           .doc(tempatNya)
           .set({
         'tahunajaran': tahunajaranya,
-        'kelompokmengaji': argumenPengampu,
+        'kelompokmengaji': argumenData[0]['namapengampu'],
         'namasemester': semesterNya,
-        'namapengampu': argumenPengampu,
+        'namapengampu': argumenData[0]['namapengampu'],
         'idpengampu': idPengampu,
         'emailpenginput': emailAdmin,
         'idpenginput': idUser,
@@ -494,10 +508,11 @@ class TambahSiswaKelompokController extends GetxController {
   }
 
   Future<void> refreshTampilan() async {
-    tampilSiswaKelompok();
+    tampilkan();
   }
 
   Future<void> simpanSiswaKelompok(String namaSiswa, String nisnSiswa) async {
+
     String tahunajaranya = await getTahunAjaranTerakhir();
     String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
 
@@ -505,62 +520,15 @@ class TambahSiswaKelompokController extends GetxController {
         .collection('Sekolah')
         .doc(idSekolah)
         .collection('pegawai')
-        .where('alias', isEqualTo: argumenPengampu)
+        .where('alias', isEqualTo: argumenData[0]['namapengampu'])
         .get();
     if (querySnapshotKelompok.docs.isNotEmpty) {
       Map<String, dynamic> dataGuru = querySnapshotKelompok.docs.first.data();
       String idPengampu = dataGuru['uid'];
-      String namaPengampu = dataGuru['alias'];
+      // String namaPengampu = dataGuru['alias'];
 
-      QuerySnapshot<Map<String, dynamic>> querySnapshotSemester =
-          await firestore
-              .collection('Sekolah')
-              .doc(idSekolah)
-              .collection('pegawai')
-              .doc(idPengampu)
-              .collection('tahunajarankelompok')
-              .doc(idTahunAjaran)
-              .collection('semester')
-              .get();
-      if (querySnapshotSemester.docs.isNotEmpty) {
-        Map<String, dynamic> dataSemester =
-            querySnapshotSemester.docs.last.data();
-        String semesterNya = dataSemester['namasemester'];
 
-        QuerySnapshot<Map<String, dynamic>> querySnapshotFase = await firestore
-            .collection('Sekolah')
-            .doc(idSekolah)
-            .collection('pegawai')
-            .doc(idPengampu)
-            .collection('tahunajarankelompok')
-            .doc(idTahunAjaran)
-            .collection('semester')
-            .doc(semesterNya)
-            .collection('kelompokmengaji')
-            .get();
-        if (querySnapshotFase.docs.isNotEmpty) {
-          Map<String, dynamic> dataFase = querySnapshotFase.docs.last.data();
-          String faseNya = dataFase['fase'];
 
-          QuerySnapshot<Map<String, dynamic>> querySnapshotTempat =
-              await firestore
-                  .collection('Sekolah')
-                  .doc(idSekolah)
-                  .collection('pegawai')
-                  .doc(idPengampu)
-                  .collection('tahunajarankelompok')
-                  .doc(idTahunAjaran)
-                  .collection('semester')
-                  .doc(semesterNya)
-                  .collection('kelompokmengaji')
-                  .doc(faseNya)
-                  .collection('tempat')
-                  .orderBy('tanggalinput')
-                  .get();
-          if (querySnapshotTempat.docs.isNotEmpty) {
-            Map<String, dynamic> dataTempat =
-                querySnapshotTempat.docs.last.data();
-            String tempatNya = dataTempat['tempatmengaji'];
 
             //buat pada tahunpelajaran sekolah
             await firestore
@@ -569,31 +537,33 @@ class TambahSiswaKelompokController extends GetxController {
                 .collection('tahunajaran')
                 .doc(idTahunAjaran)
                 .collection('semester')
-                .doc(semesterNya)
+                .doc(argumenData[0]['namasemester'])
                 .collection('kelompokmengaji')
-                .doc(faseNya)
+                .doc(argumenData[0]['fase'])
                 .collection('pengampu')
-                .doc(namaPengampu)
+                .doc(argumenData[0]['namapengampu'])
                 .collection('tempat')
-                .doc(tempatNya)
+                .doc(argumenData[0]['tempatmengaji'])
                 .collection('daftarsiswa')
                 .doc(nisnSiswa)
                 .set({
               'namasiswa': namaSiswa,
               'nisn': nisnSiswa,
               'kelas': kelasSiswaC.text,
-              'fase': faseNya,
-              'tempatmengaji': tempatNya,
-              'tahunajaran': tahunajaranya,
-              'kelompokmengaji': namaPengampu,
-              'namasemester': semesterNya,
-              'namapengampu': namaPengampu,
-              'idpengampu': idPengampu,
+              'fase': argumenData[0]['fase'],
+              'tempatmengaji': argumenData[0]['tempatmengaji'],
+              'tahunajaran': argumenData[0]['tahunajaran'],
+              'kelompokmengaji': argumenData[0]['namapengampu'],
+              'namasemester': argumenData[0]['namasemester'],
+              'namapengampu': argumenData[0]['namapengampu'],
+              'idpengampu': argumenData[0]['idpengampu'],
               'emailpenginput': emailAdmin,
               'idpenginput': idUser,
-              'tanggalinput': DateTime.now(),
+              'tanggalinput': DateTime.now().toIso8601String(),
               'idsiswa': nisnSiswa,
             });
+
+
 
             await firestore
                 .collection('Sekolah')
@@ -603,35 +573,32 @@ class TambahSiswaKelompokController extends GetxController {
                 .collection('tahunajarankelompok')
                 .doc(idTahunAjaran)
                 .collection('semester')
-                .doc(semesterNya)
+                .doc(argumenData[0]['namasemester'])
                 .collection('kelompokmengaji')
-                .doc(faseNya)
+                .doc(argumenData[0]['fase'])
                 .collection('tempat')
-                .doc(tempatNya)
+                .doc(argumenData[0]['tempatmengaji'])
                 .collection('daftarsiswa')
                 .doc(nisnSiswa)
                 .set({
               'namasiswa': namaSiswa,
               'nisn': nisnSiswa,
               'kelas': kelasSiswaC.text,
-              'fase': faseNya,
-              'tempatmengaji': tempatNya,
-              'tahunajaran': tahunajaranya,
-              'kelompokmengaji': namaPengampu,
-              'namasemester': semesterNya,
-              'namapengampu': namaPengampu,
+              'fase': argumenData[0]['fase'],
+              'tempatmengaji': argumenData[0]['tempatmengaji'],
+              'tahunajaran': argumenData[0]['tahunajaran'],
+              'kelompokmengaji': argumenData[0]['namapengampu'],
+              'namasemester': argumenData[0]['namasemester'],
+              'namapengampu': argumenData[0]['namapengampu'],
               'idpengampu': idPengampu,
               'emailpenginput': emailAdmin,
               'idpenginput': idUser,
-              'tanggalinput': DateTime.now(),
+              'tanggalinput': DateTime.now().toIso8601String(),
               'idsiswa': nisnSiswa,
             });
             ubahStatusSiswa(nisnSiswa);
-          }
-        }
-      }
+      
     }
-    // print('sudah d klik');
   }
 
   Future<void> tambahkanKelompokSiswa(
@@ -652,14 +619,14 @@ class TambahSiswaKelompokController extends GetxController {
         .collection('Sekolah')
         .doc(idSekolah)
         .collection('pegawai')
-        .where('alias', isEqualTo: argumenPengampu)
+        .where('alias', isEqualTo: argumenData[0]['namapengampu'])
         .get();
     String idPengampu = querySnapshot.docs.first.data()['uid'];
 
     if (kelasSiswaC.text.isNotEmpty &&
         tahunajaranya.isNotEmpty &&
         semesterNya.isNotEmpty &&
-        argumenPengampu.isNotEmpty) {
+        argumenData[0]['namapengampu'].isNotEmpty) {
       try {
         // buatIsiKelompokMengajiTahunAjaran();
         isiFieldPengampuKelompok();
@@ -674,15 +641,15 @@ class TambahSiswaKelompokController extends GetxController {
             .collection('semester')
             .doc(semesterNya)
             .collection('kelompokmengaji')
-            .doc(argumenPengampu)
+            .doc(argumenData[0]['namapengampu'])
             .collection('tempat')
             .doc(tempatNya)
             .set({
           'tempatmengaji': tempatNya,
           'tahunajaran': tahunajaranya,
-          'kelompokmengaji': argumenPengampu,
+          'kelompokmengaji': argumenData[0]['namapengampu'],
           'namasemester': semesterNya,
-          'namapengampu': argumenPengampu,
+          'namapengampu': argumenData[0]['namapengampu'],
           'idpengampu': idPengampu,
           'emailpenginput': emailAdmin,
           'idpenginput': idUser,
@@ -697,7 +664,7 @@ class TambahSiswaKelompokController extends GetxController {
             .collection('semester')
             .doc(semesterNya)
             .collection('kelompokmengaji')
-            .doc(argumenPengampu)
+            .doc(argumenData[0]['namapengampu'])
             .collection('tempat')
             .doc(tempatNya)
             .collection('daftarsiswakelompok')
@@ -708,9 +675,9 @@ class TambahSiswaKelompokController extends GetxController {
           'kelas': kelasSiswaC.text,
           'fase': faseNya,
           'tahunajaran': tahunajaranya,
-          'kelompoksiswa': argumenPengampu,
+          'kelompoksiswa': argumenData[0]['namapengampu'],
           'semester': semesterNya,
-          'pengampu': argumenPengampu,
+          'pengampu': argumenData[0]['namapengampu'],
           'idpengampu': idPengampu,
           'emailpenginput': emailAdmin,
           'idpenginput': idUser,
@@ -735,7 +702,7 @@ class TambahSiswaKelompokController extends GetxController {
         .collection('Sekolah')
         .doc(idSekolah)
         .collection('pegawai')
-        .where('alias', isEqualTo: argumenPengampu)
+        .where('alias', isEqualTo: argumenData[0]['namapengampu'])
         .get();
     if (querySnapshotKelompok.docs.isNotEmpty) {
       Map<String, dynamic> dataGuru = querySnapshotKelompok.docs.first.data();
@@ -778,7 +745,7 @@ class TambahSiswaKelompokController extends GetxController {
               .collection('tahunajaran')
               .doc(idTahunAjaran)
               .collection('kelastahunajaran')
-              .where('fase', isEqualTo: faseNya)
+              .where('fase', isEqualTo: argumenData[0]['fase'])
               .get()
               .then((querySnapshot) {
             for (var docSnapshot in querySnapshot.docs) {
@@ -805,7 +772,7 @@ class TambahSiswaKelompokController extends GetxController {
         .collection('Sekolah')
         .doc(idSekolah)
         .collection('pegawai')
-        .where('alias', isEqualTo: argumenPengampu)
+        .where('alias', isEqualTo: argumenData[0]['namapengampu'])
         .get();
     if (querySnapshotKelompok.docs.isNotEmpty) {
       Map<String, dynamic> dataGuru = querySnapshotKelompok.docs.first.data();
@@ -878,9 +845,39 @@ class TambahSiswaKelompokController extends GetxController {
                 .collection('daftarsiswa')
                 .orderBy('tanggalinput', descending: true)
                 .snapshots();
+
+            print('idTahunAjaran = $idTahunAjaran');
+            print('semesterNya = $semesterNya');
+            print('faseNya = ${argumenData[0]['fase']}');
+            // print('namaPengampu = $namaPengampu');
+            print('tempatNya = ${argumenData[0]['tempatmengaji']}');
           }
         }
       }
     }
   }
+
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> tampilkan() async* {
+    String tahunAjaranX = argumenData[0]['tahunajaran'];
+    String tahunAjaranya = tahunAjaranX.replaceAll("/", "-");
+    yield* firestore
+                .collection('Sekolah')
+                .doc(idSekolah)
+                .collection('tahunajaran')
+                .doc(tahunAjaranya)
+                .collection('semester')
+                .doc(argumenData[0]['namasemester'])
+                .collection('kelompokmengaji')
+                .doc(argumenData[0]['fase'])
+                .collection('pengampu')
+                .doc(argumenData[0]['namapengampu'])
+                .collection('tempat')
+                .doc(argumenData[0]['tempatmengaji'])
+                .collection('daftarsiswa')
+                .orderBy('tanggalinput', descending: true)
+                .snapshots();
+  }
+
+  Future<void> test() async {}
 }
