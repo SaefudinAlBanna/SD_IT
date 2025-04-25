@@ -60,10 +60,14 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                             },
                           ),
                           IconButton(
-                            tooltip: 'pindah',
+                            tooltip: 'hapus',
                             icon: const Icon(Icons.cancel_outlined),
                             onPressed: () {
                               // Get.toNamed(Routes.DAFTAR_NILAI, arguments: doc);
+                              // print("data argumen = ${doc['nisn']}");
+                              controller.deleteUser(doc['nisn']);
+                              controller.ubahStatusSiswa(doc['nisn'], doc['kelas']);
+                              controller.getDaftarHalaqoh();
                             },
                           ),
                         ],

@@ -2,29 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:guru_project/app/routes/app_pages.dart';
 
-import '../controllers/tambah_siswa_kelompok_controller.dart';
+import '../controllers/pilih_siswa_halaqoh_controller.dart';
 
-final dataxx = Get.arguments;
-
-class TambahSiswaKelompokView extends GetView<TambahSiswaKelompokController> {
-   TambahSiswaKelompokView({super.key});
-
+class PilihSiswaHalaqohView extends GetView<PilihSiswaHalaqohController> {
+   PilihSiswaHalaqohView({super.key});
 
   final datax = Get.arguments;
-  
   @override
   Widget build(BuildContext context) {
-    print('ini get argumen dari tambah_siswa = $datax');
     var datacc = datax[0];
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('TambahSiswaKelompokView'),
-          centerTitle: true,
-          backgroundColor: Colors.blue,
-        ),
-        body: Column(
+      appBar: AppBar(
+        title: const Text('PilihSiswaHalaqohView'),
+        centerTitle: true,
+      ),
+      body: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -131,10 +124,7 @@ class TambahSiswaKelompokView extends GetView<TambahSiswaKelompokController> {
                                                       .data!.docs[index]
                                                       .data()['nisn'] ??
                                                   'No NISN';
-                                                  if(snapshotsiswa.data!.docs.length == 0 || snapshotsiswa.data!.docs.isEmpty){
-                                                    return Center(child: Text('Semua siswa sudah terpilih'),);
-                                                  } else {
-                                                    return ListTile(
+                                              return ListTile(
                                                 title: Text(snapshotsiswa
                                                     .data!.docs[index]
                                                     .data()['namasiswa']),
@@ -164,15 +154,14 @@ class TambahSiswaKelompokView extends GetView<TambahSiswaKelompokController> {
                                                                 namaSiswa,
                                                                 nisnSiswa);
                                                         // tampilkan siswa yang sudah terpilih
-                                                        controller.tampilkan();
-                                                        controller.refreshTampilan();
+                                                        // controller.tampilkan();
+                                                        // controller.refreshTampilan();
                                                         // print('simpan siswa');
                                                       },
                                                     ),
                                                   ],
                                                 ),
                                               );
-                                                  }
                                             },
                                           );
                                         } else {
@@ -225,75 +214,10 @@ class TambahSiswaKelompokView extends GetView<TambahSiswaKelompokController> {
             SizedBox(height: 15),
             Divider(height: 3),
             SizedBox(height: 15),
-            ElevatedButton(onPressed: () {
-              Get.toNamed(Routes.TAMBAH_KELOMPOK_MENGAJI);
-            }, child: Text('data')),
-            //=======================================================
-            Expanded(
-              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  stream: controller.tampilkan(),
-                  builder: (context, snapshotKelompok) {
-                    if (snapshotKelompok.connectionState ==
-                        ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    // ignore: prefer_is_empty
-                    if (snapshotKelompok.data?.docs.length == 0 ||
-                        snapshotKelompok.data == null) {
-                      return Center(
-                        child: Text(
-                            'belum ada data'),
-                      );
-                    }
-                    // else {
-                    return ListView.builder(
-                      itemCount: snapshotKelompok.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        String namaSiswa = snapshotKelompok.data!.docs[index]
-                                .data()['namasiswa'] ??
-                            'No Name';
-                        String kelasSiswa = snapshotKelompok.data!.docs[index]
-                                .data()['kelas'] ??
-                            'No KELAS';
-                        return ListTile(
-                          title: Text(namaSiswa),
-                          subtitle: Text(kelasSiswa),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              IconButton(
-                                  onPressed: () {}, icon: Icon(Icons.checklist_rtl_outlined)),
-                              IconButton(
-                                onPressed: () {
-                                  Get.toNamed(Routes.CONTOH, arguments: namaSiswa);
-                                },
-                                icon: Icon(Icons.add_box),
-                              ),
-                              Checkbox(value: false, onChanged: (value) => true),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                    // }
-                  }),
-            ),
-            //=======================================================
-            FloatingActionButton(
-                backgroundColor: Colors.blueAccent,
-                onPressed: () {
-                  // Get.offAllNamed(Routes.TAMBAH_KELOMPOK_MENGAJI);
-                  Get.offAllNamed(Routes.HOME);
-                  RefreshCallback;
-                },
-                child: Text('kembali')),
-                ElevatedButton(onPressed: (){
-                  // Get.to(TambahSiswaKelompokView());
-                  controller.test();
-                }, child: Text('test')),
-          ],
-        ));
+      
+      
+          ]
+      ),
+    );
   }
 }

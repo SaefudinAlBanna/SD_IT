@@ -28,6 +28,8 @@ import '../modules/new_password/bindings/new_password_binding.dart';
 import '../modules/new_password/views/new_password_view.dart';
 import '../modules/pemberian_kelas_siswa/bindings/pemberian_kelas_siswa_binding.dart';
 import '../modules/pemberian_kelas_siswa/views/pemberian_kelas_siswa_view.dart';
+import '../modules/pilih_siswa_halaqoh/bindings/pilih_siswa_halaqoh_binding.dart';
+import '../modules/pilih_siswa_halaqoh/views/pilih_siswa_halaqoh_view.dart';
 import '../modules/tambah_kelompok_mengaji/bindings/tambah_kelompok_mengaji_binding.dart';
 import '../modules/tambah_kelompok_mengaji/views/tambah_kelompok_mengaji_view.dart';
 import '../modules/tambah_pegawai/bindings/tambah_pegawai_binding.dart';
@@ -148,6 +150,11 @@ class AppPages {
       name: _Paths.DAFTAR_HALAQOH_PENGAMPU,
       page: () => DaftarHalaqohPengampuView(),
       binding: DaftarHalaqohPengampuBinding(),
+    ),
+    GetPage(
+      name: _Paths.PILIH_SISWA_HALAQOH,
+      page: () => PilihSiswaHalaqohView(),
+      binding: PilihSiswaHalaqohBinding(),
     ),
   ];
 }

@@ -163,17 +163,18 @@ class TambahKelompokMengajiController extends GetxController {
         .snapshots();
   }
 
-  
-
   Future<void> buatKelompok() async {
+    QuerySnapshot<Map<String, dynamic>> datanxx = await ambilDataHalaqoh();
+    List<Map<String, dynamic>> datanya =
+        datanxx.docs.map((doc) => doc.data()).toList();
 
     DateTime now = DateTime.now();
     String docIdNilai = DateFormat.yMd().format(now).replaceAll('/', '-');
 
     String tahunajaranya = await getTahunAjaranTerakhir();
     String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
-    String semesterNya = 
-    (semesterC.text == 'semester1') ? "Semester I" : "Semester II";
+    String semesterNya =
+        (semesterC.text == 'semester1') ? "Semester I" : "Semester II";
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
         .collection('Sekolah')
         .doc(idSekolah)
@@ -182,19 +183,15 @@ class TambahKelompokMengajiController extends GetxController {
         .get();
     String idPengampu = querySnapshot.docs.first.data()['uid'];
 
-    
     if (faseC.text.isNotEmpty &&
         tahunajaranya.isNotEmpty &&
         pengampuC.text.isNotEmpty &&
-        tempatC.text.isNotEmpty && 
-        semesterNya.isNotEmpty 
-        ) {
-         
+        tempatC.text.isNotEmpty &&
+        semesterNya.isNotEmpty) {
       try {
         // buatIsiKelompokMengajiTahunAjaran();
         isiFieldPengampuKelompok();
         buatIsiSemester1();
-        
 
         await firestore
             .collection('Sekolah')
@@ -211,7 +208,7 @@ class TambahKelompokMengajiController extends GetxController {
           'semester': semesterNya,
           'emailpenginput': emailAdmin,
           'idpenginput': idUser,
-          'tanggalinput': DateTime.now(),
+          'tanggalinput': DateTime.now().toIso8601String(),
         });
 
         await firestore
@@ -228,7 +225,7 @@ class TambahKelompokMengajiController extends GetxController {
             .collection('tempat')
             .doc(tempatC.text)
             .set({
-          'fase' : faseC.text,
+          'fase': faseC.text,
           'tempatmengaji': tempatC.text,
           'tahunajaran': tahunajaranya,
           'kelompokmengaji': pengampuC.text,
@@ -242,61 +239,90 @@ class TambahKelompokMengajiController extends GetxController {
         });
 
         Get.snackbar('Sukses', 'Kelompok mengaji berhasil dibuat');
-
-        // Get.offAllNamed(Routes.TAMBAH_SISWA_KELOMPOK,
-        //                 arguments: await ambilDataHalaqoh());
-
-        // refresh();
-
-       
+        Get.defaultDialog(
+          title: 'Grup Halaqoh berhasil', 
+          middleText: 'middleText ...??? xxx',
+          actions: <Widget>[
+          ElevatedButton(
+              onPressed: () {
+                dataxx();
+              },
+              child: Text('buka kelompok'))
+        ]);
       } catch (e) {
-        Get.snackbar('Error', e.toString());
+        Get.snackbar('ErrorXX', e.toString());
       }
     } else {
       Get.snackbar('Error', 'tidak boleh kosong');
     }
-        refresh();
-    
+    // refresh();
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> ambilDataHalaqoh() async {
-
-    DateTime now = DateTime.now();
-    String docIdNilai = DateFormat.yMd().format(now).replaceAll('/', '-');
+    // DateTime now = DateTime.now();
+    // String docIdNilai = DateFormat.yMd().format(now).replaceAll('/', '-');
 
     String tahunajaranya = await getTahunAjaranTerakhir();
     String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
-    String semesterNya = 
-    (semesterC.text == 'semester1') ? "Semester I" : "Semester II";
+    String semesterNya =
+        (semesterC.text == 'semester1') ? "Semester I" : "Semester II";
 
     // print('idSekolah = $idSekolah');
     return await firestore
-            .collection('Sekolah')
-            .doc(idSekolah)
-            .collection('tahunajaran')
-            .doc(idTahunAjaran)
-            .collection('semester')
-            .doc(semesterNya)
-            .collection('kelompokmengaji')
-            .doc(faseC.text)
-            .collection('pengampu')
-            .doc(pengampuC.text)
-            .collection('tempat')
-        .where('tanggalinputx', isEqualTo: docIdNilai)
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran')
+        .doc(idTahunAjaran)
+        .collection('semester')
+        .doc(semesterNya)
+        .collection('kelompokmengaji')
+        .doc(faseC.text)
+        .collection('pengampu')
+        .doc(pengampuC.text)
+        .collection('tempat')
+        // .where('tanggalinputx', isEqualTo: docIdNilai)
+        .orderBy('tanggalinput', descending: true)
         .get();
   }
 
-  Future<void> dataxx() async {
-    QuerySnapshot<Map<String, dynamic>> datanxx = await ambilDataHalaqoh();
-    List<Map<String, dynamic>> datanya = datanxx.docs.map((doc) => doc.data()).toList();
+  // Future<void> dataxx() async {
+  //   QuerySnapshot<Map<String, dynamic>> datanxx = await ambilDataHalaqoh();
+  //   List<Map<String, dynamic>> datanya = datanxx.docs.map((doc) => doc.data()).toList();
 
-    Get.offAllNamed(Routes.TAMBAH_SISWA_KELOMPOK,
-                        arguments: datanya);
-    print('ini data argumen = $datanya');
-    if (datanya.isNotEmpty) {
-      print('ini data argumen = ${datanya[0]['tanggalinputx']}');
-    } else {
-      print('Data is empty');
+  //   if(datanya.isNotEmpty || datanya != []) {
+  //   Get.offAllNamed(Routes.TAMBAH_SISWA_KELOMPOK,
+  //                       arguments: datanya);
+  //   print('ini data argumen = $datanya');
+  //   } else if(datanya.isEmpty || datanya == [] || datanya.length == 0) {
+  //     QuerySnapshot<Map<String, dynamic>> datanxx = await ambilDataHalaqoh();
+  //   List<Map<String, dynamic>> datanya = datanxx.docs.map((doc) => doc.data()).toList();
+
+  //   print('pengambilan data kalo null = $datanya');
+  //   }
+  // }
+
+  Future<void> dataxx() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> datanxx = await ambilDataHalaqoh();
+      List<Map<String, dynamic>> datanya =
+          datanxx.docs.map((doc) => doc.data()).toList();
+
+      if (datanya.isNotEmpty || datanya != [] || datanya.length != 0) {
+        Get.offAllNamed(Routes.TAMBAH_SISWA_KELOMPOK, arguments: datanya);
+        // print('ini data argumenXX = $datanya');
+      } else if (datanya.isEmpty) {
+        // print('ini yang kedua = $datanya');
+        Get.snackbar('Error', 'data kosong, silahkan coba lagi');
+      } else if (datanya.isEmpty || datanya == []) {
+        Get.snackbar('Error', 'data kosong, silahkan coba lagi');
+        // print('pengambilan data kalo null = $datanya');
+      } else {
+        // print('Error, bukan keduanya');
+        Get.snackbar('Error', 'data kosong, silahkan coba lagi');
+      }
+    } catch (e) {
+      Get.snackbar('Error', '$e');
+      // print('kode error print nya : $e');
     }
   }
 
@@ -353,7 +379,7 @@ class TambahKelompokMengajiController extends GetxController {
           'idpengampu': idPengampu,
           'emailpenginput': emailAdmin,
           'idpenginput': idUser,
-          'tanggalinput': DateTime.now(),
+          'tanggalinput': DateTime.now().toIso8601String(),
         });
 
         await firestore
@@ -381,7 +407,7 @@ class TambahKelompokMengajiController extends GetxController {
           'idpengampu': idPengampu,
           'emailpenginput': emailAdmin,
           'idpenginput': idUser,
-          'tanggalinput': DateTime.now(),
+          'tanggalinput': DateTime.now().toIso8601String(),
           'idsiswa': nisnSiswa,
         });
 
@@ -459,7 +485,7 @@ class TambahKelompokMengajiController extends GetxController {
       'tahunajaran': tahunajaranya,
       'emailpenginput': emailAdmin,
       'idpenginput': idUser,
-      'tanggalinput': DateTime.now(),
+      'tanggalinput': DateTime.now().toIso8601String(),
     });
   }
 
@@ -495,7 +521,7 @@ class TambahKelompokMengajiController extends GetxController {
       'tahunajaran': tahunajaranya,
       'emailpenginput': emailAdmin,
       'idpenginput': idUser,
-      'tanggalinput': DateTime.now(),
+      'tanggalinput': DateTime.now().toIso8601String(),
     });
   }
 
@@ -537,7 +563,7 @@ class TambahKelompokMengajiController extends GetxController {
         'tahunajaran': tahunajaranya,
         'emailpenginput': emailAdmin,
         'idpenginput': idUser,
-        'tanggalinput': DateTime.now(),
+        'tanggalinput': DateTime.now().toIso8601String(),
       });
 
       await firestore
@@ -552,7 +578,7 @@ class TambahKelompokMengajiController extends GetxController {
           .collection('kelompokmengaji')
           .doc(faseC.text)
           .set({
-        'fase' : faseC.text,
+        'fase': faseC.text,
         'tempatmengaji': tempatC.text,
         'namapengampu': pengampuC.text,
         'idpengampu': idPengampu,
@@ -560,7 +586,7 @@ class TambahKelompokMengajiController extends GetxController {
         'tahunajaran': tahunajaranya,
         'emailpenginput': emailAdmin,
         'idpenginput': idUser,
-        'tanggalinput': DateTime.now(),
+        'tanggalinput': DateTime.now().toIso8601String(),
       });
 
       await firestore
@@ -577,7 +603,7 @@ class TambahKelompokMengajiController extends GetxController {
           .collection('tempat')
           .doc(tempatC.text)
           .set({
-        'fase' : faseC.text,
+        'fase': faseC.text,
         'tempatmengaji': tempatC.text,
         'namapengampu': pengampuC.text,
         'idpengampu': idPengampu,
@@ -585,7 +611,7 @@ class TambahKelompokMengajiController extends GetxController {
         'tahunajaran': tahunajaranya,
         'emailpenginput': emailAdmin,
         'idpenginput': idUser,
-        'tanggalinput': DateTime.now(),
+        'tanggalinput': DateTime.now().toIso8601String(),
       });
     }
   }
@@ -623,7 +649,7 @@ class TambahKelompokMengajiController extends GetxController {
         .collection('tempat')
         .doc(tempatC.text)
         .set({
-      'fase' : faseC.text,
+      'fase': faseC.text,
       'tempatmengaji': tempatC.text,
       'tahunajaran': tahunajaranya,
       'kelompokmengaji': pengampuC.text,
@@ -632,7 +658,7 @@ class TambahKelompokMengajiController extends GetxController {
       'idpengampu': idPengampu,
       'emailpenginput': emailAdmin,
       'idpenginput': idUser,
-      'tanggalinput': DateTime.now(),
+      'tanggalinput': DateTime.now().toIso8601String(),
     });
 
     await firestore
@@ -647,7 +673,7 @@ class TambahKelompokMengajiController extends GetxController {
         .collection('pengampu')
         .doc(pengampuC.text)
         .set({
-      'fase' : faseC.text,
+      'fase': faseC.text,
       'namasemester': semesterNya,
       'kelompokmengaji': pengampuC.text,
       'idpengampu': idPengampu,
@@ -656,7 +682,7 @@ class TambahKelompokMengajiController extends GetxController {
       'tahunajaran': tahunajaranya,
       'emailpenginput': emailAdmin,
       'idpenginput': idUser,
-      'tanggalinput': DateTime.now(),
+      'tanggalinput': DateTime.now().toIso8601String(),
     });
   }
 
@@ -695,7 +721,7 @@ class TambahKelompokMengajiController extends GetxController {
           .collection('pengampu')
           .doc(pengampuC.text)
           .set({
-        'fase' : faseC.text,
+        'fase': faseC.text,
         'tahunajaran': tahunajaranya,
         'kelompokmengaji': pengampuC.text,
         'namasemester': semesterNya,
@@ -703,7 +729,7 @@ class TambahKelompokMengajiController extends GetxController {
         'idpengampu': idPengampu,
         'emailpenginput': emailAdmin,
         'idpenginput': idUser,
-        'tanggalinput': DateTime.now(),
+        'tanggalinput': DateTime.now().toIso8601String(),
         'tempatmengaji': tempatC.text,
       });
 
@@ -723,7 +749,7 @@ class TambahKelompokMengajiController extends GetxController {
           .collection('tempat')
           .doc(tempatC.text)
           .set({
-        'fase' : faseC.text,
+        'fase': faseC.text,
         'tahunajaran': tahunajaranya,
         'kelompokmengaji': pengampuC.text,
         'namasemester': semesterNya,
@@ -731,7 +757,7 @@ class TambahKelompokMengajiController extends GetxController {
         'idpengampu': idPengampu,
         'emailpenginput': emailAdmin,
         'idpenginput': idUser,
-        'tanggalinput': DateTime.now(),
+        'tanggalinput': DateTime.now().toIso8601String(),
         'tempatmengaji': tempatC.text,
       });
     }

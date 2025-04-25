@@ -479,6 +479,13 @@ class HomeController extends GetxController {
     String uid = auth.currentUser!.uid;
     String emailPenginput = auth.currentUser!.email!;
 
+    String kelasNya = kelasBaruC.text.substring(0, 1);
+    String faseNya = (kelasNya == '1' || kelasNya == '2')
+        ? "Fase A"
+        : (kelasNya == '3' || kelasNya == '4')
+            ? "Fase B"
+            : "Fase C";
+
     CollectionReference<Map<String, dynamic>> colKelas = firestore
         .collection('Sekolah')
         .doc(idSekolah)
@@ -499,8 +506,8 @@ class HomeController extends GetxController {
           'namakelas': kelasBaruC.text,
           'idpenginput': uid,
           'emailpenginput' : emailPenginput,
-          'tanggalinput': DateTime.now().toString(),
-          'idkelas' : idKelas,
+          'tanggalinput': DateTime.now().toIso8601String(),
+          'fase' : faseNya,
         }).then(
           (value) {
               Get.snackbar('Berhasil', 'Kelas Baru Berhasil Dibuat');

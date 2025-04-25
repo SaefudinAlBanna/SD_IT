@@ -32,6 +32,7 @@ abstract class Routes {
   static const DAFTAR_HALAQOH_PERFASE = _Paths.DAFTAR_HALAQOH_PERFASE;
   static const DAFTAR_HALAQOH = _Paths.DAFTAR_HALAQOH;
   static const DAFTAR_HALAQOH_PENGAMPU = _Paths.DAFTAR_HALAQOH_PENGAMPU;
+  static const PILIH_SISWA_HALAQOH = _Paths.PILIH_SISWA_HALAQOH;
 }
 
 abstract class _Paths {
@@ -65,4 +66,5 @@ abstract class _Paths {
   static const DAFTAR_HALAQOH_PERFASE = '/daftar-halaqoh-perfase';
   static const DAFTAR_HALAQOH = '/daftar-halaqoh';
   static const DAFTAR_HALAQOH_PENGAMPU = '/daftar-halaqoh-pengampu';
+  static const PILIH_SISWA_HALAQOH = '/pilih-siswa-halaqoh';
 }
