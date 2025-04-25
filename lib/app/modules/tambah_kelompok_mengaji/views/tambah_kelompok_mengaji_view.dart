@@ -143,20 +143,10 @@ class TambahKelompokMengajiView
                   },
                   child: Text('Buat Kelompok')),
 
-                  // FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  //   future: controller.ambilDataHalaqoh(),
-                  //   builder: (context, snapshot) {
-                  //     if(snapshot.connectionState == ConnectionState.done){
-                  //     return 
-                  ElevatedButton(onPressed: (){
-                        controller.dataxx();
-                      }, child: Text('data'))
-                    // } 
-                  //else {
-                  //     return SizedBox();
-                  //   }
-                  //     } 
-                  // )
+                  
+                  // ElevatedButton(onPressed: (){
+                  //       controller.dataxx();
+                  //     }, child: Text('data'))
               
             ],
           ),

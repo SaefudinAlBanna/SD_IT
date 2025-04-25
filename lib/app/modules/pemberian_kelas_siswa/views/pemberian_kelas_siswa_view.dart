@@ -96,11 +96,14 @@ class PemberianKelasSiswaView extends GetView<PemberianKelasSiswaController> {
                     return Center(
                       child: CircularProgressIndicator(),
                     );
-                  }
+                  } 
                   if (snapshot.connectionState == ConnectionState.active) {
                     final List<DocumentSnapshot<Map<String, dynamic>>> data =
                         snapshot.data!.docs;
-                    return ListView.builder(
+                        if(data.length == 0 || data.isEmpty) {
+                          return Center(child: Text('Semua siswa sudah punya kelas'),);
+                        } else {
+                          return ListView.builder(
                       shrinkWrap: true,
                       itemCount: data.length,
                       itemBuilder: (context, index) {
@@ -126,6 +129,7 @@ class PemberianKelasSiswaView extends GetView<PemberianKelasSiswaController> {
                         );
                       },
                     );
+                        }
                   }
                   return Center(
                     child: Text('No data available'),

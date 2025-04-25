@@ -26,50 +26,54 @@ class ContohView extends GetView<ContohController> {
             ),
             Divider(height: 3, color: Colors.black),
             SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    Card(
-                      child: Column(
-                        spacing: 5,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Nama Siswa : ${dataxx['namasiswa']}'),
-                          Text('No Induk : ${dataxx['nisn']}'),
-                          Text('Kelas :  ${dataxx['kelas']}'),
-                        ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Card(
+                        child: Column(
+                          spacing: 5,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Nama Siswa : ${dataxx['namasiswa']}'),
+                            Text('No Induk : ${dataxx['nisn']}'),
+                            Text('Kelas :  ${dataxx['kelas']}'),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Card(
-                      child: Column(
-                        spacing: 5,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(DateFormat('dd Mmmm Yyyy').toString()),
-                          Text(dataxx['namapengampu']),
-                          Text(dataxx['tempatmengaji']),
-                        ],
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Card(
+                        child: Column(
+                          spacing: 5,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(DateFormat('dd Mmmm Yyyy').toString()),
+                            Text(dataxx['namapengampu']),
+                            Text(dataxx['tempatmengaji']),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
             SizedBox(height: 20),
             Column(
               spacing: 5,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Tatap muka ke :'),
-                Text('Tgl : ${DateTime.now()}'),
+                // Text('Tatap muka ke :'),
+                Text(
+                              'Tanggal :   ${DateFormat.yMd().format(DateTime.now())}'),
                 SizedBox(height: 10),
                 Text(
                   'HAFALAN',

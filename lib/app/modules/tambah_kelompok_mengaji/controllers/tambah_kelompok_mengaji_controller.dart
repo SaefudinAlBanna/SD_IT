@@ -164,9 +164,6 @@ class TambahKelompokMengajiController extends GetxController {
   }
 
   Future<void> buatKelompok() async {
-    QuerySnapshot<Map<String, dynamic>> datanxx = await ambilDataHalaqoh();
-    List<Map<String, dynamic>> datanya =
-        datanxx.docs.map((doc) => doc.data()).toList();
 
     DateTime now = DateTime.now();
     String docIdNilai = DateFormat.yMd().format(now).replaceAll('/', '-');
@@ -241,7 +238,7 @@ class TambahKelompokMengajiController extends GetxController {
         Get.snackbar('Sukses', 'Kelompok mengaji berhasil dibuat');
         Get.defaultDialog(
           title: 'Grup Halaqoh berhasil', 
-          middleText: 'middleText ...??? xxx',
+          middleText: 'Silahkan klik buka kelompok',
           actions: <Widget>[
           ElevatedButton(
               onPressed: () {

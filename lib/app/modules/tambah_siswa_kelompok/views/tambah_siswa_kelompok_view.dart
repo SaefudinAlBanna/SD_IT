@@ -227,7 +227,7 @@ class TambahSiswaKelompokView extends GetView<TambahSiswaKelompokController> {
             SizedBox(height: 15),
             ElevatedButton(onPressed: () {
               Get.toNamed(Routes.TAMBAH_KELOMPOK_MENGAJI);
-            }, child: Text('data')),
+            }, child: Text('Buat lagi')),
             //=======================================================
             Expanded(
               child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
@@ -289,10 +289,14 @@ class TambahSiswaKelompokView extends GetView<TambahSiswaKelompokController> {
                   RefreshCallback;
                 },
                 child: Text('kembali')),
-                ElevatedButton(onPressed: (){
-                  // Get.to(TambahSiswaKelompokView());
-                  controller.test();
-                }, child: Text('test')),
+                
+                
+                // ElevatedButton(onPressed: (){
+                //   // Get.to(TambahSiswaKelompokView());
+                //   controller.test();
+                // }, child: Text('test')),
+
+
           ],
         ));
   }

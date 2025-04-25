@@ -205,6 +205,7 @@ class Contoh extends GetView<HomeController> {
                                                               child:
                                                                   GestureDetector(
                                                                 onTap: () {
+                                                                  Get.back();
                                                                   Get.toNamed(
                                                                       Routes
                                                                           .DAFTAR_KELAS,
@@ -297,12 +298,14 @@ class Contoh extends GetView<HomeController> {
                                                                   kelompokPengampu
                                                                       .map((p) {
                                                                 return GestureDetector(
-                                                                  onTap: () =>
-                                                                      Get.toNamed(
-                                                                          Routes
-                                                                              .DAFTAR_HALAQOH_PENGAMPU,
-                                                                          arguments:
-                                                                              p),
+                                                                  onTap: () {
+                                                                    Get.back();
+                                                                    Get.toNamed(
+                                                                        Routes
+                                                                            .DAFTAR_HALAQOH_PENGAMPU,
+                                                                        arguments:
+                                                                            p);
+                                                                  },
                                                                   child:
                                                                       Container(
                                                                     margin: EdgeInsets
@@ -352,7 +355,7 @@ class Contoh extends GetView<HomeController> {
                                       icon: Icon(Icons.sports_gymnastics_rounded),
                                       onTap: () => Get.defaultDialog(
                                           onCancel: Get.back,
-                                          title: 'Update Kelas',
+                                          title: 'Ekskul',
                                           middleText: 'Fitur dalam pengembangan'),
                                     ),
                                     //KOORDINATOR HALAQOH
@@ -825,7 +828,7 @@ class Contoh extends GetView<HomeController> {
                                             icon: Icon(
                                                 Icons.account_tree_outlined),
                                             onTap: () => Get.defaultDialog(
-                                                title: 'Ekskul',
+                                                title: 'Update Kelas',
                                                 middleText:
                                                     'Fitur dalam pengembangan'),
                                             // Get.toNamed(Routes.UPDATE_KELAS_TAHUN_AJARAN),

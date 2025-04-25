@@ -118,10 +118,10 @@ class PemberianKelasSiswaController extends GetxController {
     String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
     String kelasNya = kelasSiswaC.text.substring(0, 1);
     String faseNya = (kelasNya == '1' || kelasNya == '2')
-        ? "FaseA"
+        ? "Fase A"
         : (kelasNya == '3' || kelasNya == '4')
-            ? "FaseB"
-            : "FaseC";
+            ? "Fase B"
+            : "Fase C";
 
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
         .collection('Sekolah')
@@ -146,7 +146,7 @@ class PemberianKelasSiswaController extends GetxController {
       'tahunajaran': tahunajaranya,
       'emailpenginput': emailAdmin,
       'idpenginput': idUser,
-      'tanggalinput': DateTime.now(),
+      'tanggalinput': DateTime.now().toIso8601String(),
     });
   }
 
@@ -186,7 +186,7 @@ class PemberianKelasSiswaController extends GetxController {
       'tahunajaran': tahunajaranya,
       'emailpenginput': emailAdmin,
       'idpenginput': idUser,
-      'tanggalinput': DateTime.now(),
+      'tanggalinput': DateTime.now().toIso8601String(),
     });
   }
 
@@ -221,7 +221,7 @@ class PemberianKelasSiswaController extends GetxController {
           .set({
         'namatahunajaran': tahunajaranya,
         'idpenginput': idUser,
-        'tanggalinput': DateTime.now(),
+        'tanggalinput': DateTime.now().toIso8601String(),
       });
 
       await firestore
@@ -239,7 +239,7 @@ class PemberianKelasSiswaController extends GetxController {
         'tahunajaran': tahunajaranya,
         'emailpenginput': emailAdmin,
         'idpenginput': idUser,
-        'tanggalinput': DateTime.now(),
+        'tanggalinput': DateTime.now().toIso8601String(),
       });
     }
   }
@@ -289,7 +289,7 @@ class PemberianKelasSiswaController extends GetxController {
           'idwalikelas': uidWaliKelasnya,
           'emailpenginput': emailAdmin,
           'idpenginput': idUser,
-          'tanggalinput': DateTime.now(),
+          'tanggalinput': DateTime.now().toIso8601String(),
           'status': 'aktif',
           'idsiswa': nisnSiswa,
           'statuskelompok' : 'baru',
