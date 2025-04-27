@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:guru_project/app/routes/app_pages.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 
 class TambahSiswaKelompokController extends GetxController {
   var argumenData = Get.arguments;
@@ -25,8 +25,8 @@ class TambahSiswaKelompokController extends GetxController {
     String tahunajaranya = await getTahunAjaranTerakhir();
     String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
 
-    DateTime now = DateTime.now();
-    String docIdNilai = DateFormat.yMd().format(now).replaceAll('/', '-');
+    // DateTime now = DateTime.now();
+    // String docIdNilai = DateFormat.yMd().format(now).replaceAll('/', '-');
 
     QuerySnapshot<Map<String, dynamic>> querySnapshotKelompok = await firestore
         .collection('Sekolah')
@@ -116,7 +116,7 @@ class TambahSiswaKelompokController extends GetxController {
     // String tahunajaranya = await getTahunAjaranTerakhir();
     // String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
 
-    DateTime now = DateTime.now();
+    // DateTime now = DateTime.now();
     // String docIdNilai = DateFormat.().format(now).replaceAll('/', '-');
   }
 
@@ -735,8 +735,8 @@ class TambahSiswaKelompokController extends GetxController {
             .collection('kelompokmengaji')
             .get();
         if (querySnapshotFase.docs.isNotEmpty) {
-          Map<String, dynamic> dataFase = querySnapshotFase.docs.last.data();
-          String faseNya = dataFase['fase'];
+          // Map<String, dynamic> dataFase = querySnapshotFase.docs.last.data();
+          // String faseNya = dataFase['fase'];
 
           List<String> kelasList = [];
           await firestore
@@ -756,7 +756,7 @@ class TambahSiswaKelompokController extends GetxController {
         }
       }
     }
-    throw Exception('No data found for getDataKelasYangAda');
+    throw Exception('belum ada kelas');
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> tampilSiswaKelompok() async* {

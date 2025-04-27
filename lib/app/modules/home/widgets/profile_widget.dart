@@ -39,7 +39,7 @@ class ProfileWidget extends GetView<HomeController> {
               leading: Icon(Icons.key),
               title: Text('Ubah Password'),
                         ),
-            StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+             StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
               stream: controller.getProfileBaru(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
