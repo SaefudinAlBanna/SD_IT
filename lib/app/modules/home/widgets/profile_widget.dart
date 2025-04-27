@@ -11,51 +11,65 @@ class ProfileWidget extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      drawer: Drawer(
-        shadowColor: Colors.red,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(30),
-                topRight: Radius.circular(30))),
-        width: 230,
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.all(15),
-              height: 150,
-              width: 230,
-              color: Colors.grey,
-              alignment: Alignment.bottomLeft,
-              child: Align(
+      drawer: SafeArea(
+        child: Drawer(
+          shadowColor: Colors.red,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(30),
+                  topRight: Radius.circular(30))),
+          width: 230,
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(15),
+                height: 150,
+                width: 230,
+                color: Colors.grey,
                 alignment: Alignment.bottomLeft,
-                child: Text(
-                  'Menu',
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    'Menu',
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
+                  ),
                 ),
               ),
-            ),
-            ListTile(
-              onTap: () =>  Get.toNamed(Routes.UPDATE_PASSWORD),
-              leading: Icon(Icons.key),
-              title: Text('Ubah Password'),
-                        ),
-             StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-              stream: controller.getProfileBaru(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ListTile(
-                    onTap: () => Get.toNamed(
-                      Routes.UPDATE_PEGAWAI,
-                      arguments: snapshot.data!.data(),
-                    ),
-                    leading: Icon(Icons.person),
-                    title: Text('Update Profile'),
-                  );
-                }
-                return SizedBox.shrink(); // Return an empty widget if no data
-              },
-            ),
-          ],
+              ListTile(
+                onTap: () {
+                  if (context.mounted) {
+                    Get.back();
+                    Get.toNamed(Routes.UPDATE_PASSWORD);
+                  }
+                },
+                leading: Icon(Icons.key),
+                title: Text('Ubah Password'),
+              ),
+              StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                stream: controller.getProfileBaru(),
+                builder: (context, snapshot) {
+                  if(snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (!context.mounted) {
+                    return SizedBox.shrink(); // Prevent rebuilding if disposed
+                  }
+                  if (snapshot.hasData) {
+                    return ListTile(
+                      onTap: () {
+                        Get.back();
+                        Get.toNamed(Routes.UPDATE_PEGAWAI,
+                            arguments: snapshot.data!.data());
+                      },
+                      leading: Icon(Icons.person),
+                      title: Text('Update Profile'),
+                    );
+                  }
+                  return SizedBox.shrink();
+                },
+              ),
+            ],
+          ),
         ),
       ),
       body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(

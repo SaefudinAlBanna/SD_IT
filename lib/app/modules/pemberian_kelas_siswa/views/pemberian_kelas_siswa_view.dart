@@ -100,6 +100,7 @@ class PemberianKelasSiswaView extends GetView<PemberianKelasSiswaController> {
                   if (snapshot.connectionState == ConnectionState.active) {
                     final List<DocumentSnapshot<Map<String, dynamic>>> data =
                         snapshot.data!.docs;
+                        // ignore: prefer_is_empty
                         if(data.length == 0 || data.isEmpty) {
                           return Center(child: Text('Semua siswa sudah punya kelas'),);
                         } else {

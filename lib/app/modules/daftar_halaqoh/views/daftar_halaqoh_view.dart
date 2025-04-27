@@ -114,6 +114,7 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                                                                               index]
                                                                           .data()['nisn'] ??
                                                                       'No NISN';
+                                                              // ignore: prefer_is_empty
                                                               if (snapshotsiswa
                                                                           .data!
                                                                           .docs
@@ -263,12 +264,12 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                           tooltip: 'pindah',
                           icon: const Icon(Icons.change_circle_outlined),
                           onPressed: () {
-                            // Get.toNamed(Routes.DAFTAR_NILAI, arguments: doc);
                             Get.defaultDialog(
+                              barrierDismissible: false,
                               title: '${data['fase']}',
                               content: SizedBox(
-                                height: 250,
-                                width: 350,
+                                height: 300,
+                                width: 400,
                                 child: Column(
                                   children: [
                                     Column(
@@ -289,7 +290,7 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                                               ? controller.pengampuC.text
                                               : null,
                                           items: (f, cs) =>
-                                              controller.getDataPengampu(),
+                                              controller.getDataPengampuFase(),
                                           onChanged: (String? value) {
                                             if (value != null) {
                                               controller.pengampuC.text = value;
@@ -299,20 +300,37 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                                               fit: FlexFit.tight),
                                         ),
                                         SizedBox(height: 20),
+                                        TextField(
+                                          controller: controller.alasanC,
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            hintText: 'Alasan Pindah',
+                                          ),
+                                        ),
+                                        SizedBox(height: 20),
                                         ElevatedButton(
-                                            onPressed: () {},
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(Icons
-                                                    .change_circle_outlined),
-                                                SizedBox(width: 15),
-                                                Text('Pindah halaqoh'),
-                                              ],
-                                            ))
+                                          onPressed: () async {
+                                            if (controller.isLoading.isFalse) {
+                                              // Get.back();
+                                              await controller.pindahkan();
+                                              // controller.test();
+                                            }
+                                          },
+                                          // child: Text('Pindah halaqoh'),
+                                          child: Row(
+                                            children: [
+                                              Text(controller.isLoading.isFalse ? "Pindah halaqoh" : "LOADING..."),
+                                              SizedBox(width: 15),
+                                              Center(child: controller.isLoading.isFalse ? SizedBox()  : CircularProgressIndicator()), 
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
+                                    SizedBox(height: 20),
+                                    ElevatedButton(
+                                        onPressed: () => Get.back(),
+                                        child: Text('Batal')),
                                   ],
                                 ),
                               ),

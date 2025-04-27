@@ -87,8 +87,6 @@ class Contoh extends GetView<HomeController> {
                               decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                     colors: [
-                                      // Colors.blue.shade300,
-                                      // Colors.blue.shade400,
                                       Colors.indigo.shade500,
                                       Colors.indigo.shade600,
                                     ],

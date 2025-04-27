@@ -845,12 +845,6 @@ class TambahSiswaKelompokController extends GetxController {
                 .collection('daftarsiswa')
                 .orderBy('tanggalinput', descending: true)
                 .snapshots();
-
-            print('idTahunAjaran = $idTahunAjaran');
-            print('semesterNya = $semesterNya');
-            print('faseNya = ${argumenData[0]['fase']}');
-            // print('namaPengampu = $namaPengampu');
-            print('tempatNya = ${argumenData[0]['tempatmengaji']}');
           }
         }
       }

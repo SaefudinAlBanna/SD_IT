@@ -304,6 +304,7 @@ class TambahKelompokMengajiController extends GetxController {
       List<Map<String, dynamic>> datanya =
           datanxx.docs.map((doc) => doc.data()).toList();
 
+      // ignore: prefer_is_empty
       if (datanya.isNotEmpty || datanya != [] || datanya.length != 0) {
         Get.offAllNamed(Routes.TAMBAH_SISWA_KELOMPOK, arguments: datanya);
         // print('ini data argumenXX = $datanya');

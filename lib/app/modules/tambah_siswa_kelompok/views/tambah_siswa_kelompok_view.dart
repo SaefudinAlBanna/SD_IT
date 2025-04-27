@@ -16,7 +16,7 @@ class TambahSiswaKelompokView extends GetView<TambahSiswaKelompokController> {
   
   @override
   Widget build(BuildContext context) {
-    print('ini get argumen dari tambah_siswa = $datax');
+    // print('ini get argumen dari tambah_siswa = $datax');
     var datacc = datax[0];
     return Scaffold(
         appBar: AppBar(
@@ -131,6 +131,7 @@ class TambahSiswaKelompokView extends GetView<TambahSiswaKelompokController> {
                                                       .data!.docs[index]
                                                       .data()['nisn'] ??
                                                   'No NISN';
+                                                  // ignore: prefer_is_empty
                                                   if(snapshotsiswa.data!.docs.length == 0 || snapshotsiswa.data!.docs.isEmpty){
                                                     return Center(child: Text('Semua siswa sudah terpilih'),);
                                                   } else {
