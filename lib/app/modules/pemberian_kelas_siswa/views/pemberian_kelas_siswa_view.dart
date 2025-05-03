@@ -7,7 +7,9 @@ import 'package:get/get.dart';
 import '../controllers/pemberian_kelas_siswa_controller.dart';
 
 class PemberianKelasSiswaView extends GetView<PemberianKelasSiswaController> {
-  const PemberianKelasSiswaView({super.key});
+  PemberianKelasSiswaView({super.key});
+
+  final dataKelas = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -46,47 +48,68 @@ class PemberianKelasSiswaView extends GetView<PemberianKelasSiswaController> {
                   ],
                 ),
                 SizedBox(height: 20),
-                DropdownSearch<String>(
-              decoratorProps: DropDownDecoratorProps(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  filled: true,
-                  prefixText: 'Wali kelas : ',
+                Text(
+                  'Kelas : $dataKelas',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
-              ),
-              // selectedItem: controller.kelasSiswaC.text,
-              selectedItem: controller.idPegawaiC.text,
-              items: (f, cs) => controller.getDataWaliKelas(),
-              onChanged: (String? value) {
-                controller.waliKelasSiswaC.text = value!;
-                controller.idPegawaiC.text = value;
-              },
-              popupProps: PopupProps.menu(
-                  // disabledItemFn: (item) => item == '1A',
-                  fit: FlexFit.tight),
-            ),
-            SizedBox(height: 10),
-            DropdownSearch<String>(
-              decoratorProps: DropDownDecoratorProps(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  filled: true,
-                  prefixText: 'kelas : ',
-                ),
-              ),
-              selectedItem: controller.kelasSiswaC.text,
-              items: (f, cs) => controller.getDataKelas(),
-              onChanged: (String? value) {
-                controller.kelasSiswaC.text = value!;
-              },
-              popupProps: PopupProps.menu(
-                  // disabledItemFn: (item) => item == '1A',
-                  fit: FlexFit.tight),
-            ),
+                SizedBox(height: 10),
+                FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    future: controller.getDataWali(),
+                    // future: null,
+                    builder: (context, snapwalikelas) {
+                      var datakelasnya = snapwalikelas.data?.docs;
+                      if (snapwalikelas.connectionState ==
+                          ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapwalikelas.hasData) {
+                        if (datakelasnya != null &&
+                            datakelasnya.any((doc) =>
+                                doc['namakelas'].toString() ==
+                                dataKelas.toString())) {
+                          // tampilkan data walikelas
+                          final waliKelasDoc = datakelasnya.firstWhere(
+                              (doc) =>
+                                  doc['namakelas'].toString() ==
+                                  dataKelas.toString(),
+                              orElse: () => throw Exception(
+                                  'No matching document found'));
+                          // print('waliKelasDoc = $waliKelasDoc');
+                          return Text('wali kelas : ${waliKelasDoc['walikelas'] as String? ?? 'No Wali Kelas'}');
+                        } 
+                      }
+                      // return SizedBox.shrink(); // Default return statement
+                      return DropdownSearch<String>(
+                            decoratorProps: DropDownDecoratorProps(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                filled: null,
+                                prefixText: 'Wali kelas : ',
+                              ),
+                            ),
+                            // selectedItem: controller.kelasSiswaC.text,
+                            selectedItem: controller.idPegawaiC.text,
+                            items: (f, cs) => controller.getDataWaliKelas(),
+                            onChanged: (String? value) {
+                              controller.waliKelasSiswaC.text = value!;
+                              controller.idPegawaiC.text = value;
+                            },
+                            popupProps: PopupProps.menu(
+                                // disabledItemFn: (item) => item == '1A',
+                                fit: FlexFit.tight),
+                          ); // Default return statement
+                    }),
+                // ElevatedButton(
+                //     onPressed: () {
+                //       controller.getDataWali();
+                //       // print('waliKelasDoc = $waliKelasDoc');
+                //     },
+                //     child: Text('test')),
               ],
             ),
           ),
-          
           SizedBox(height: 10),
           Expanded(
             child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
@@ -96,41 +119,47 @@ class PemberianKelasSiswaView extends GetView<PemberianKelasSiswaController> {
                     return Center(
                       child: CircularProgressIndicator(),
                     );
-                  } 
+                  }
                   if (snapshot.connectionState == ConnectionState.active) {
                     final List<DocumentSnapshot<Map<String, dynamic>>> data =
                         snapshot.data!.docs;
-                        // ignore: prefer_is_empty
-                        if(data.length == 0 || data.isEmpty) {
-                          return Center(child: Text('Semua siswa sudah punya kelas'),);
-                        } else {
-                          return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: data.length,
-                      itemBuilder: (context, index) {
-                        String namaSiswa =
-                            data[index].data()?['nama'] ?? 'No Name';
-                        String nisnSiswa =
-                            data[index].data()?['nisn'] ?? 'No NISN';
-                        return ListTile(
-                          title: Text(namaSiswa),
-                          subtitle: Text(nisnSiswa),
-                          trailing: IconButton(
-                            onPressed: () {
-                              if(controller.waliKelasSiswaC.text.isEmpty){
-                                Get.snackbar('Peringatan', 'Wali kelas tidak boleh kosong');
-                              } else if(controller.kelasSiswaC.text.isEmpty){
-                                Get.snackbar('Peringatan', 'kelas tidak boleh kosong');
-                              }
-                              controller.tambahkanKelasSiswa(
-                                  namaSiswa, nisnSiswa);
-                            },
-                            icon: Icon(Icons.save_outlined),
-                          ),
-                        );
-                      },
-                    );
-                        }
+                    // ignore: prefer_is_empty
+                    if (data.length == 0 || data.isEmpty) {
+                      return Center(
+                        child: Text('Semua siswa sudah punya kelas'),
+                      );
+                    } else {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          String namaSiswa =
+                              data[index].data()?['nama'] ?? 'No Name';
+                          String nisnSiswa =
+                              data[index].data()?['nisn'] ?? 'No NISN';
+                          return ListTile(
+                            title: Text(namaSiswa),
+                            subtitle: Text(nisnSiswa),
+                            trailing: IconButton(
+                              onPressed: () {
+                                // if (controller.waliKelasSiswaC.text.isEmpty) {
+                                //   Get.snackbar('Peringatan',
+                                //       'Wali kelas tidak boleh kosong');
+                                // } else if (controller
+                                //     .argumentKelas.isEmpty) {
+                                //   Get.snackbar(
+                                //       'Peringatan', 'kelas tidak boleh kosong');
+                                // }
+                                // controller.tambahkanKelasSiswa(
+                                //     namaSiswa, nisnSiswa);
+                                controller.testinputkelas(namaSiswa, nisnSiswa);
+                              },
+                              icon: Icon(Icons.save_outlined),
+                            ),
+                          );
+                        },
+                      );
+                    }
                   }
                   return Center(
                     child: Text('No data available'),

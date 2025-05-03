@@ -608,10 +608,10 @@ class TambahSiswaKelompokController extends GetxController {
     String kelasNya = kelasSiswaC.text.substring(0, 1);
     // String idKelompokmengaji = "${pengampuC.text} ${tempatC.text}";
     String faseNya = (kelasNya == '1' || kelasNya == '2')
-        ? "FaseA"
+        ? "Fase A"
         : (kelasNya == '3' || kelasNya == '4')
-            ? "FaseB"
-            : "FaseC";
+            ? "Fase B"
+            : "Fase C";
     String semesterNya = await getDataSemester();
     String tempatNya = await getDataTempat();
 

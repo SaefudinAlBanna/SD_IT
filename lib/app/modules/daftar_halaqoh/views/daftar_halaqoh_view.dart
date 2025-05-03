@@ -37,7 +37,6 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                 ),
               ),
             ),
-
             ListTile(
               onTap: () {
                 Get.back();
@@ -88,7 +87,17 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                                                             ConnectionState
                                                                 .waiting) {
                                                           return CircularProgressIndicator();
-                                                        } else if (snapshotsiswa
+                                                        }
+                                                        if (snapshotsiswa.data!
+                                                                .docs.isEmpty ||
+                                                            snapshotsiswa
+                                                                    .data ==
+                                                                null) {
+                                                          return Center(
+                                                              child: Text(
+                                                                  'Semua siswa sudah terpilih'));
+                                                        }
+                                                        if (snapshotsiswa
                                                             .hasData) {
                                                           return ListView
                                                               .builder(
@@ -157,9 +166,9 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                                                                     children: <Widget>[
                                                                       IconButton(
                                                                         tooltip:
-                                                                            'Detail Nilai',
+                                                                            'Simpan',
                                                                         icon: const Icon(
-                                                                            Icons.info_outlined),
+                                                                            Icons.arrow_circle_right_outlined),
                                                                         onPressed:
                                                                             () {
                                                                           controller.simpanSiswaKelompok(
@@ -204,22 +213,6 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
               leading: Icon(Icons.person_add_sharp),
               title: Text('Tambah Siswa'),
             ),
-            //  StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-            //   stream: controller.getProfileBaru(),
-            //   builder: (context, snapshot) {
-            //     if (snapshot.hasData) {
-            //       return ListTile(
-            //         onTap: () => Get.toNamed(
-            //           Routes.UPDATE_PEGAWAI,
-            //           arguments: snapshot.data!.data(),
-            //         ),
-            //         leading: Icon(Icons.person),
-            //         title: Text('Update Profile'),
-            //       );
-            //     }
-            //     return SizedBox.shrink(); // Return an empty widget if no data
-            //   },
-            // ),
           ]),
         ),
         appBar: AppBar(
@@ -231,7 +224,11 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasData) {
+            }
+            if (snapshot.data!.docs.isEmpty || snapshot.data == null) {
+              return Center(child: Text('Belum ada siswa..'));
+            }
+            if (snapshot.hasData) {
               return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
@@ -263,78 +260,103 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                         IconButton(
                           tooltip: 'pindah',
                           icon: const Icon(Icons.change_circle_outlined),
-                          onPressed: () {
-                            Get.defaultDialog(
-                              barrierDismissible: false,
-                              title: '${data['fase']}',
-                              content: SizedBox(
-                                height: 300,
-                                width: 400,
-                                child: Column(
-                                  children: [
-                                    Column(
-                                      children: [
-                                        // Text(data['fase']),
-                                        SizedBox(height: 20),
-                                        DropdownSearch<String>(
-                                          decoratorProps:
-                                              DropDownDecoratorProps(
+                          onPressed: () async {
+                            if (controller.isLoading.isFalse) {
+                              await Get.defaultDialog(
+                                barrierDismissible: false,
+                                title: '${data['fase']}',
+                                content: SizedBox(
+                                  height: 350,
+                                  width: 400,
+                                  child: Column(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          SizedBox(height: 20),
+                                          DropdownSearch<String>(
+                                            decoratorProps:
+                                                DropDownDecoratorProps(
+                                              decoration: InputDecoration(
+                                                border: OutlineInputBorder(),
+                                                filled: true,
+                                                labelText: 'Pengampu',
+                                              ),
+                                            ),
+                                            selectedItem: controller
+                                                    .pengampuC.text.isNotEmpty
+                                                ? controller.pengampuC.text
+                                                : null,
+                                            items: (f, cs) => controller
+                                                .getDataPengampuFase(),
+                                            onChanged: (String? value) {
+                                              if (value != null) {
+                                                controller.pengampuC.text =
+                                                    value;
+                                              }
+                                            },
+                                            popupProps: PopupProps.menu(
+                                                fit: FlexFit.tight),
+                                          ),
+                                          SizedBox(height: 20),
+                                          TextField(
+                                            controller: controller.alasanC,
                                             decoration: InputDecoration(
                                               border: OutlineInputBorder(),
-                                              filled: true,
-                                              labelText: 'Pengampu',
+                                              hintText: 'Alasan Pindah',
                                             ),
                                           ),
-                                          selectedItem: controller
-                                                  .pengampuC.text.isNotEmpty
-                                              ? controller.pengampuC.text
-                                              : null,
-                                          items: (f, cs) =>
-                                              controller.getDataPengampuFase(),
-                                          onChanged: (String? value) {
-                                            if (value != null) {
-                                              controller.pengampuC.text = value;
-                                            }
-                                          },
-                                          popupProps: PopupProps.menu(
-                                              fit: FlexFit.tight),
-                                        ),
-                                        SizedBox(height: 20),
-                                        TextField(
-                                          controller: controller.alasanC,
-                                          decoration: InputDecoration(
-                                            border: OutlineInputBorder(),
-                                            hintText: 'Alasan Pindah',
-                                          ),
-                                        ),
-                                        SizedBox(height: 20),
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            if (controller.isLoading.isFalse) {
-                                              // Get.back();
-                                              await controller.pindahkan();
-                                              // controller.test();
-                                            }
-                                          },
-                                          // child: Text('Pindah halaqoh'),
-                                          child: Row(
+                                          SizedBox(height: 20),
+                                          Column(
                                             children: [
-                                              Text(controller.isLoading.isFalse ? "Pindah halaqoh" : "LOADING..."),
-                                              SizedBox(width: 15),
-                                              Center(child: controller.isLoading.isFalse ? SizedBox()  : CircularProgressIndicator()), 
+                                              Obx(() => ElevatedButton(
+                                                    onPressed: () async {
+                                                      if (controller
+                                                          .isLoading.isFalse) {
+                                                        await controller
+                                                            .pindahkan();
+                                                        // await controller.pindahkan();
+                                                        controller
+                                                            .getDaftarHalaqoh();
+                                                        // controller.deleteUser(
+                                                        //     doc['nisn']);
+                                                      }
+                                                    },
+                                                    child: Text(controller
+                                                            .isLoading.isFalse
+                                                        ? "Pindah halaqoh"
+                                                        : "LOADING..."),
+                                                    // child: Text("Pindah halaqoh"),
+                                                  )),
+                                              SizedBox(height: 20),
+                                              ElevatedButton(
+                                                  onPressed: () {
+                                                    Get.back();
+                                                  },
+                                                  child: Text(controller
+                                                          .isLoading.isFalse
+                                                      ? "Batal"
+                                                      : "LOADING...")),
+                                              ElevatedButton(
+                                                  onPressed: () =>
+                                                      controller.test(),
+                                                  child: Text('test')),
                                             ],
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 20),
-                                    ElevatedButton(
-                                        onPressed: () => Get.back(),
-                                        child: Text('Batal')),
-                                  ],
+                                        ],
+                                      ),
+                                      // SizedBox(height: 20),
+                                      // ElevatedButton(
+                                      //     onPressed: () => Get.back(),
+                                      //     child: Text('Batal')),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            );
+                              );
+                            } else {
+                              Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
                           },
                         ),
                         // IconButton(

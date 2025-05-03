@@ -46,8 +46,8 @@ class DaftarKelasController extends GetxController {
         .collection('kelastahunajaran')
         .doc(kelasnya)
         .collection('semester')
-        .doc('semester1') // ini nanti diganti otomatis
-        .collection('daftarsiswasemester1')
+        .doc('Semester I') // ini nanti diganti otomatis
+        .collection('daftarsiswa')
         .get();
   }
 }

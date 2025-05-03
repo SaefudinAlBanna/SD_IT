@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -164,7 +165,8 @@ class Contoh extends GetView<HomeController> {
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   // crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     //KELAS
                                     MenuAtas(
@@ -182,7 +184,8 @@ class Contoh extends GetView<HomeController> {
                                                 future: controller
                                                     .getDataKelasYangDiajar(),
                                                 builder: (context, snapshot) {
-                                                  if (snapshot.connectionState ==
+                                                  if (snapshot
+                                                          .connectionState ==
                                                       ConnectionState.waiting) {
                                                     return CircularProgressIndicator();
                                                   } else if (snapshot.hasData) {
@@ -195,8 +198,9 @@ class Contoh extends GetView<HomeController> {
                                                       child: SizedBox(
                                                         // color: Colors.amber,
                                                         child: Row(
-                                                          children: kelasAjarGuru
-                                                              .map((k) {
+                                                          children:
+                                                              kelasAjarGuru
+                                                                  .map((k) {
                                                             return SingleChildScrollView(
                                                               scrollDirection:
                                                                   Axis.horizontal,
@@ -212,7 +216,8 @@ class Contoh extends GetView<HomeController> {
                                                                   // Get.back();
                                                                   // Navigator.of(context).pop();
                                                                 },
-                                                                child: Container(
+                                                                child:
+                                                                    Container(
                                                                   margin: EdgeInsets
                                                                       .only(
                                                                           left:
@@ -256,7 +261,7 @@ class Contoh extends GetView<HomeController> {
                                         );
                                       },
                                     ),
-                                
+
                                     //HALAQOH
                                     MenuAtas(
                                       title: 'Halaqoh',
@@ -287,7 +292,8 @@ class Contoh extends GetView<HomeController> {
                                                           List<String>
                                                               kelompokPengampu =
                                                               snapshot.data
-                                                                  as List<String>;
+                                                                  as List<
+                                                                      String>;
                                                           return SingleChildScrollView(
                                                             scrollDirection:
                                                                 Axis.horizontal,
@@ -317,10 +323,11 @@ class Contoh extends GetView<HomeController> {
                                                                             BorderRadius.circular(
                                                                                 10),
                                                                         color: Colors
-                                                                                .indigo[
-                                                                            700]),
-                                                                    child: Center(
-                                                                      child: Text(
+                                                                            .indigo[700]),
+                                                                    child:
+                                                                        Center(
+                                                                      child:
+                                                                          Text(
                                                                         p,
                                                                         style: TextStyle(
                                                                             color: Colors
@@ -350,11 +357,13 @@ class Contoh extends GetView<HomeController> {
                                     //EKSKUL
                                     MenuAtas(
                                       title: 'Ekskul',
-                                      icon: Icon(Icons.sports_gymnastics_rounded),
+                                      icon:
+                                          Icon(Icons.sports_gymnastics_rounded),
                                       onTap: () => Get.defaultDialog(
                                           onCancel: Get.back,
                                           title: 'Ekskul',
-                                          middleText: 'Fitur dalam pengembangan'),
+                                          middleText:
+                                              'Fitur dalam pengembangan'),
                                     ),
                                     //KOORDINATOR HALAQOH
                                     if (snapshot.connectionState ==
@@ -372,7 +381,7 @@ class Contoh extends GetView<HomeController> {
                                       )
                                     else
                                       SizedBox(),
-                                      
+
                                     //KESISWAAN
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting)
@@ -561,12 +570,11 @@ class Contoh extends GetView<HomeController> {
                                                                           kelompokPengampu
                                                                               .map((p) {
                                                                         return GestureDetector(
-                                                                        
-                                                                          onTap: () { 
+                                                                          onTap:
+                                                                              () {
                                                                             Get.back();
-                                                                            Get.toNamed(
-                                                                              Routes.DAFTAR_HALAQOH_PERFASE,
-                                                                              arguments: p);
+                                                                            Get.toNamed(Routes.DAFTAR_HALAQOH_PERFASE,
+                                                                                arguments: p);
                                                                           },
                                                                           child:
                                                                               Container(
@@ -600,12 +608,16 @@ class Contoh extends GetView<HomeController> {
                                                   ),
                                                 )),
 
-                                       // TAMBAH PEGAWAI
-                                       if(snapshot.data!.data()!['role'] ==
+                                      // TAMBAH PEGAWAI
+                                      if (snapshot.data!.data()!['role'] ==
                                           'admin')
-                                          MenuBawah(title: 'Pegawai', icon: Icon(Icons.person_add), onTap: () {
+                                        MenuBawah(
+                                          title: 'Pegawai',
+                                          icon: Icon(Icons.person_add),
+                                          onTap: () {
                                             Get.toNamed(Routes.TAMBAH_PEGAWAI);
-                                          },),
+                                          },
+                                        ),
                                       // TAMBAH PESAN GURU KE WALI
                                       MenuBawah(
                                           title: 'Pesan',
@@ -818,8 +830,98 @@ class Contoh extends GetView<HomeController> {
                                             title: 'Input Kelas',
                                             icon: Icon(
                                                 Icons.account_balance_rounded),
-                                            onTap: () => Get.toNamed(
-                                                Routes.PEMBERIAN_KELAS_SISWA),
+                                            onTap: () {
+                                              Get.defaultDialog(
+                                                  onCancel: () => Get.back(),
+                                                  title: 'Tambah Kelas Baru',
+                                                  middleText:
+                                                      'Silahkan tambahkan kelas baru',
+                                                  content: Column(
+                                                    children: [
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            'Masukan Kelas Baru',
+                                                            style: TextStyle(
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          SizedBox(height: 10),
+                                                          DropdownSearch<
+                                                              String>(
+                                                            decoratorProps:
+                                                                DropDownDecoratorProps(
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                border:
+                                                                    OutlineInputBorder(),
+                                                                filled: true,
+                                                                prefixText:
+                                                                    'kelas : ',
+                                                              ),
+                                                            ),
+                                                            selectedItem:
+                                                                controller
+                                                                    .kelasSiswaC
+                                                                    .text,
+                                                            items: (f, cs) =>
+                                                                controller
+                                                                    .getDataKelas(),
+                                                            onChanged: (String?
+                                                                value) {
+                                                              controller
+                                                                  .kelasSiswaC
+                                                                  .text = value!;
+                                                            },
+                                                            popupProps:
+                                                                PopupProps.menu(
+                                                                    // disabledItemFn: (item) => item == '1A',
+                                                                    fit: FlexFit
+                                                                        .tight),
+                                                          ),
+                                                          SizedBox(height: 20),
+                                                          Center(
+                                                            child:
+                                                                ElevatedButton(
+                                                              onPressed: () {
+                                                                if(controller.kelasSiswaC.text.isEmpty || controller.kelasSiswaC.text == null) {
+                                                                  Get.snackbar('Peringatan', 'Kelas belum dipilih');
+                                                                } else {
+                                                                Get.back();
+                                                                Get.toNamed(
+                                                                  Routes.PEMBERIAN_KELAS_SISWA, arguments: controller.kelasSiswaC.text);
+                                                                }
+                                                              },
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                        horizontal:
+                                                                            40,
+                                                                        vertical:
+                                                                            15),
+                                                                textStyle:
+                                                                    TextStyle(
+                                                                        fontSize:
+                                                                            16),
+                                                              ),
+                                                              child: Text(
+                                                                  'Pilih siswa'),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ));
+
+                                              
+                                            },
                                             colors: Colors.grey.shade800),
                                         MenuManagement(
                                             title: 'Update Kelas',
@@ -831,7 +933,6 @@ class Contoh extends GetView<HomeController> {
                                                     'Fitur dalam pengembangan'),
                                             // Get.toNamed(Routes.UPDATE_KELAS_TAHUN_AJARAN),
                                             colors: Colors.teal.shade700),
-                                            
                                       ],
                                     ),
                                   ),

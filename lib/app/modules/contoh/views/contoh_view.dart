@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import '../controllers/contoh_controller.dart';
 
 class ContohView extends GetView<ContohController> {
-   ContohView({super.key});
+  ContohView({super.key});
   final dataxx = Get.arguments;
 
   // List get data => [];
@@ -72,8 +72,7 @@ class ContohView extends GetView<ContohController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Text('Tatap muka ke :'),
-                Text(
-                              'Tanggal :   ${DateFormat.yMd().format(DateTime.now())}'),
+                Text('Tanggal :   ${DateFormat.yMd().format(DateTime.now())}'),
                 SizedBox(height: 10),
                 Text(
                   'HAFALAN',
@@ -101,10 +100,10 @@ class ContohView extends GetView<ContohController> {
                     'dll'
                   ],
                   onChanged: (String? value) {
-                  if (value != null) {
-                    controller.suratC.text = value;
-                  }
-                },
+                    if (value != null) {
+                      controller.suratC.text = value;
+                    }
+                  },
                   popupProps: PopupProps.menu(
                       // disabledItemFn: (item) => item == '1A',
                       fit: FlexFit.tight),
@@ -204,10 +203,39 @@ class ContohView extends GetView<ContohController> {
                     hintText: 'Keterangan / Catatan Pengampu',
                   ),
                 ),
-                Center(child: FloatingActionButton(onPressed: (){
-                  controller.simpanNilai();
-                  Navigator.of(context).pop();
-                }, child: Text('Simpan'),)),
+                Center(
+                    child: FloatingActionButton(
+                  onPressed: () {
+                    if (controller.suratC.text.isEmpty) {
+                      Get.snackbar('Peringatan', 'Hafalan surat masih kosong');
+                    } else if (controller.ayatHafalC.text.isEmpty) {
+                      Get.snackbar(
+                          'Peringatan', 'Ayat hafalan surat masih kosong');
+                    } else if (controller.jldSuratC.text.isEmpty) {
+                      Get.snackbar(
+                          'Peringatan', 'Jilid / AlQuran ummi masih kosong');
+                    } else if (controller.halAyatC.text.isEmpty) {
+                      Get.snackbar(
+                          'Peringatan', 'Halaman atau Ayat masih kosong');
+                    } else if (controller.materiC.text.isEmpty) {
+                      Get.snackbar('Peringatan', 'Materi masih kosong');
+                    } else if (controller.nilaiC.text.isEmpty) {
+                      Get.snackbar('Peringatan', 'Nilai masih kosong');
+                    } else if (controller.keteranganGuruC.text.isEmpty) {
+                      Get.snackbar('Peringatan', 'Keterangan masih kosong');
+                    } else if (controller.suratC.text.isNotEmpty &&
+                        controller.ayatHafalC.text.isNotEmpty &&
+                        controller.jldSuratC.text.isNotEmpty &&
+                        controller.halAyatC.text.isNotEmpty &&
+                        controller.materiC.text.isNotEmpty &&
+                        controller.nilaiC.text.isNotEmpty &&
+                        controller.keteranganGuruC.text.isNotEmpty) {
+                      controller.simpanNilai();
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: Text('Simpan'),
+                )),
               ],
             ),
           ],

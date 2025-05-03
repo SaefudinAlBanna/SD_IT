@@ -16,6 +16,8 @@ import '../modules/daftar_nilai/bindings/daftar_nilai_binding.dart';
 import '../modules/daftar_nilai/views/daftar_nilai_view.dart';
 import '../modules/daftar_siswa/bindings/daftar_siswa_binding.dart';
 import '../modules/daftar_siswa/views/daftar_siswa_view.dart';
+import '../modules/daftar_siswa_pindah_halaqoh/bindings/daftar_siswa_pindah_halaqoh_binding.dart';
+import '../modules/daftar_siswa_pindah_halaqoh/views/daftar_siswa_pindah_halaqoh_view.dart';
 import '../modules/detail_siswa/bindings/detail_siswa_binding.dart';
 import '../modules/detail_siswa/views/detail_siswa_view.dart';
 import '../modules/forgot_password/bindings/forgot_password_binding.dart';
@@ -123,7 +125,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PEMBERIAN_KELAS_SISWA,
-      page: () => const PemberianKelasSiswaView(),
+      page: () => PemberianKelasSiswaView(),
       binding: PemberianKelasSiswaBinding(),
     ),
     GetPage(
@@ -155,6 +157,11 @@ class AppPages {
       name: _Paths.PILIH_SISWA_HALAQOH,
       page: () => PilihSiswaHalaqohView(),
       binding: PilihSiswaHalaqohBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAFTAR_SISWA_PINDAH_HALAQOH,
+      page: () => const DaftarSiswaPindahHalaqohView(),
+      binding: DaftarSiswaPindahHalaqohBinding(),
     ),
   ];
 }

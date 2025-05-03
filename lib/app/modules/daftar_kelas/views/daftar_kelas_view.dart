@@ -27,8 +27,14 @@ class DaftarKelasView extends GetView<DaftarKelasController> {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   return ListTile(
+                    onTap: () {
+                      String getNama =
+                                snapshot.data!.docs[index].data()['nisn'];
+                            Get.toNamed(Routes.DETAIL_SISWA,
+                                arguments: getNama);
+                    },
                     title: Text(snapshot.data!.docs[index].data()['namasiswa']),
-                    subtitle: Text(snapshot.data!.docs[index].data()['kelas']),
+                    subtitle: Text(snapshot.data!.docs[index].data()['namakelas']),
                     leading: CircleAvatar(
                       child: Text(
                           snapshot.data!.docs[index].data()['namasiswa'][0]),

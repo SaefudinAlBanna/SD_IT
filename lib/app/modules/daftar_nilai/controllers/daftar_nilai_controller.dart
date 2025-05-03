@@ -48,6 +48,7 @@ class DaftarNilaiController extends GetxController {
         .collection('daftarsiswa')
         .doc(dataNilai['nisn'])
         .collection('nilai')
+        .orderBy('tanggalinput', descending: true)
         .get();
   }
   

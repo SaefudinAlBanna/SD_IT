@@ -16,68 +16,86 @@ class DetailSiswaView extends GetView<DetailSiswaController> {
     return Scaffold(
       appBar: AppBar(),
       body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        future: controller.getDetailSiswa(),
-        builder: (context, snapshotDetail) {
-          if(snapshotDetail.connectionState == ConnectionState.waiting){
-            return const Center(child: CircularProgressIndicator());
-          }
-          if(snapshotDetail.hasData) {
-            final data = snapshotDetail.data!.docs.first.data();
-          return SafeArea(
-            child: Column(
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+          future: controller.getDetailSiswa(),
+          builder: (context, snapshotDetail) {
+            if (snapshotDetail.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshotDetail.hasData) {
+              final data = snapshotDetail.data!.docs.first.data();
+              return SafeArea(
+                child: Column(
                   children: [
-                    Center(
-                      child: Container(
-                        margin: EdgeInsets.only(top: 30, bottom: 15),
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40),
-                            color: Colors.grey),
-                      ),
-                    ),
-                    Text(data['nama']),
-                  ],
-                ),
-                Expanded(
-                  child: SafeArea(
-                    child: ListView(
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          margin:
-                              EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                          height: Get.height,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // InfoDetailSiswa(icon: Icon(Icons.airline_seat_recline_normal_rounded)),
-                                InfoDetailSiswa(data: data, icon: Icon(Icons.access_alarm), isi: 'agama'),
-                                InfoDetailSiswa(data: data, icon: Icon(Icons.access_alarm), isi: 'alamat')
-                              ],
+                        Center(
+                          child: Container(
+                            height: 80,
+                            width: 80,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(50),
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      "https://ui-avatars.com/api/?name=${data['nama']}")),
                             ),
                           ),
                         ),
+                        SizedBox(height: 10),
+                        Text(data['nama']),
                       ],
                     ),
-                  ),
-                )
-              ],
-            ),
-          ); 
-          } else {
-            return Text('Terjadi kesalahan');
-          }
-        }
-      ),
+                    Expanded(
+                      child: SafeArea(
+                        child: ListView(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 15),
+                              height: Get.height,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // InfoDetailSiswa(icon: Icon(Icons.airline_seat_recline_normal_rounded)),
+                                    InfoDetailSiswa(
+                                        data: data,
+                                        icon: Icon(Icons.access_alarm),
+                                        isi: 'agama'),
+                                    InfoDetailSiswa(
+                                        data: data,
+                                        icon: Icon(Icons.home_outlined),
+                                        isi: 'alamat'),
+                                    InfoDetailSiswa(
+                                        data: data,
+                                        icon: Icon(Icons.home_outlined),
+                                        isi: 'jenisKelamin'),
+                                    InfoDetailSiswa(
+                                        data: data,
+                                        icon: Icon(Icons.home_outlined),
+                                        isi: 'nisn'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            } else {
+              return Text('Terjadi kesalahan');
+            }
+          }),
     );
   }
 }
@@ -88,7 +106,6 @@ class InfoDetailSiswa extends StatelessWidget {
     required this.data,
     required this.icon,
     required this.isi,
-
   });
 
   final Map<String, dynamic> data;

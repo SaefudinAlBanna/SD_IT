@@ -23,6 +23,11 @@ class DaftarHalaqohPerfaseView extends GetView<DaftarHalaqohPerfaseController> {
                 appBar: AppBar(
                   title: Text('Halaqoh $data'),
                   centerTitle: true,
+                  actions: [
+                    IconButton(onPressed: (){
+                      Get.toNamed(Routes.DAFTAR_SISWA_PINDAH_HALAQOH);
+                    }, icon: Icon(Icons.view_list)),
+                  ],
                 ),
                 body: SafeArea(
                     child: ListView.builder(

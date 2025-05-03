@@ -22,6 +22,7 @@ class HomeController extends GetxController {
   TextEditingController pengampuC = TextEditingController();
   TextEditingController kelasBaruC = TextEditingController();
   TextEditingController tahunAjaranBaruC = TextEditingController();
+  TextEditingController kelasSiswaC = TextEditingController();
 
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
