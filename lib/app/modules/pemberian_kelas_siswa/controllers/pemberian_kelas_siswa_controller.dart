@@ -245,118 +245,7 @@ class PemberianKelasSiswaController extends GetxController {
     }
   }
 
-  Future<void> tambahkanKelasSiswa(String namaSiswa, String nisnSiswa) async {
-    String tahunajaranya = await getTahunAjaranTerakhir();
-    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
-    String kelasNya = argumentKelas.substring(0, 1);
-    String faseNya = (kelasNya == '1' || kelasNya == '2')
-        ? "Fase A"
-        : (kelasNya == '3' || kelasNya == '4')
-            ? "Fase B"
-            : "Fase C";
-
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
-        .collection('Sekolah')
-        .doc(idSekolah)
-        .collection('pegawai')
-        .where('alias', isEqualTo: waliKelasSiswaC.text)
-        .get();
-
-    // Check if the query returned any documents
-    // if (querySnapshot.docs.isEmpty) {
-    //   Get.snackbar('Error',
-    //       'Wali kelas tidak ditemukan. Pastikan alias wali kelas benar.');
-    //   return; // Exit the function if no documents are found
-    // }
-
-    String uidWaliKelasnya = querySnapshot.docs.first.data()['uid'];
-
-    CollectionReference<Map<String, dynamic>> colKelas = firestore
-        .collection('Sekolah')
-        .doc(idSekolah)
-        .collection('tahunajaran')
-        .doc(idTahunAjaran)
-        .collection('kelastahunajaran');
-
-    // try {
-    DocumentSnapshot<Map<String, dynamic>> docIdKelas =
-        await colKelas.doc(argumentKelas).get();
-
-    if (docIdKelas.exists) {
-      // Add the student to the existing class
-      await firestore
-          .collection('Sekolah')
-          .doc(idSekolah)
-          .collection('tahunajaran')
-          .doc(idTahunAjaran)
-          .collection('kelastahunajaran')
-          .doc(argumentKelas)
-          .collection('semester')
-          .doc('semester I')
-          .collection('daftarsiswa')
-          .doc(nisnSiswa)
-          .set({
-        'namasiswa': namaSiswa,
-        'nisn': nisnSiswa,
-        'fase': faseNya,
-        'namakelas': docIdKelas['namakelas'],
-        'namasemester': 'Semester I',
-        'walikelas': docIdKelas['walikelas'],
-        'idwalikelas': docIdKelas['idwalikelas'],
-        'emailpenginput': emailAdmin,
-        'idpenginput': idUser,
-        'tanggalinput': DateTime.now().toIso8601String(),
-        'status': 'aktif',
-        'idsiswa': nisnSiswa,
-        'statuskelompok': 'baru',
-      });
-      ubahStatusSiswa(nisnSiswa);
-    } else {
-      // Handle the case where the class does not exist
-      Get.snackbar(
-          'Error', 'Kelas tidak ditemukan. Pastikan data kelas benar.');
-    }
-    if (!docIdKelas.exists) {
-      // Get.snackbar(
-      //     'Error', 'Kelas tidak ditemukan. Pastikan data kelas benar.');
-      if (argumentKelas.isNotEmpty &&
-          tahunajaranya.isNotEmpty &&
-          waliKelasSiswaC.text.isNotEmpty) {
-        buatIsiKelasTahunAjaran();
-        buatIsiSemester1();
-        tambahDaftarKelasGuruAjar();
-
-        await firestore
-            .collection('Sekolah')
-            .doc(idSekolah)
-            .collection('tahunajaran')
-            .doc(idTahunAjaran)
-            .collection('kelastahunajaran')
-            .doc(argumentKelas)
-            .collection('semester')
-            .doc('Semester I')
-            .collection('daftarsiswa')
-            .doc(nisnSiswa)
-            .set({
-          'namasiswa': namaSiswa,
-          'nisn': nisnSiswa,
-          'fase': faseNya,
-          'namakelas': argumentKelas,
-          'namasemester': 'Semester I',
-          'walikelas': waliKelasSiswaC.text,
-          'idwalikelas': uidWaliKelasnya,
-          'emailpenginput': emailAdmin,
-          'idpenginput': idUser,
-          'tanggalinput': DateTime.now().toIso8601String(),
-          'status': 'aktif',
-          'idsiswa': nisnSiswa,
-          'statuskelompok': 'baru',
-        });
-
-        ubahStatusSiswa(nisnSiswa);
-      }
-    }
-  }
+  
 
   Future<QuerySnapshot<Map<String, dynamic>>> getDataWali() async {
     String tahunajaranya = await getTahunAjaranTerakhir();
@@ -387,7 +276,7 @@ class PemberianKelasSiswaController extends GetxController {
     }
   }
 
-  Future<void> testinputkelas(String namaSiswa, String nisnSiswa) async {
+  Future<void> simpankelasSiswa(String namaSiswa, String nisnSiswa) async {
     String tahunajaranya = await getTahunAjaranTerakhir();
     String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
 
@@ -424,10 +313,7 @@ class PemberianKelasSiswaController extends GetxController {
       //       querySnapshotSemester.docs.last.data();
       //   String semesterNya = dataSemester['namasemester'];
 
-      print('kelas ada ${docIdKelas['namakelas']}');
-      print('ini fasenya = $faseNya');
-      print('nama Siswa = $namaSiswa');
-      print('nisn Siswa = $nisnSiswa');
+      
 
       await firestore
           .collection('Sekolah')

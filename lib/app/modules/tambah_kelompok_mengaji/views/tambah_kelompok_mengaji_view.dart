@@ -2,6 +2,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:guru_project/app/routes/app_pages.dart';
 // import 'package:guru_project/app/routes/app_pages.dart';
 import '../controllers/tambah_kelompok_mengaji_controller.dart';
 
@@ -136,17 +137,19 @@ class TambahKelompokMengajiView
                     } else if (controller.semesterC.text.isEmpty){
                       Get.snackbar('Peringatan', 'Semester kosong');
                     } else {
-                    controller.buatKelompok();
+                    // controller.buatKelompok();
+                    controller.testBuat();
                     // Get.offAllNamed(Routes.TAMBAH_SISWA_KELOMPOK,
                     //     arguments: controller.pengampuC.text);
                     }
                   },
                   child: Text('Buat Kelompok')),
 
+                  SizedBox(height: 20),
                   
-                  // ElevatedButton(onPressed: (){
-                  //       controller.dataxx();
-                  //     }, child: Text('data'))
+                  ElevatedButton(onPressed: (){
+                        Get.offAllNamed(Routes.HOME);
+                      }, child: Text('kembali'))
               
             ],
           ),

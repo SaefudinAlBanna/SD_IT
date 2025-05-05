@@ -24,6 +24,8 @@ import '../modules/forgot_password/bindings/forgot_password_binding.dart';
 import '../modules/forgot_password/views/forgot_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/kelompok_halaqoh/bindings/kelompok_halaqoh_binding.dart';
+import '../modules/kelompok_halaqoh/views/kelompok_halaqoh_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/new_password/bindings/new_password_binding.dart';
@@ -162,6 +164,11 @@ class AppPages {
       name: _Paths.DAFTAR_SISWA_PINDAH_HALAQOH,
       page: () => const DaftarSiswaPindahHalaqohView(),
       binding: DaftarSiswaPindahHalaqohBinding(),
+    ),
+    GetPage(
+      name: _Paths.KELOMPOK_HALAQOH,
+      page: () => KelompokHalaqohView(),
+      binding: KelompokHalaqohBinding(),
     ),
   ];
 }

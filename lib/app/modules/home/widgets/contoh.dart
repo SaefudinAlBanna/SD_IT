@@ -206,7 +206,7 @@ class Contoh extends GetView<HomeController> {
                                                                   Axis.horizontal,
                                                               child:
                                                                   GestureDetector(
-                                                                onTap: () {
+                                                                  onTap: () {
                                                                   Get.back();
                                                                   Get.toNamed(
                                                                       Routes
@@ -817,7 +817,7 @@ class Contoh extends GetView<HomeController> {
                                         MenuManagement(
                                             title: 'Input Halaqoh',
                                             icon: Icon(Icons.add_box_outlined),
-                                            onTap: () => Get.toNamed(
+                                            onTap: () => Get.offAllNamed(
                                                 Routes.TAMBAH_KELOMPOK_MENGAJI),
                                             colors: Colors.green.shade700),
                                         MenuManagement(

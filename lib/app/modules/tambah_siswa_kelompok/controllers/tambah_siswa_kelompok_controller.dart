@@ -289,6 +289,27 @@ class TambahSiswaKelompokController extends GetxController {
     // print('ini kelasnya : ${kelasSiswaC.text}');
   }
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> getDataSiswaStreamBaru() async* {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+    // String idSemester = await getDataSemester();
+    yield* firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran')
+        .doc(idTahunAjaran)
+        .collection('kelastahunajaran')
+        .doc(kelasSiswaC.text)
+        .collection('semester')
+        .doc(
+            'Semester I') // ini nanti diganti otomatis // sudah di pasang -->> kalo sudah dihapus comment
+        .collection('daftarsiswa')
+        .where('statuskelompok', isEqualTo: 'baru')
+        .snapshots();
+
+    // print('ini kelasnya : ${kelasSiswaC.text}');
+  }
+
   Future<void> isiTahunAjaranKelompokPadaPegawai() async {
     String tahunajaranya = await getTahunAjaranTerakhir();
     String idTahunAjaran = tahunajaranya.replaceAll("/", "-");

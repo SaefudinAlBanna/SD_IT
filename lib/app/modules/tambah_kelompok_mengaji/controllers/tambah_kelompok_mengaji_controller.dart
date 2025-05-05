@@ -163,8 +163,129 @@ class TambahKelompokMengajiController extends GetxController {
         .snapshots();
   }
 
-  Future<void> buatKelompok() async {
+  Future<void> testBuat() async {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
 
+    String semesterNya =
+        (semesterC.text == 'semester1') ? "Semester I" : "Semester II";
+
+    QuerySnapshot<Map<String, dynamic>> colTempat = await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran')
+        .doc(idTahunAjaran)
+        .collection('semester')
+        .doc(semesterNya)
+        .collection('kelompokmengaji')
+        .doc(faseC.text)
+        .collection('pengampu')
+        .doc(pengampuC.text)
+        .collection('tempat')
+        .get();
+
+    // DocumentSnapshot<Map<String, dynamic>> snapTempat =
+    //     await colTempat.doc(tempatC.text).get();
+
+    // if (snapTempat.exists && (snapTempat.data() == null || snapTempat.data()!.isEmpty)) {
+      if(colTempat.docs.length != 0) {
+      // tempat pengampu sudah ada => tampilkan pesan tidak bisa
+      // print('snapTempat.exists : ${snapTempat.exists} ..-.. snapTempat.data()?.length : ${snapTempat.data()?.length}');
+      // print('snapTempat.exists : ${snapTempat.exists}');
+      // print('tempatC : ${tempatC.text} ');
+      print('tempatC : ${colTempat.docs.length} ');
+      Get.snackbar('Error',
+          'Tidak bisa membuat kelompok, pengampu sudah punya kelompok');
+    } else {
+      print('tempatC : ${colTempat.docs.length} ');
+      // tempat belum ada => buatkan kelompoknya
+      // await colTempat.doc(tempatC.text).set({});
+    
+      // print('snapTempat.exists : ${snapTempat.exists} ..-.. snapTempat.data()?.length : ${snapTempat.data()?.length}');
+      // Get.snackbar('Yes',
+      //     'Silahkan dibuatkan');
+
+      // print('snapTempat =$snapTempat');
+      // print('snapTempat.exists =${snapTempat.exists}');
+      // print('snapTempat.data() =${snapTempat.data()}');
+      // print('snapTempat.data()?.length =${snapTempat.data()?.length}');
+
+      try {
+        QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
+            .collection('Sekolah')
+            .doc(idSekolah)
+            .collection('pegawai')
+            .where('alias', isEqualTo: pengampuC.text)
+            .get();
+
+        String idPengampu = querySnapshot.docs.first.data()['uid'];
+        // buatIsiKelompokMengajiTahunAjaran();
+        isiFieldPengampuKelompok();
+        buatIsiSemester1();
+
+        await firestore
+            .collection('Sekolah')
+            .doc(idSekolah)
+            .collection('tahunajaran')
+            .doc(idTahunAjaran)
+            .collection('semester')
+            .doc(semesterNya)
+            .collection('kelompokmengaji')
+            .doc(faseC.text)
+            .set({
+          'fase': faseC.text,
+          'tahunajaran': tahunajaranya,
+          'semester': semesterNya,
+          'emailpenginput': emailAdmin,
+          'idpenginput': idUser,
+          'tanggalinput': DateTime.now().toIso8601String(),
+        });
+
+        await firestore
+            .collection('Sekolah')
+            .doc(idSekolah)
+            .collection('tahunajaran')
+            .doc(idTahunAjaran)
+            .collection('semester')
+            .doc(semesterNya)
+            .collection('kelompokmengaji')
+            .doc(faseC.text)
+            .collection('pengampu')
+            .doc(pengampuC.text)
+            .collection('tempat')
+            .doc(tempatC.text)
+            .set({
+          'fase': faseC.text,
+          'tempatmengaji': tempatC.text,
+          'tahunajaran': tahunajaranya,
+          'kelompokmengaji': pengampuC.text,
+          'namasemester': semesterNya,
+          'namapengampu': pengampuC.text,
+          'idpengampu': idPengampu,
+          'emailpenginput': emailAdmin,
+          'idpenginput': idUser,
+          'tanggalinput': DateTime.now().toIso8601String(),
+          // 'tanggalinputx': docIdNilai,
+        });
+
+        Get.snackbar('Sukses', 'Kelompok mengaji berhasil dibuat');
+        Get.defaultDialog(
+            title: 'Grup Halaqoh berhasil',
+            middleText: 'Silahkan klik buka kelompok',
+            actions: <Widget>[
+              ElevatedButton(
+                  onPressed: () {
+                    dataxx();
+                  },
+                  child: Text('buka kelompok'))
+            ]);
+      } catch (e) {
+        Get.snackbar('ErrorXX', e.toString());
+      }
+    }
+  }
+
+  Future<void> buatKelompok() async {
     DateTime now = DateTime.now();
     String docIdNilai = DateFormat.yMd().format(now).replaceAll('/', '-');
 
@@ -232,20 +353,20 @@ class TambahKelompokMengajiController extends GetxController {
           'emailpenginput': emailAdmin,
           'idpenginput': idUser,
           'tanggalinput': DateTime.now().toIso8601String(),
-          'tanggalinputx': docIdNilai,
+          // 'tanggalinputx': docIdNilai,
         });
 
         Get.snackbar('Sukses', 'Kelompok mengaji berhasil dibuat');
         Get.defaultDialog(
-          title: 'Grup Halaqoh berhasil', 
-          middleText: 'Silahkan klik buka kelompok',
-          actions: <Widget>[
-          ElevatedButton(
-              onPressed: () {
-                dataxx();
-              },
-              child: Text('buka kelompok'))
-        ]);
+            title: 'Grup Halaqoh berhasil',
+            middleText: 'Silahkan klik buka kelompok',
+            actions: <Widget>[
+              ElevatedButton(
+                  onPressed: () {
+                    dataxx();
+                  },
+                  child: Text('buka kelompok'))
+            ]);
       } catch (e) {
         Get.snackbar('ErrorXX', e.toString());
       }
@@ -306,8 +427,12 @@ class TambahKelompokMengajiController extends GetxController {
 
       // ignore: prefer_is_empty
       if (datanya.isNotEmpty || datanya != [] || datanya.length != 0) {
-        Get.offAllNamed(Routes.TAMBAH_SISWA_KELOMPOK, arguments: datanya);
-        // print('ini data argumenXX = $datanya');
+        // Get.offAllNamed(Routes.TAMBAH_SISWA_KELOMPOK, arguments: datanya);
+        // Get.back();
+        // Get.offAllNamed(Routes.TAMBAH_SISWA_KELOMPOK, arguments: datanya);
+        Get.back();
+        Get.offAllNamed(Routes.KELOMPOK_HALAQOH, arguments: datanya);
+        print('ini data argumenXX = $datanya');
       } else if (datanya.isEmpty) {
         // print('ini yang kedua = $datanya');
         Get.snackbar('Error', 'data kosong, silahkan coba lagi');

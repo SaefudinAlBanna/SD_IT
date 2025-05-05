@@ -152,7 +152,7 @@ class PemberianKelasSiswaView extends GetView<PemberianKelasSiswaController> {
                                 // }
                                 // controller.tambahkanKelasSiswa(
                                 //     namaSiswa, nisnSiswa);
-                                controller.testinputkelas(namaSiswa, nisnSiswa);
+                                controller.simpankelasSiswa(namaSiswa, nisnSiswa);
                               },
                               icon: Icon(Icons.save_outlined),
                             ),

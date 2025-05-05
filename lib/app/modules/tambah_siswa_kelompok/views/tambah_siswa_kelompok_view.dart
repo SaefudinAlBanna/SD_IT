@@ -114,6 +114,7 @@ class TambahSiswaKelompokView extends GetView<TambahSiswaKelompokController> {
                                   child: StreamBuilder<
                                           QuerySnapshot<Map<String, dynamic>>>(
                                       stream: controller.getDataSiswaStream(),
+                                      // stream: controller.getDataSiswaStreamBaru(),
                                       builder: (context, snapshotsiswa) {
                                         if (snapshotsiswa.connectionState ==
                                             ConnectionState.waiting) {
@@ -261,20 +262,20 @@ class TambahSiswaKelompokView extends GetView<TambahSiswaKelompokController> {
                         return ListTile(
                           title: Text(namaSiswa),
                           subtitle: Text(kelasSiswa),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              IconButton(
-                                  onPressed: () {}, icon: Icon(Icons.checklist_rtl_outlined)),
-                              IconButton(
-                                onPressed: () {
-                                  Get.toNamed(Routes.CONTOH, arguments: namaSiswa);
-                                },
-                                icon: Icon(Icons.add_box),
-                              ),
-                              Checkbox(value: false, onChanged: (value) => true),
-                            ],
-                          ),
+                          // trailing: Row(
+                          //   mainAxisSize: MainAxisSize.min,
+                          //   children: <Widget>[
+                          //     IconButton(
+                          //         onPressed: () {}, icon: Icon(Icons.checklist_rtl_outlined)),
+                          //     IconButton(
+                          //       onPressed: () {
+                          //         Get.toNamed(Routes.CONTOH, arguments: namaSiswa);
+                          //       },
+                          //       icon: Icon(Icons.add_box),
+                          //     ),
+                          //     Checkbox(value: false, onChanged: (value) => true),
+                          //   ],
+                          // ),
                         );
                       },
                     );
@@ -283,13 +284,14 @@ class TambahSiswaKelompokView extends GetView<TambahSiswaKelompokController> {
             ),
             //=======================================================
             FloatingActionButton(
-                backgroundColor: Colors.blueAccent,
+                // backgroundColor: Colors.blueAccent,
                 onPressed: () {
                   // Get.offAllNamed(Routes.TAMBAH_KELOMPOK_MENGAJI);
                   Get.offAllNamed(Routes.HOME);
                   RefreshCallback;
                 },
                 child: Text('kembali')),
+                marginOnly(bottom: 10),
                 
                 
                 // ElevatedButton(onPressed: (){

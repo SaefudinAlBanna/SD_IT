@@ -79,7 +79,7 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                                                               Map<String,
                                                                   dynamic>>>(
                                                       stream: controller
-                                                          .getDataSiswaStream(),
+                                                          .getDataSiswaStreamBaru(),
                                                       builder: (context,
                                                           snapshotsiswa) {
                                                         if (snapshotsiswa
@@ -150,7 +150,7 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                                                                           .data!
                                                                           .docs[
                                                                               index]
-                                                                          .data()['kelas']),
+                                                                          .data()['namakelas']),
                                                                   leading:
                                                                       CircleAvatar(
                                                                     child: Text(snapshotsiswa
@@ -234,6 +234,7 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                 itemBuilder: (context, index) {
                   var doc = (snapshot.data as QuerySnapshot).docs[index];
                   return ListTile(
+                    onTap:() => Get.toNamed(Routes.DAFTAR_NILAI, arguments: doc),
                     leading: Container(
                       height: 50,
                       width: 50,
@@ -336,10 +337,10 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                                                           .isLoading.isFalse
                                                       ? "Batal"
                                                       : "LOADING...")),
-                                              ElevatedButton(
-                                                  onPressed: () =>
-                                                      controller.test(),
-                                                  child: Text('test')),
+                                              // ElevatedButton(
+                                              //     onPressed: () =>
+                                              //         controller.test(),
+                                              //     child: Text('test')),
                                             ],
                                           ),
                                         ],

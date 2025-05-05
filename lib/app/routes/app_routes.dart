@@ -34,6 +34,7 @@ abstract class Routes {
   static const DAFTAR_HALAQOH_PENGAMPU = _Paths.DAFTAR_HALAQOH_PENGAMPU;
   static const PILIH_SISWA_HALAQOH = _Paths.PILIH_SISWA_HALAQOH;
   static const DAFTAR_SISWA_PINDAH_HALAQOH = _Paths.DAFTAR_SISWA_PINDAH_HALAQOH;
+  static const KELOMPOK_HALAQOH = _Paths.KELOMPOK_HALAQOH;
 }
 
 abstract class _Paths {
@@ -69,4 +70,5 @@ abstract class _Paths {
   static const DAFTAR_HALAQOH_PENGAMPU = '/daftar-halaqoh-pengampu';
   static const PILIH_SISWA_HALAQOH = '/pilih-siswa-halaqoh';
   static const DAFTAR_SISWA_PINDAH_HALAQOH = '/daftar-siswa-pindah-halaqoh';
+  static const KELOMPOK_HALAQOH = '/kelompok-halaqoh';
 }

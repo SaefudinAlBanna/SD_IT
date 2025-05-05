@@ -66,8 +66,8 @@ class DaftarHalaqohController extends GetxController {
         .doc(kelasSiswaC.text)
         .collection('semester')
         // .doc(semesterNya)
-        .doc('semester1')
-        .collection('daftarsiswasemester1')
+        .doc('Semester I')
+        .collection('daftarsiswa')
         .doc(nisnSiSwa)
         .update({
       'statuskelompok': 'aktif',
@@ -795,6 +795,27 @@ class DaftarHalaqohController extends GetxController {
         String docIdPindah = DateFormat.yMEd().add_jms().format(now).replaceAllMapped(RegExp(r'[ :,/AMPM]+'), (match) => '-');
 
         print('docIdPindah = $docIdPindah');
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getDataSiswaStreamBaru() async* {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+    // String idSemester = await getDataSemester();
+    yield* firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran')
+        .doc(idTahunAjaran)
+        .collection('kelastahunajaran')
+        .doc(kelasSiswaC.text)
+        .collection('semester')
+        .doc(
+            'Semester I') // ini nanti diganti otomatis // sudah di pasang -->> kalo sudah dihapus comment
+        .collection('daftarsiswa')
+        .where('statuskelompok', isEqualTo: 'baru')
+        .snapshots();
+
+    // print('ini kelasnya : ${kelasSiswaC.text}');
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getDataSiswaStream() async* {

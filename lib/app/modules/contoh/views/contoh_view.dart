@@ -55,7 +55,7 @@ class ContohView extends GetView<ContohController> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(DateFormat('dd Mmmm Yyyy').toString()),
+                            Text('nanti tanya mas dayat'),
                             Text(dataxx['namapengampu']),
                             Text(dataxx['tempatmengaji']),
                           ],
@@ -72,7 +72,7 @@ class ContohView extends GetView<ContohController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Text('Tatap muka ke :'),
-                Text('Tanggal :   ${DateFormat.yMd().format(DateTime.now())}'),
+                Text('Tanggal :   ${DateFormat.yMd().format(DateTime.now()).replaceAll("/", "-")}'),
                 SizedBox(height: 10),
                 Text(
                   'HAFALAN',
