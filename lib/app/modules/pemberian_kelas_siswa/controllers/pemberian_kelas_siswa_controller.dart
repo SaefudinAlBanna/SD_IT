@@ -87,15 +87,48 @@ class PemberianKelasSiswaController extends GetxController {
     // isLoadingTambahKelas.value = false;
   }
 
+  Future<void> ubahStatusSiswaNext(String nisnSiSwa) async {
+    // QuerySnapshot<Map<String, dynamic>> querySnapshotSiswa = await firestore
+    //     .collection('Sekolah')
+    //     .doc(idSekolah)
+    //     .collection('siswa')
+    //     .where('nisn', isEqualTo: nisnSiSwa)
+    //     .get();
+    // if (querySnapshotSiswa.docs.isNotEmpty) {
+    //   Map<String, dynamic> dataSiswa = querySnapshotSiswa.docs.first.data();
+    //   String uidSiswa = dataSiswa['uid'];
+
+      await firestore
+          .collection('Sekolah')
+          .doc(idSekolah)
+          .collection('siswa')
+          .doc(nisnSiSwa)
+          .update({
+        'status': 'aktif',
+      });
+    // }
+  }
+
   Future<void> ubahStatusSiswa(String nisnSiSwa) async {
-    await firestore
+    QuerySnapshot<Map<String, dynamic>> querySnapshotSiswa = await firestore
         .collection('Sekolah')
         .doc(idSekolah)
         .collection('siswa')
-        .doc(nisnSiSwa)
-        .update({
-      'status': 'aktif',
-    });
+        .where('nisn', isEqualTo: nisnSiSwa)
+        .get();
+    if (querySnapshotSiswa.docs.isNotEmpty) {
+      Map<String, dynamic> dataSiswa = querySnapshotSiswa.docs.first.data();
+      String uidSiswa = dataSiswa['uid'];
+
+      await firestore
+          .collection('Sekolah')
+          .doc(idSekolah)
+          .collection('siswa')
+          .doc(uidSiswa)
+          .update({
+        'status': 'aktif',
+      });
+    }
   }
 
   Future<void> buatIsiKelasTahunAjaran() async {
@@ -145,7 +178,6 @@ class PemberianKelasSiswaController extends GetxController {
             ? "Fase B"
             : "Fase C";
 
-
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
         .collection('Sekolah')
         .doc(idSekolah)
@@ -189,6 +221,114 @@ class PemberianKelasSiswaController extends GetxController {
       'idpenginput': idUser,
       'tanggalinput': DateTime.now().toIso8601String(),
     });
+  }
+
+  Future<void> kelasUntukSiswaNext(String nisnSiswa) async {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+    String kelasNya = argumentKelas.substring(0, 1);
+    String faseNya = (kelasNya == '1' || kelasNya == '2')
+        ? "Fase A"
+        : (kelasNya == '3' || kelasNya == '4')
+            ? "Fase B"
+            : "Fase C";
+
+    // QuerySnapshot<Map<String, dynamic>> querySnapshotSiswa = await firestore
+    //     .collection('Sekolah')
+    //     .doc(idSekolah)
+    //     .collection('siswa')
+    //     .where('nisn', isEqualTo: nisnSiswa)
+    //     .get();
+    // if (querySnapshotSiswa.docs.isNotEmpty) {
+    //   Map<String, dynamic> dataSiswa = querySnapshotSiswa.docs.first.data();
+    //   String uidSiswa = dataSiswa['uid'];
+
+      await firestore
+          .collection('Sekolah')
+          .doc(idSekolah)
+          .collection('siswa')
+          .doc(nisnSiswa)
+          .collection('tahunajaran')
+          .doc(idTahunAjaran)
+          .set({
+        'nisn' : nisnSiswa,
+        'namatahunajaran': tahunajaranya,
+        'idpenginput': idUser,
+        'tanggalinput': DateTime.now().toIso8601String(),
+      });
+
+      await firestore
+          .collection('Sekolah')
+          .doc(idSekolah)
+          .collection('siswa')
+          .doc(nisnSiswa)
+          .collection('tahunajaran')
+          .doc(idTahunAjaran)
+          .collection('kelasnya')
+          .doc(argumentKelas)
+          .set({
+        'nisn' : nisnSiswa,
+        'namakelas': argumentKelas,
+        'fase': faseNya,
+        'tahunajaran': tahunajaranya,
+        'emailpenginput': emailAdmin,
+        'idpenginput': idUser,
+        'tanggalinput': DateTime.now().toIso8601String(),
+      });
+    // }
+  }
+
+  Future<void> kelasUntukSiswa(String nisnSiswa) async {
+    String tahunajaranya = await getTahunAjaranTerakhir();
+    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
+    String kelasNya = argumentKelas.substring(0, 1);
+    String faseNya = (kelasNya == '1' || kelasNya == '2')
+        ? "Fase A"
+        : (kelasNya == '3' || kelasNya == '4')
+            ? "Fase B"
+            : "Fase C";
+
+    QuerySnapshot<Map<String, dynamic>> querySnapshotSiswa = await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('siswa')
+        .where('nisn', isEqualTo: nisnSiswa)
+        .get();
+    if (querySnapshotSiswa.docs.isNotEmpty) {
+      Map<String, dynamic> dataSiswa = querySnapshotSiswa.docs.first.data();
+      String uidSiswa = dataSiswa['uid'];
+
+      await firestore
+          .collection('Sekolah')
+          .doc(idSekolah)
+          .collection('siswa')
+          .doc(uidSiswa)
+          .collection('tahunajaran')
+          .doc(idTahunAjaran)
+          .set({
+        'namatahunajaran': tahunajaranya,
+        'idpenginput': idUser,
+        'tanggalinput': DateTime.now().toIso8601String(),
+      });
+
+      await firestore
+          .collection('Sekolah')
+          .doc(idSekolah)
+          .collection('siswa')
+          .doc(uidSiswa)
+          .collection('tahunajaran')
+          .doc(idTahunAjaran)
+          .collection('kelasnya')
+          .doc(argumentKelas)
+          .set({
+        'namakelas': argumentKelas,
+        'fase': faseNya,
+        'tahunajaran': tahunajaranya,
+        'emailpenginput': emailAdmin,
+        'idpenginput': idUser,
+        'tanggalinput': DateTime.now().toIso8601String(),
+      });
+    }
   }
 
   Future<void> tambahDaftarKelasGuruAjar() async {
@@ -244,8 +384,6 @@ class PemberianKelasSiswaController extends GetxController {
       });
     }
   }
-
-  
 
   Future<QuerySnapshot<Map<String, dynamic>>> getDataWali() async {
     String tahunajaranya = await getTahunAjaranTerakhir();
@@ -313,8 +451,6 @@ class PemberianKelasSiswaController extends GetxController {
       //       querySnapshotSemester.docs.last.data();
       //   String semesterNya = dataSemester['namasemester'];
 
-      
-
       await firestore
           .collection('Sekolah')
           .doc(idSekolah)
@@ -341,63 +477,72 @@ class PemberianKelasSiswaController extends GetxController {
         'idsiswa': nisnSiswa,
         'statuskelompok': 'baru',
       });
-      ubahStatusSiswa(nisnSiswa);
-    }
-    else if (!docIdKelas.exists) {
+
+      buatIsiKelasTahunAjaran();
+      buatIsiSemester1();
+      tambahDaftarKelasGuruAjar();
+
+      kelasUntukSiswaNext(nisnSiswa);
+      // ubahStatusSiswa(nisnSiswa);
+      ubahStatusSiswaNext(nisnSiswa);
+      
+    } else if (!docIdKelas.exists) {
       try {
-      QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
-          .collection('Sekolah')
-          .doc(idSekolah)
-          .collection('pegawai')
-          .where('alias', isEqualTo: waliKelasSiswaC.text)
-          .get();
-
-      String uidWaliKelasnya = querySnapshot.docs.first.data()['uid'];
-
-      print('kelas tidak ada');
-      print('waliKelasSiswaC.text = ${waliKelasSiswaC.text}');
-      print("===============================");
-      print('nama Siswa = $namaSiswa');
-      print('nisn Siswa = $nisnSiswa');
-      print("===============================");
-      // print('uidWaliKelasnya = $uidWaliKelasnya');
-      if (uidWaliKelasnya.isEmpty) {
-        Get.snackbar('Peringatan', 'Wali kelas tidak oleh kosong');
-      } 
-      else {
-        buatIsiKelasTahunAjaran();
-        buatIsiSemester1();
-        tambahDaftarKelasGuruAjar();
-
-        await firestore
+        QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
             .collection('Sekolah')
             .doc(idSekolah)
-            .collection('tahunajaran')
-            .doc(idTahunAjaran)
-            .collection('kelastahunajaran')
-            .doc(argumentKelas)
-            .collection('semester')
-            .doc('Semester I')
-            .collection('daftarsiswa')
-            .doc(nisnSiswa)
-            .set({
-          'namasiswa': namaSiswa,
-          'nisn': nisnSiswa,
-          'fase': faseNya,
-          'namakelas': argumentKelas,
-          'namasemester': 'Semester I',
-          'walikelas': waliKelasSiswaC.text,
-          'idwalikelas': uidWaliKelasnya,
-          'emailpenginput': emailAdmin,
-          'idpenginput': idUser,
-          'tanggalinput': DateTime.now().toIso8601String(),
-          'status': 'aktif',
-          'idsiswa': nisnSiswa,
-          'statuskelompok': 'baru',
-        });
+            .collection('pegawai')
+            .where('alias', isEqualTo: waliKelasSiswaC.text)
+            .get();
 
-        ubahStatusSiswa(nisnSiswa);
-      }
+        String uidWaliKelasnya = querySnapshot.docs.first.data()['uid'];
+
+        print('kelas tidak ada');
+        print('waliKelasSiswaC.text = ${waliKelasSiswaC.text}');
+        print("===============================");
+        print('nama Siswa = $namaSiswa');
+        print('nisn Siswa = $nisnSiswa');
+        print("===============================");
+        // print('uidWaliKelasnya = $uidWaliKelasnya');
+        if (uidWaliKelasnya.isEmpty) {
+          Get.snackbar('Peringatan', 'Wali kelas tidak oleh kosong');
+        } else {
+          buatIsiKelasTahunAjaran();
+          buatIsiSemester1();
+          tambahDaftarKelasGuruAjar();
+
+          await firestore
+              .collection('Sekolah')
+              .doc(idSekolah)
+              .collection('tahunajaran')
+              .doc(idTahunAjaran)
+              .collection('kelastahunajaran')
+              .doc(argumentKelas)
+              .collection('semester')
+              .doc('Semester I')
+              .collection('daftarsiswa')
+              .doc(nisnSiswa)
+              .set({
+            'namasiswa': namaSiswa,
+            'nisn': nisnSiswa,
+            'fase': faseNya,
+            'namakelas': argumentKelas,
+            'namasemester': 'Semester I',
+            'walikelas': waliKelasSiswaC.text,
+            'idwalikelas': uidWaliKelasnya,
+            'emailpenginput': emailAdmin,
+            'idpenginput': idUser,
+            'tanggalinput': DateTime.now().toIso8601String(),
+            'status': 'aktif',
+            'idsiswa': nisnSiswa,
+            'statuskelompok': 'baru',
+          });
+
+          // kelasUntukSiswa(nisnSiswa);
+          kelasUntukSiswaNext(nisnSiswa);
+
+          ubahStatusSiswaNext(nisnSiswa);
+        }
       } catch (e) {
         Get.snackbar('Error', 'periksa.. !! apakah wali kelas belum terisi..');
       }
@@ -405,6 +550,6 @@ class PemberianKelasSiswaController extends GetxController {
   }
 
   void test() async {
-    print('argumentKelas = $argumentKelas');
+    print('idUser = $idUser');
   }
 }

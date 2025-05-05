@@ -8,7 +8,6 @@ class TambahSiswaController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isLoadingTambahSiswa = false.obs;
 
-  TextEditingController tahunAjaran = TextEditingController();
   TextEditingController nisnSiswaController = TextEditingController();
   TextEditingController namaSiswaController = TextEditingController();
   // TextEditingController kelasSiswaController = TextEditingController();
@@ -38,6 +37,8 @@ class TambahSiswaController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  String idUser = FirebaseAuth.instance.currentUser!.uid;
+
   //ambil tahun ajaran terakhir
   Future<String> getTahunAjaranTerakhir() async {
     String idSekolah = 'UQjMpsKZKmWWbWVu4Uwb';
@@ -63,30 +64,34 @@ class TambahSiswaController extends GetxController {
       try {
         String emailAdmin = auth.currentUser!.email!;
 
+        UserCredential userCredentialAdmin =
+              await auth.signInWithEmailAndPassword(
+            email: emailAdmin,
+            password: passAdminC.text,
+          );
+
         UserCredential siswaCredential =
             await auth.createUserWithEmailAndPassword(
           email: emailOrangTuaController.text,
           password: 'password',
         );
-        
 
         //======================================================
 
         if (siswaCredential.user != null) {
-          // String uid = siswaCredential.user!.uid;
+          String uidSiswa = siswaCredential.user!.uid;
+          // String uidAdmin = userCredentialAdmin.user!.uid;
           String idSekolah = 'UQjMpsKZKmWWbWVu4Uwb';
 
           // await firestore.collection("Siswa").doc(nisnSiswaController.text).set({
           await firestore.collection("Sekolah").doc(idSekolah).collection('siswa').doc(nisnSiswaController.text).set({
             "nisn": nisnSiswaController.text,
             "nama": namaSiswaController.text,
-            // "kelas": kelasSiswaController.text,
             "jenisKelamin": jenisKelaminSiswaController.text,
             "agama": agamaSiswaController.text,
             "tempatLahir": tempatLahirSiswaController.text,
             "tanggalLahir": tanggalLahirSiswaController.text,
             "alamat": alamatSiswaController.text,
-            // "waliKelas": waliKelasSiswaController.text,
             "namaAyah": namaAyahController.text,
             "namaIbu": namaIbuController.text,
             "emailOrangTua": emailOrangTuaController.text,
@@ -102,26 +107,26 @@ class TambahSiswaController extends GetxController {
             "pendidikanWali": pendidikanWaliController.text,
             "biayaSpp": biayaSppController.text,
             "biayaUangPangkal": biayaUangPangkalController.text,
-            "uid": nisnSiswaController.text,
+            "uid": uidSiswa,
             "createdAt": DateTime.now().toIso8601String(),
             "createdByEmail": emailAdmin,
-            "createdById": auth.currentUser!.uid,
-            // "createdByName" : auth.currentUser!.
-            "status": "Siswa",
+            // "createdById": auth.currentUser!.uid,
+            // "createdById": uidAdmin,
+            "status": "baru",
           });
 
           await siswaCredential.user!.sendEmailVerification();
 
-          // await auth.signOut();
+          await auth.signOut();
 
-          // UserCredential userCredentialAdmin =
-          //     await auth.signInWithEmailAndPassword(
-          //   email: emailAdmin,
-          //   password: passAdminC.text,
-          // );
+          UserCredential userCredentialAdmin =
+              await auth.signInWithEmailAndPassword(
+            email: emailAdmin,
+            password: passAdminC.text,
+          );
 
-          Get.back();
-          Get.back();
+          Get.back(); // tutup dialog
+          Get.back(); // back to home
 
           Get.snackbar(
             'Berhasil',
@@ -130,11 +135,12 @@ class TambahSiswaController extends GetxController {
             backgroundColor: Colors.green,
             colorText: Colors.white,
           );
+          // print("idUse = $idUser");
           
-          resetForm();
+          // resetForm();
         }
         isLoadingTambahSiswa.value = false;
-      } on FirebaseAuthException catch (e) {
+       } on FirebaseAuthException catch (e) {
         isLoadingTambahSiswa.value = false;
         if(e.code == 'email-already-in-use') {
           Get.snackbar(
@@ -176,7 +182,7 @@ class TambahSiswaController extends GetxController {
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
-      } catch (e) {
+       } catch (e) {
         isLoadingTambahSiswa.value = false;
         Get.snackbar(
           'Gagal',
@@ -271,60 +277,35 @@ class TambahSiswaController extends GetxController {
       } 
     }
 
-  void resetForm() {
-    namaSiswaController.clear();
-    // kelasSiswaController.clear();
-    // kelasSiswaController.text == "";
-    jenisKelaminSiswaController.clear();
-    jenisKelaminSiswaController.text == "";
-    agamaSiswaController.clear();
-    agamaSiswaController.text == "";
-    tempatLahirSiswaController.clear();
-    tanggalLahirSiswaController.clear();
-    alamatSiswaController.clear();
-    // waliKelasSiswaController.clear();
-    namaAyahController.clear();
-    namaIbuController.clear();
-    emailOrangTuaController.clear();
-    noHpOrangTuaController.clear();
-    alamatOrangTuaController.clear();
-    pekerjaanAyahController.clear();
-    pekerjaanIbuController.clear();
-    pendidikanAyahController.clear();
-    pendidikanIbuController.clear();
-    noHpWaliController.clear();
-    alamatWaliController.clear();
-    pekerjaanWaliController.clear();
-    pendidikanWaliController.clear();
-    biayaSppController.clear();
-    biayaUangPangkalController.clear();
-  }
+  //  void resetFormXX() {
+  //   namaSiswaController.clear();
+  //   // kelasSiswaController.clear();
+  //   // kelasSiswaController.text == "";
+  //   jenisKelaminSiswaController.clear();
+  //   jenisKelaminSiswaController.text == "";
+  //   agamaSiswaController.clear();
+  //   agamaSiswaController.text == "";
+  //   tempatLahirSiswaController.clear();
+  //   tanggalLahirSiswaController.clear();
+  //   alamatSiswaController.clear();
+  //   // waliKelasSiswaController.clear();
+  //   namaAyahController.clear();
+  //   namaIbuController.clear();
+  //   emailOrangTuaController.clear();
+  //   noHpOrangTuaController.clear();
+  //   alamatOrangTuaController.clear();
+  //   pekerjaanAyahController.clear();
+  //   pekerjaanIbuController.clear();
+  //   pendidikanAyahController.clear();
+  //   pendidikanIbuController.clear();
+  //   noHpWaliController.clear();
+  //   alamatWaliController.clear();
+  //   pekerjaanWaliController.clear();
+  //   pendidikanWaliController.clear();
+  //   biayaSppController.clear();
+  //   biayaUangPangkalController.clear();
+  // }
 
-  @override
-  void onClose() {
-    namaSiswaController.dispose();
-    // kelasSiswaController.dispose();
-    jenisKelaminSiswaController.dispose();
-    agamaSiswaController.dispose();
-    tempatLahirSiswaController.dispose();
-    tanggalLahirSiswaController.dispose();
-    alamatSiswaController.dispose();
-    // waliKelasSiswaController.dispose();
-    namaAyahController.dispose();
-    namaIbuController.dispose();
-    emailOrangTuaController.dispose();
-    noHpOrangTuaController.dispose();
-    alamatOrangTuaController.dispose();
-    pekerjaanAyahController.dispose();
-    pekerjaanIbuController.dispose();
-    pendidikanAyahController.dispose();
-    pendidikanIbuController.dispose();
-    noHpWaliController.dispose();
-    alamatWaliController.dispose();
-    pekerjaanWaliController.dispose();
-    pendidikanWaliController.dispose();
-    biayaSppController.dispose();
-    biayaUangPangkalController.dispose();
-  }
+ 
   
 }

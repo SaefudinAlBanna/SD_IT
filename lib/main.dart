@@ -33,7 +33,7 @@ Future<void> main() async {
             ),
           );
         }
-        // print(snapshot.data);
+        // print('snapshot.data = ${snapshot.data}');
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: "Application",

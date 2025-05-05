@@ -101,12 +101,12 @@ class PemberianKelasSiswaView extends GetView<PemberianKelasSiswaController> {
                                 fit: FlexFit.tight),
                           ); // Default return statement
                     }),
-                // ElevatedButton(
-                //     onPressed: () {
-                //       controller.getDataWali();
-                //       // print('waliKelasDoc = $waliKelasDoc');
-                //     },
-                //     child: Text('test')),
+                ElevatedButton(
+                    onPressed: () {
+                      controller.test();
+                      // print('waliKelasDoc = $waliKelasDoc');
+                    },
+                    child: Text('test')),
               ],
             ),
           ),
@@ -152,6 +152,7 @@ class PemberianKelasSiswaView extends GetView<PemberianKelasSiswaController> {
                                 // }
                                 // controller.tambahkanKelasSiswa(
                                 //     namaSiswa, nisnSiswa);
+                                
                                 controller.simpankelasSiswa(namaSiswa, nisnSiswa);
                               },
                               icon: Icon(Icons.save_outlined),
