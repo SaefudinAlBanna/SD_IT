@@ -335,37 +335,37 @@ class DaftarHalaqohController extends GetxController {
             }
 
             // SIMPAN DATA SISWA PADA (PENGAMPU BARU)
-            await firestore
-                .collection('Sekolah')
-                .doc(idSekolah)
-                .collection('pegawai')
-                .doc(pengampuData['idpengampu'])
-                .collection('tahunajarankelompok')
-                .doc(tahunAjaranPengampu)
-                .collection('semester')
-                .doc(pengampuData['namasemester'])
-                .collection('kelompokmengaji')
-                .doc(pengampuData['fase'])
-                .collection('tempat')
-                .doc(pengampuData['tempatmengaji'])
-                .collection('daftarsiswa')
-                .doc(nisnSiswa)
-                .set({
-              'namasiswa': namasiswa,
-              'nisn': nisnSiswa,
-              'kelas': kelassiswa,
-              'fase': pengampuData['fase'],
-              'tempatmengaji': pengampuData['tempatmengaji'],
-              'tahunajaran': pengampuData['tahunajaran'],
-              'kelompokmengaji': pengampuData['namapengampu'],
-              'namasemester': pengampuData['namasemester'],
-              'namapengampu': pengampuData['namapengampu'],
-              'idpengampu': pengampuData['idpengampu'],
-              'emailpenginput': emailAdmin,
-              'idpenginput': idUser,
-              'tanggalinput': DateTime.now().toIso8601String(),
-              'idsiswa': nisnSiswa,
-            });
+            // await firestore
+            //     .collection('Sekolah')
+            //     .doc(idSekolah)
+            //     .collection('pegawai')
+            //     .doc(pengampuData['idpengampu'])
+            //     .collection('tahunajarankelompok')
+            //     .doc(tahunAjaranPengampu)
+            //     .collection('semester')
+            //     .doc(pengampuData['namasemester'])
+            //     .collection('kelompokmengaji')
+            //     .doc(pengampuData['fase'])
+            //     .collection('tempat')
+            //     .doc(pengampuData['tempatmengaji'])
+            //     .collection('daftarsiswa')
+            //     .doc(nisnSiswa)
+            //     .set({
+            //   'namasiswa': namasiswa,
+            //   'nisn': nisnSiswa,
+            //   'kelas': kelassiswa,
+            //   'fase': pengampuData['fase'],
+            //   'tempatmengaji': pengampuData['tempatmengaji'],
+            //   'tahunajaran': pengampuData['tahunajaran'],
+            //   'kelompokmengaji': pengampuData['namapengampu'],
+            //   'namasemester': pengampuData['namasemester'],
+            //   'namapengampu': pengampuData['namapengampu'],
+            //   'idpengampu': pengampuData['idpengampu'],
+            //   'emailpenginput': emailAdmin,
+            //   'idpenginput': idUser,
+            //   'tanggalinput': DateTime.now().toIso8601String(),
+            //   'idsiswa': nisnSiswa,
+            // });
             // print('SIMPAN DATA SISWA PADA (PENGAMPU BARU)');
 
             // BUAT TEMPAT di firebase MURID PINDAHAN HALAQOH PADA DATABASE
