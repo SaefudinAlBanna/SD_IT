@@ -46,7 +46,7 @@ Future<String> getTahunAjaranTerakhir() async {
     String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
     String semesternya = await getSemesterTerakhir();
 
-    QuerySnapshot<Map<String, dynamic>> getDaftarSiswaPindahan = await firestore
+    return await firestore
         .collection('Sekolah')
          .doc(idSekolah)
         .collection('tahunajaran')
@@ -54,9 +54,10 @@ Future<String> getTahunAjaranTerakhir() async {
         .collection('semester')
         .doc(semesternya)
         .collection('pindahan')
+        .orderBy('tanggalpindah', descending: true)
         .get();
 
     // print('ini get pentampunya = ${getPengampuNya.docs.first.data()['test']}');
-    return getDaftarSiswaPindahan;
+    // return getDaftarSiswaPindahan;
   }
 }

@@ -107,9 +107,10 @@ class DaftarNilaiView extends GetView<DaftarNilaiController> {
                                       'pengampu : ${data['keteranganpengampu']}'),
                                   SizedBox(height: 7),
                                   // Text('orangtua : ${data['keteranganorangtua']}'),
-                                  Text(
-                                      // ignore: unrelated_type_equality_checks
-                                      "orangtua : ${data == 0 ? (data['keteranganorangtua'] ?? '-') : '-'}"),
+                                  // Text( "orangtua : ${data == 0 ? (data['keteranganorangtua'] ?? '-') : '-'}"),
+                                  if (data['keteranganorangtua'] != "0")
+                                        Text('orangtua : ${data['keteranganorangtua']}') 
+                                  else Text("orangtua : -")
                                 ],
                               ),
                             );

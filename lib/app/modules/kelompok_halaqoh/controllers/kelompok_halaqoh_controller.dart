@@ -206,37 +206,37 @@ class KelompokHalaqohController extends GetxController {
         'idsiswa': nisnSiswa,
       });
 
-      await firestore
-          .collection('Sekolah')
-          .doc(idSekolah)
-          .collection('pegawai')
-          .doc(idPengampu)
-          .collection('tahunajarankelompok')
-          .doc(idTahunAjaran)
-          .collection('semester')
-          .doc(argumenData[0]['namasemester'])
-          .collection('kelompokmengaji')
-          .doc(argumenData[0]['fase'])
-          .collection('tempat')
-          .doc(argumenData[0]['tempatmengaji'])
-          .collection('daftarsiswa')
-          .doc(nisnSiswa)
-          .set({
-        'namasiswa': namaSiswa,
-        'nisn': nisnSiswa,
-        'kelas': kelasSiswaC.text,
-        'fase': argumenData[0]['fase'],
-        'tempatmengaji': argumenData[0]['tempatmengaji'],
-        'tahunajaran': argumenData[0]['tahunajaran'],
-        'kelompokmengaji': argumenData[0]['namapengampu'],
-        'namasemester': argumenData[0]['namasemester'],
-        'namapengampu': argumenData[0]['namapengampu'],
-        'idpengampu': idPengampu,
-        'emailpenginput': emailAdmin,
-        'idpenginput': idUser,
-        'tanggalinput': DateTime.now().toIso8601String(),
-        'idsiswa': nisnSiswa,
-      });
+      // await firestore
+      //     .collection('Sekolah')
+      //     .doc(idSekolah)
+      //     .collection('pegawai')
+      //     .doc(idPengampu)
+      //     .collection('tahunajarankelompok')
+      //     .doc(idTahunAjaran)
+      //     .collection('semester')
+      //     .doc(argumenData[0]['namasemester'])
+      //     .collection('kelompokmengaji')
+      //     .doc(argumenData[0]['fase'])
+      //     .collection('tempat')
+      //     .doc(argumenData[0]['tempatmengaji'])
+      //     .collection('daftarsiswa')
+      //     .doc(nisnSiswa)
+      //     .set({
+      //   'namasiswa': namaSiswa,
+      //   'nisn': nisnSiswa,
+      //   'kelas': kelasSiswaC.text,
+      //   'fase': argumenData[0]['fase'],
+      //   'tempatmengaji': argumenData[0]['tempatmengaji'],
+      //   'tahunajaran': argumenData[0]['tahunajaran'],
+      //   'kelompokmengaji': argumenData[0]['namapengampu'],
+      //   'namasemester': argumenData[0]['namasemester'],
+      //   'namapengampu': argumenData[0]['namapengampu'],
+      //   'idpengampu': idPengampu,
+      //   'emailpenginput': emailAdmin,
+      //   'idpenginput': idUser,
+      //   'tanggalinput': DateTime.now().toIso8601String(),
+      //   'idsiswa': nisnSiswa,
+      // });
 
       await firestore
           .collection('Sekolah')

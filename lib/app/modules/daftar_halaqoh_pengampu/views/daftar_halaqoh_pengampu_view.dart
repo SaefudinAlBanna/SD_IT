@@ -67,6 +67,7 @@ class DaftarHalaqohPengampuView
                                 Get.toNamed(Routes.CONTOH,
                                     // arguments: snapshot.data!.docs[index].data()['namasiswa']);
                                     arguments: dataNya);
+                                    // print('datamua = ${snapshot.data!.docs[index].data()}');
                             } ,
                             child: SizedBox(
                                 height: 40,
@@ -90,22 +91,22 @@ class DaftarHalaqohPengampuView
                           
                           ),
 
-                          SizedBox(
-                            height: 40,
-                            width: 40,
-                            child: Checkbox(
-                              value: false,
-                              onChanged: (bool? value) {
-                                // Handle checkbox state change here
-                              },
-                            ),
-                          )
+                          // SizedBox(
+                          //   height: 40,
+                          //   width: 40,
+                          //   child: Checkbox(
+                          //     value: false,
+                          //     onChanged: (bool? value) {
+                          //       // Handle checkbox state change here
+                          //     },
+                          //   ),
+                          // )
                         ],
                       ),
                     );
                   },
                 ));
-          } else {
+           } else {
             return Center(
               child: Text('Terjadi kesalahan, Periksa koneksi internet'),
             );

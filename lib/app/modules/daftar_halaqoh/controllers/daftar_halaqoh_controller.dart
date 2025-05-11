@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 
 class DaftarHalaqohController extends GetxController {
   var dataFase = Get.arguments;
@@ -94,9 +94,9 @@ class DaftarHalaqohController extends GetxController {
         .collection('daftarsiswa')
         .doc(nisnSiSwa)
         .delete();
-        // .then((value) =>
-        //     Get.snackbar('Berhasil', 'Siswa sudah dihapus dari kelompok'))
-        // .catchError((error) => Get.snackbar('Gagal', '$error'));
+    // .then((value) =>
+    //     Get.snackbar('Berhasil', 'Siswa sudah dihapus dari kelompok'))
+    // .catchError((error) => Get.snackbar('Gagal', '$error'));
   }
 
   Future<List<String>> getDataPengampu() async {
@@ -163,328 +163,7 @@ class DaftarHalaqohController extends GetxController {
     return getPengampuNya;
   }
 
-  // Future<void> pindahkan() async {
-  //   if (pengampuC.text.isEmpty || pengampuC.text == "") {
-  //     // print('PENGAMPU BELUM DIISI');
-  //     isLoading.value = false;
-  //     Get.snackbar('Peringatan', 'Pengampu baru kosong');
-  //   } else if (alasanC.text.isEmpty) {
-  //     isLoading.value = false;
-  //     Get.snackbar('Peringatan', 'Alasan pindah kosong, silahkan diisi dahulu');
-  //   } else {
-  //     isLoading.value = true;
-  //     try {
-  //       DocumentSnapshot<Map<String, dynamic>> pengampuSnapshot =
-  //           await dataPengampuPindah();
-  //       Map<String, dynamic> pengampuData = pengampuSnapshot.data()!;
-
-  //       String tahunajaran = pengampuData['tahunajaran'];
-  //       String tahunAjaranPengampu = tahunajaran.replaceAll('/', '-');
-  //       // String tempatPengampuPindah = pengampuData['tempatmengaji'];
-
-  //       DateTime now = DateTime.now();
-  //       String docIdPindah = DateFormat.yMd().format(now).replaceAll('/', '-');
-
-  //       QuerySnapshot<Map<String, dynamic>> snapDaftarHalaqoh =
-  //           await getDaftarHalaqoh().first;
-  //       Map<String, dynamic> siswaData = snapDaftarHalaqoh.docs.first.data();
-
-  //       QuerySnapshot<Map<String, dynamic>> getNilainya = await firestore
-  //           .collection('Sekolah')
-  //           .doc(idSekolah)
-  //           .collection('tahunajaran')
-  //           .doc(tahunAjaranPengampu)
-  //           .collection('semester')
-  //           .doc(pengampuData['namasemester'])
-  //           .collection('kelompokmengaji')
-  //           .doc(pengampuData['fase'])
-  //           .collection('pengampu')
-  //           .doc(dataFase['namapengampu'])
-  //           .collection('tempat')
-  //           .doc(dataFase['tempatmengaji'])
-  //           .collection('daftarsiswa')
-  //           .doc(siswaData['nisn'])
-  //           .collection('nilai')
-  //           .get();
-
-  //       // if (getNilainya.docs.isEmpty) {
-  //       //   Get.snackbar(
-  //       //      "Informasi", "No data available");
-  //       //   return;
-  //       // }
-
-  //       // ambil semua data doc nilai
-  //       // Map<String, dynamic> allNilaiNya = {};
-  //       // for (var element in getNilainya.docs) {
-  //       //   allNilaiNya[element.id] = element.data();
-  //       // }
-
-  //       //ambil semua doc id
-  //       Map<String, dynamic> allDocId = {};
-  //       for (var element in getNilainya.docs) {
-  //         allDocId[element.id] = element.data()[element.id];
-
-  //         // print('allNilaiNya = $allNilaiNya');
-  //         // print('===============================');
-  //         // print('allDocId = $allDocId');
-
-  //         Map<String, dynamic> allDocNilai = {};
-  //         for (var element in getNilainya.docs) {
-  //           allDocNilai[element.id] = element.data();
-
-  //           // print("allDocNilai[element.id]['tanggalinput'] = ${allDocNilai[element.id]['tanggalinput']}");
-  //           // print('===============================');
-  //           // print("allDocNilai[element.id]['ummijilidatausurat'] = ${allDocNilai[element.id]['ummijilidatausurat']}");
-
-  //           // BUAT DOC PINDAH PADA PENGAMPU LAMA
-  //           // await firestore
-  //           //     .collection('Sekolah')
-  //           //     .doc(idSekolah)
-  //           //     .collection('tahunajaran')
-  //           //     .doc(tahunAjaranPengampu)
-  //           //     .collection('semester')
-  //           //     .doc(pengampuData['namasemester'])
-  //           //     .collection('kelompokmengaji')
-  //           //     .doc(pengampuData['fase'])
-  //           //     .collection('pengampu')
-  //           //     .doc(dataFase['namapengampu'])
-  //           //     .collection('tempat')
-  //           //     .doc(dataFase['tempatmengaji'])
-  //           //     .collection('daftarsiswa')
-  //           //     .doc(siswaData['nisn'])
-  //           //     .collection('pindahhalaqoh')
-  //           //     .doc(docIdPindah)
-  //           //     .set({
-  //           //   'emailpenginput': emailAdmin,
-  //           //   'idpenginput': idUser,
-  //           //   'tanggalpindah': DateTime.now().toIso8601String(),
-  //           //   'halaqohlama': dataFase['namapengampu'],
-  //           //   'tempathalaqohlama': dataFase['tempatmengaji'],
-  //           //   'halaqohbaru': pengampuData['namapengampu'],
-  //           //   'tempathalaqohbaru': pengampuData['tempatmengaji'],
-  //           //   'alasanpindah': alasanC.text,
-  //           // });
-
-  //           //  SIMPAN DATA SISWA PADA TAHUN AJARAN SEKOLAH (PENGAMPU BARU)
-  //           await firestore
-  //               .collection('Sekolah')
-  //               .doc(idSekolah)
-  //               .collection('tahunajaran')
-  //               .doc(tahunAjaranPengampu)
-  //               .collection('semester')
-  //               .doc(pengampuData['namasemester'])
-  //               .collection('kelompokmengaji')
-  //               .doc(pengampuData['fase'])
-  //               .collection('pengampu')
-  //               .doc(pengampuData['namapengampu'])
-  //               .collection('tempat')
-  //               .doc(pengampuData['tempatmengaji'])
-  //               .collection('daftarsiswa')
-  //               .doc(siswaData['nisn'])
-  //               .set({
-  //             'namasiswa': siswaData['namasiswa'],
-  //             'nisn': siswaData['nisn'],
-  //             'kelas': siswaData['kelas'],
-  //             'fase': pengampuData['fase'],
-  //             'tempatmengaji': pengampuData['tempatmengaji'],
-  //             'tahunajaran': pengampuData['tahunajaran'],
-  //             'kelompokmengaji': pengampuData['namapengampu'],
-  //             'namasemester': pengampuData['namasemester'],
-  //             'namapengampu': pengampuData['namapengampu'],
-  //             'idpengampu': pengampuData['idpengampu'],
-  //             'emailpenginput': emailAdmin,
-  //             'idpenginput': idUser,
-  //             'tanggalinput': DateTime.now().toIso8601String(),
-  //             'idsiswa': siswaData['idsiswa'],
-  //           });
-
-  //           // SIMPAN NILAI DATA SISWA PADA TAHUN AJARAN SEKOLAH (PENGAMPU BARU)
-  //           // Jika nilai pada halaqoh sebelumnya tidak ada maka step ini d lewati
-  //           // ignore: prefer_is_empty
-  //           if (element.id.isNotEmpty || element.id.length != 0) {
-  //             await firestore
-  //                 .collection('Sekolah')
-  //                 .doc(idSekolah)
-  //                 .collection('tahunajaran')
-  //                 .doc(tahunAjaranPengampu)
-  //                 .collection('semester')
-  //                 .doc(pengampuData['namasemester'])
-  //                 .collection('kelompokmengaji')
-  //                 .doc(pengampuData['fase'])
-  //                 .collection('pengampu')
-  //                 .doc(pengampuData['namapengampu'])
-  //                 .collection('tempat')
-  //                 .doc(pengampuData['tempatmengaji'])
-  //                 .collection('daftarsiswa')
-  //                 .doc(siswaData['nisn'])
-  //                 .collection('nilai')
-  //                 .doc(element.id)
-  //                 .set({
-  //               'tanggalinput': allDocNilai[element.id]['tanggalinput'],
-  //               //=========================================
-  //               "emailpenginput": emailAdmin,
-  //               "fase": allDocNilai[element.id]['fase'],
-  //               "idpengampu": allDocNilai[element.id]['idpengampu'],
-  //               "idsiswa": allDocNilai[element.id]['idsiswa'],
-  //               "kelas": allDocNilai[element.id]['kelas'],
-  //               "kelompokmengaji": allDocNilai[element.id]['kelompokmengaji'],
-  //               "namapengampu": allDocNilai[element.id]['namapengampu'],
-  //               "namasemester": allDocNilai[element.id]['namasemester'],
-  //               "namasiswa": allDocNilai[element.id]['namasiswa'],
-  //               "tahunajaran": allDocNilai[element.id]['tahunajaran'],
-  //               "tempatmengaji": allDocNilai[element.id]['tempatmengaji'],
-  //               "hafalansurat": allDocNilai[element.id]['hafalansurat'],
-  //               "ayathafalansurat": allDocNilai[element.id]['ayathafalansurat'],
-  //               "ummijilidatausurat": allDocNilai[element.id]
-  //                   ['ummijilidatausurat'],
-  //               "ummihalatauayat": allDocNilai[element.id]['ummihalatauayat'],
-  //               "materi": allDocNilai[element.id]['materi'],
-  //               "nilai": allDocNilai[element.id]['nilai'],
-  //               "keteranganpengampu": allDocNilai[element.id]
-  //                   ['keteranganpengampu'],
-  //               "keteranganorangtua": allDocNilai[element.id]
-  //                   ['keteranganorangtua']
-  //             });
-  //           }
-
-  //           // SIMPAN DATA SISWA PADA (PENGAMPU BARU)
-  //           await firestore
-  //               .collection('Sekolah')
-  //               .doc(idSekolah)
-  //               .collection('pegawai')
-  //               .doc(pengampuData['idpengampu'])
-  //               .collection('tahunajarankelompok')
-  //               .doc(tahunAjaranPengampu)
-  //               .collection('semester')
-  //               .doc(pengampuData['namasemester'])
-  //               .collection('kelompokmengaji')
-  //               .doc(pengampuData['fase'])
-  //               .collection('tempat')
-  //               .doc(pengampuData['tempatmengaji'])
-  //               .collection('daftarsiswa')
-  //               .doc(siswaData['nisn'])
-  //               .set({
-  //             'namasiswa': siswaData['namasiswa'],
-  //             'nisn': siswaData['nisn'],
-  //             'kelas': siswaData['kelas'],
-  //             'fase': pengampuData['fase'],
-  //             'tempatmengaji': pengampuData['tempatmengaji'],
-  //             'tahunajaran': pengampuData['tahunajaran'],
-  //             'kelompokmengaji': pengampuData['namapengampu'],
-  //             'namasemester': pengampuData['namasemester'],
-  //             'namapengampu': pengampuData['namapengampu'],
-  //             'idpengampu': pengampuData['idpengampu'],
-  //             'emailpenginput': emailAdmin,
-  //             'idpenginput': idUser,
-  //             'tanggalinput': DateTime.now().toIso8601String(),
-  //             'idsiswa': siswaData['idsiswa'],
-  //           });
-
-  //           // BUAT TEMPAT di firebase MURID PINDAHAN HALAQOH PADA DATABASE
-  //           await firestore
-  //               .collection('Sekolah')
-  //               .doc(idSekolah)
-  //               .collection('tahunajaran')
-  //               .doc(tahunAjaranPengampu)
-  //               .collection('semester')
-  //               .doc(pengampuData['namasemester'])
-  //               .collection('pindahan')
-  //               .doc(docIdPindah)
-  //               .set({
-  //             'namasiswa': siswaData['namasiswa'],
-  //             'kelas': siswaData['kelas'],
-  //             'fase': pengampuData['fase'],
-  //             'namasemester': pengampuData['namasemester'],
-  //             'tahunajaran': pengampuData['tahunajaran'],
-  //             'emailpenginput': emailAdmin,
-  //             'idpenginput': idUser,
-  //             'tanggalpindah': DateTime.now().toIso8601String(),
-  //             'halaqohlama': dataFase['namapengampu'],
-  //             'tempathalaqohlama': dataFase['tempatmengaji'],
-  //             'halaqohbaru': pengampuData['namapengampu'],
-  //             'tempathalaqohbaru': pengampuData['tempatmengaji'],
-  //             'alasanpindah': alasanC.text,
-  //           });
-
-  //           // BUAT TEMPAT di firebase MURID PINDAHAN HALAQOH PADA DATABASE
-  //           // await firestore
-  //           //     .collection('Sekolah')
-  //           //     .doc(idSekolah)
-  //           //     .collection('tahunajaran')
-  //           //     .doc(tahunAjaranPengampu)
-  //           //     .collection('semester')
-  //           //     .doc(pengampuData['namasemester'])
-  //           //     .collection('pindahan')
-  //           //     .doc(docIdPindah)
-  //           //     .collection('daftarsiswa')
-  //           //     .doc(siswaData['nisn'])
-  //           //     .set({
-  //           //   'namasiswa': siswaData['namasiswa'],
-  //           //   'nisn': siswaData['nisn'],
-  //           //   'kelas': siswaData['kelas'],
-  //           //   'fase': pengampuData['fase'],
-  //           //   'emailpenginput': emailAdmin,
-  //           //   'idpenginput': idUser,
-  //           //   'tanggalpindah': DateTime.now().toIso8601String(),
-  //           //   'halaqohlama': dataFase['namapengampu'],
-  //           //   'tempathalaqohlama': dataFase['tempatmengaji'],
-  //           //   'halaqohbaru': pengampuData['namapengampu'],
-  //           //   'tempathalaqohbaru': pengampuData['tempatmengaji'],
-  //           //   'alasanpindah': alasanC.text,
-  //           //   'idsiswa': siswaData['idsiswa'],
-  //           // });
-
-  //           //DELETE SISWA DARI HALAQOH LAMA (TAHUN AJARAN SEKOLAH)
-  //           await firestore
-  //               .collection('Sekolah')
-  //               .doc(idSekolah)
-  //               .collection('tahunajaran')
-  //               .doc(pengampuData['tahunajaran'])
-  //               .collection('semester')
-  //               .doc(pengampuData['namasemester'])
-  //               .collection('kelompokmengaji')
-  //               .doc(pengampuData['fase']) // ini nanti diganti otomatis
-  //               .collection('pengampu')
-  //               .doc(pengampuData['namapengampu'])
-  //               .collection('tempat')
-  //               .doc(pengampuData['tempatmengaji'])
-  //               .collection('daftarsiswa')
-  //               .doc(siswaData['nisn'])
-  //               .delete();
-            
-  //           //DELETE SISWA DARI HALAQOH LAMA (PEGAWAI PENGAMPU LAMA)
-  //           // await firestore
-  //           //     .collection('Sekolah')
-  //           //     .doc(idSekolah)
-  //           //     .collection('pegawai')
-  //           //     .doc(dataFase['idpengampu'])
-  //           //     .collection('tahunajarankelompok')
-  //           //     .doc(pengampuData['tahunajaran'])
-  //           //     .collection('semester')
-  //           //     .doc(pengampuData['namasemester']) // ini nanti diganti otomatis
-  //           //     .collection('kelompokmengaji')
-  //           //     .doc(dataFase['fase'])
-  //           //     .collection('tempat')
-  //           //     .doc(pengampuData['tempatmengaji'])
-  //           //     .collection('daftarsiswa')
-  //           //     .doc(siswaData['nisn'])
-  //           //     .delete();
-  //         }
-  //       }
-
-  //       // print('berhasil================');
-  //       Get.back();
-  //       Get.snackbar('Berhasil', 'Siswa sudah pindah halaqoh');
-  //       isLoading.value = false;
-  //     } catch (e) {
-  //       isLoading.value = false;
-  //       Get.snackbar('Error', '$e');
-  //       print('pesan error : $e');
-  //     }
-  //   }
-  // }
-
-  Future<void> pindahkan() async {
+  Future<void> pindahkan(String nisnSiswa) async {
     if (pengampuC.text.isEmpty || pengampuC.text == "") {
       // print('PENGAMPU BELUM DIISI');
       isLoading.value = false;
@@ -494,21 +173,35 @@ class DaftarHalaqohController extends GetxController {
       Get.snackbar('Peringatan', 'Alasan pindah kosong, silahkan diisi dahulu');
     } else {
       isLoading.value = true;
-      try {
-        DocumentSnapshot<Map<String, dynamic>> pengampuSnapshot =
-            await dataPengampuPindah();
-        Map<String, dynamic> pengampuData = pengampuSnapshot.data()!;
 
-        String tahunajaran = pengampuData['tahunajaran'];
-        String tahunAjaranPengampu = tahunajaran.replaceAll('/', '-');
-        // String tempatPengampuPindah = pengampuData['tempatmengaji'];
+      DocumentSnapshot<Map<String, dynamic>> pengampuSnapshot =
+          await dataPengampuPindah();
+      Map<String, dynamic> pengampuData = pengampuSnapshot.data()!;
+      String tahunajaran = pengampuData['tahunajaran'];
+      String tahunAjaranPengampu = tahunajaran.replaceAll('/', '-');
 
-        DateTime now = DateTime.now();
-        String docIdPindah = DateFormat.yMd().format(now).replaceAll('/', '-');
+      String uid = firestore.collection('Sekolah').doc().id;
 
-        QuerySnapshot<Map<String, dynamic>> snapDaftarHalaqoh =
-            await getDaftarHalaqoh().first;
-        Map<String, dynamic> siswaData = snapDaftarHalaqoh.docs.first.data();
+      QuerySnapshot<Map<String, dynamic>> querySnapshotSiswa = await firestore
+          .collection('Sekolah')
+          .doc(idSekolah)
+          .collection('tahunajaran')
+          .doc(tahunAjaranPengampu)
+          .collection('semester')
+          .doc(dataFase['namasemester'])
+          .collection('kelompokmengaji')
+          .doc(dataFase['fase']) // ini nanti diganti otomatis
+          .collection('pengampu')
+          .doc(dataFase['namapengampu'])
+          .collection('tempat')
+          .doc(dataFase['tempatmengaji'])
+          .collection('daftarsiswa')
+          .where('nisn', isEqualTo: nisnSiswa)
+          .get();
+      if (querySnapshotSiswa.docs.isNotEmpty) {
+        Map<String, dynamic> dataSiswa = querySnapshotSiswa.docs.first.data();
+        String namasiswa = dataSiswa['namasiswa'];
+        String kelassiswa = dataSiswa['kelas'];
 
         QuerySnapshot<Map<String, dynamic>> getNilainya = await firestore
             .collection('Sekolah')
@@ -524,7 +217,7 @@ class DaftarHalaqohController extends GetxController {
             .collection('tempat')
             .doc(dataFase['tempatmengaji'])
             .collection('daftarsiswa')
-            .doc(siswaData['nisn'])
+            .doc(nisnSiswa)
             .collection('nilai')
             .get();
 
@@ -557,36 +250,6 @@ class DaftarHalaqohController extends GetxController {
             // print('===============================');
             // print("allDocNilai[element.id]['ummijilidatausurat'] = ${allDocNilai[element.id]['ummijilidatausurat']}");
 
-            // BUAT DOC PINDAH PADA PENGAMPU LAMA
-            await firestore
-                .collection('Sekolah')
-                .doc(idSekolah)
-                .collection('tahunajaran')
-                .doc(tahunAjaranPengampu)
-                .collection('semester')
-                .doc(pengampuData['namasemester'])
-                .collection('kelompokmengaji')
-                .doc(pengampuData['fase'])
-                .collection('pengampu')
-                .doc(dataFase['namapengampu'])
-                .collection('tempat')
-                .doc(dataFase['tempatmengaji'])
-                .collection('daftarsiswa')
-                .doc(siswaData['nisn'])
-                .collection('pindahhalaqoh')
-                .doc(docIdPindah)
-                .set({
-              'emailpenginput': emailAdmin,
-              'idpenginput': idUser,
-              'tanggalpindah': DateTime.now().toIso8601String(),
-              'halaqohlama': dataFase['namapengampu'],
-              'tempathalaqohlama': dataFase['tempatmengaji'],
-              'halaqohbaru': pengampuData['namapengampu'],
-              'tempathalaqohbaru': pengampuData['tempatmengaji'],
-              'alasanpindah': alasanC.text,
-            });
-            print('BUAT DOC PINDAH PADA PENGAMPU LAMA');
-
             //  SIMPAN DATA SISWA PADA TAHUN AJARAN SEKOLAH (PENGAMPU BARU)
             await firestore
                 .collection('Sekolah')
@@ -602,11 +265,11 @@ class DaftarHalaqohController extends GetxController {
                 .collection('tempat')
                 .doc(pengampuData['tempatmengaji'])
                 .collection('daftarsiswa')
-                .doc(siswaData['nisn'])
+                .doc(nisnSiswa)
                 .set({
-              'namasiswa': siswaData['namasiswa'],
-              'nisn': siswaData['nisn'],
-              'kelas': siswaData['kelas'],
+              'namasiswa': namasiswa,
+              'nisn': nisnSiswa,
+              'kelas': kelassiswa,
               'fase': pengampuData['fase'],
               'tempatmengaji': pengampuData['tempatmengaji'],
               'tahunajaran': pengampuData['tahunajaran'],
@@ -617,9 +280,9 @@ class DaftarHalaqohController extends GetxController {
               'emailpenginput': emailAdmin,
               'idpenginput': idUser,
               'tanggalinput': DateTime.now().toIso8601String(),
-              'idsiswa': siswaData['idsiswa'],
+              'idsiswa': nisnSiswa,
             });
-              print('SIMPAN DATA SISWA PADA TAHUN AJARAN SEKOLAH (PENGAMPU BARU)');
+            // print('SIMPAN DATA SISWA PADA TAHUN AJARAN SEKOLAH (PENGAMPU BARU)');
 
             // SIMPAN NILAI DATA SISWA PADA TAHUN AJARAN SEKOLAH (PENGAMPU BARU)
             // Jika nilai pada halaqoh sebelumnya tidak ada maka step ini d lewati
@@ -639,7 +302,7 @@ class DaftarHalaqohController extends GetxController {
                   .collection('tempat')
                   .doc(pengampuData['tempatmengaji'])
                   .collection('daftarsiswa')
-                  .doc(siswaData['nisn'])
+                  .doc(nisnSiswa)
                   .collection('nilai')
                   .doc(element.id)
                   .set({
@@ -668,7 +331,7 @@ class DaftarHalaqohController extends GetxController {
                 "keteranganorangtua": allDocNilai[element.id]
                     ['keteranganorangtua']
               });
-              print('SIMPAN NILAI DATA SISWA PADA TAHUN AJARAN SEKOLAH (PENGAMPU BARU)');
+              // print('SIMPAN NILAI DATA SISWA PADA TAHUN AJARAN SEKOLAH (PENGAMPU BARU)');
             }
 
             // SIMPAN DATA SISWA PADA (PENGAMPU BARU)
@@ -686,11 +349,11 @@ class DaftarHalaqohController extends GetxController {
                 .collection('tempat')
                 .doc(pengampuData['tempatmengaji'])
                 .collection('daftarsiswa')
-                .doc(siswaData['nisn'])
+                .doc(nisnSiswa)
                 .set({
-              'namasiswa': siswaData['namasiswa'],
-              'nisn': siswaData['nisn'],
-              'kelas': siswaData['kelas'],
+              'namasiswa': namasiswa,
+              'nisn': nisnSiswa,
+              'kelas': kelassiswa,
               'fase': pengampuData['fase'],
               'tempatmengaji': pengampuData['tempatmengaji'],
               'tahunajaran': pengampuData['tahunajaran'],
@@ -701,9 +364,9 @@ class DaftarHalaqohController extends GetxController {
               'emailpenginput': emailAdmin,
               'idpenginput': idUser,
               'tanggalinput': DateTime.now().toIso8601String(),
-              'idsiswa': siswaData['idsiswa'],
+              'idsiswa': nisnSiswa,
             });
-            print('SIMPAN DATA SISWA PADA (PENGAMPU BARU)');
+            // print('SIMPAN DATA SISWA PADA (PENGAMPU BARU)');
 
             // BUAT TEMPAT di firebase MURID PINDAHAN HALAQOH PADA DATABASE
             await firestore
@@ -714,12 +377,12 @@ class DaftarHalaqohController extends GetxController {
                 .collection('semester')
                 .doc(pengampuData['namasemester'])
                 .collection('pindahan')
-                .doc(docIdPindah)
-                // .doc(uid)
+                // .doc(docIdPindah)
+                .doc(uid)
                 .set({
-              'namasiswa': siswaData['namasiswa'],
-              'nisn': siswaData['nisn'],
-              'kelas': siswaData['kelas'],
+              'namasiswa': namasiswa,
+              'nisn': nisnSiswa,
+              'kelas': kelassiswa,
               'fase': pengampuData['fase'],
               'emailpenginput': emailAdmin,
               'idpenginput': idUser,
@@ -729,72 +392,225 @@ class DaftarHalaqohController extends GetxController {
               'halaqohbaru': pengampuData['namapengampu'],
               'tempathalaqohbaru': pengampuData['tempatmengaji'],
               'alasanpindah': alasanC.text,
-              'idsiswa': siswaData['idsiswa'],
+              'idsiswa': nisnSiswa,
             });
-            print('BUAT TEMPAT di firebase MURID PINDAHAN HALAQOH PADA DATABASE');
 
-            // BUAT TEMPAT di firebase MURID PINDAHAN HALAQOH PADA DATABASE
-            // await firestore
-            //     .collection('Sekolah')
-            //     .doc(idSekolah)
-            //     .collection('tahunajaran')
-            //     .doc(tahunAjaranPengampu)
-            //     .collection('semester')
-            //     .doc(pengampuData['namasemester'])
-            //     .collection('pindahan')
-            //     .doc(docIdPindah)
-            //     .collection('daftarsiswa')
-            //     .doc(siswaData['nisn'])
-            //     .set({
-            //   'namasiswa': siswaData['namasiswa'],
-            //   'nisn': siswaData['nisn'],
-            //   'kelas': siswaData['kelas'],
-            //   'fase': pengampuData['fase'],
-            //   'emailpenginput': emailAdmin,
-            //   'idpenginput': idUser,
-            //   'tanggalpindah': DateTime.now().toIso8601String(),
-            //   'halaqohlama': dataFase['namapengampu'],
-            //   'tempathalaqohlama': dataFase['tempatmengaji'],
-            //   'halaqohbaru': pengampuData['namapengampu'],
-            //   'tempathalaqohbaru': pengampuData['tempatmengaji'],
-            //   'alasanpindah': alasanC.text,
-            //   'idsiswa': siswaData['idsiswa'],
-            // });
+            //HAPUS DATA PADA PENGAMPU LAMA
+            // jika ada nilai pada siswa di pengampu lama, maka hapus semua data nilai pada pengampu lama
+
+            DocumentSnapshot<Map<String, dynamic>> docSnapIdSiswa =
+                await firestore
+                    .collection('Sekolah')
+                    .doc(idSekolah)
+                    .collection('tahunajaran')
+                    .doc(tahunAjaranPengampu)
+                    .collection('semester')
+                    .doc(pengampuData['namasemester'])
+                    .collection('kelompokmengaji')
+                    .doc(pengampuData['fase'])
+                    .collection('pengampu')
+                    .doc(dataFase['namapengampu'])
+                    .collection('tempat')
+                    .doc(dataFase['tempatmengaji'])
+                    .collection('daftarsiswa')
+                    .doc(nisnSiswa)
+                    .get();
+
+            // ignore: prefer_is_empty
+            if (element.id.isNotEmpty || element.id.length != 0) {
+              await firestore
+                  .collection('Sekolah')
+                  .doc(idSekolah)
+                  .collection('tahunajaran')
+                  .doc(tahunAjaranPengampu)
+                  .collection('semester')
+                  .doc(pengampuData['namasemester'])
+                  .collection('kelompokmengaji')
+                  .doc(pengampuData['fase'])
+                  .collection('pengampu')
+                  .doc(dataFase['namapengampu'])
+                  .collection('tempat')
+                  .doc(dataFase['tempatmengaji'])
+                  .collection('daftarsiswa')
+                  .doc(nisnSiswa)
+                  .collection('nilai')
+                  .get()
+                  .then((querySnapshot) {
+                querySnapshot.docs.forEach((doc) async {
+                  await firestore
+                      .collection('Sekolah')
+                      .doc(idSekolah)
+                      .collection('tahunajaran')
+                      .doc(tahunAjaranPengampu)
+                      .collection('semester')
+                      .doc(pengampuData['namasemester'])
+                      .collection('kelompokmengaji')
+                      .doc(pengampuData['fase'])
+                      .collection('pengampu')
+                      .doc(dataFase['namapengampu'])
+                      .collection('tempat')
+                      .doc(dataFase['tempatmengaji'])
+                      .collection('daftarsiswa')
+                      .doc(nisnSiswa)
+                      .collection('nilai')
+                      .doc(doc.id)
+                      .delete();
+                });
+              });
+            }
+
+            if (docSnapIdSiswa.exists) {
+              //HAPUS DATA PADA PENGAMPU LAMA
+              await firestore
+                  .collection('Sekolah')
+                  .doc(idSekolah)
+                  .collection('tahunajaran')
+                  .doc(tahunAjaranPengampu)
+                  .collection('semester')
+                  .doc(pengampuData['namasemester'])
+                  .collection('kelompokmengaji')
+                  .doc(pengampuData['fase'])
+                  .collection('pengampu')
+                  .doc(dataFase['namapengampu'])
+                  .collection('tempat')
+                  .doc(dataFase['tempatmengaji'])
+                  .collection('daftarsiswa')
+                  .doc(nisnSiswa)
+                  .delete();
+            }
+
+            //HAPUS DATA DARI DOCUMENT PEGAWAI
+            await firestore
+                .collection('Sekolah')
+                .doc(idSekolah)
+                .collection('pegawai')
+                .doc(dataFase['idpengampu'])
+                .collection('tahunajarankelompok')
+                .doc(tahunAjaranPengampu)
+                .collection('semester')
+                .doc(dataFase['namasemester'])
+                .collection('kelompokmengaji')
+                .doc(dataFase['fase'])
+                .collection('pengampu')
+                .doc(dataFase['namapengampu'])
+                .collection('tempat')
+                .doc(dataFase['tempatmengaji'])
+                .collection('daftarsiswa')
+                .doc(nisnSiswa)
+                .delete();
+
+            //UBAH DATA PADA DOCUMENT SISWA
+            await firestore
+                .collection('Sekolah')
+                .doc(idSekolah)
+                .collection('siswa')
+                .doc(nisnSiswa)
+                .collection('tahunajarankelompok')
+                .doc(tahunAjaranPengampu)
+                .collection('semester')
+                .doc(dataFase['namasemester'])
+                .collection('kelompokmengaji')
+                .doc(dataFase['fase'])
+                .update({
+              "idpengampu": pengampuData['idpengampu'],
+              "kelompokmengaji": pengampuData['namapengampu'],
+              "namapengampu": pengampuData['namapengampu'],
+              "tempatmengaji": pengampuData['tempatmengaji'],
+              "pernahpindah": "iya",
+            });
+
+            //DELETED TEMPAT LAMA PADA SISWA
+            await firestore
+                .collection('Sekolah')
+                .doc(idSekolah)
+                .collection('siswa')
+                .doc(nisnSiswa)
+                .collection('tahunajarankelompok')
+                .doc(tahunAjaranPengampu)
+                .collection('semester')
+                .doc(pengampuData['namasemester'])
+                .collection('kelompokmengaji')
+                .doc(pengampuData['fase'])
+                .collection('tempat')
+                .doc(dataFase['tempatmengaji'])
+                .delete();
+
+            // BUAT TEMPAT BARU PADA SISWA
+            await firestore
+                .collection('Sekolah')
+                .doc(idSekolah)
+                .collection('siswa')
+                .doc(nisnSiswa)
+                .collection('tahunajarankelompok')
+                .doc(tahunAjaranPengampu)
+                .collection('semester')
+                .doc(pengampuData['namasemester'])
+                .collection('kelompokmengaji')
+                .doc(pengampuData['fase'])
+                .collection('tempat')
+                .doc(pengampuData['tempatmengaji'])
+                .set({
+              'nisn': nisnSiswa,
+              'tempatmengaji': pengampuData['tempatmengaji'],
+              'fase': pengampuData['fase'],
+              'tahunajaran': pengampuData['tahunajaran'],
+              'kelompokmengaji': pengampuData['namapengampu'],
+              'namasemester': pengampuData['namasemester'],
+              'namapengampu': pengampuData['namapengampu'],
+              'idpengampu': pengampuData['idpengampu'],
+              'emailpenginput': emailAdmin,
+              'idpenginput': idUser,
+              'tanggalinput': DateTime.now().toIso8601String(),
+            });
           }
         }
 
-        // print('berhasil================');
         Get.back();
-        Get.snackbar('Alhamdulillah', 'berhasil memindahkan siswa');
-      } catch (e) {
-        Get.snackbar('Errpr', '$e');
+        Get.snackbar('Berhasil', 'berhasil memindahkan siswa');
       }
     }
   }
 
-  void test() async {
-     DocumentSnapshot<Map<String, dynamic>> pengampuSnapshot =
-            await dataPengampuPindah();
-        Map<String, dynamic> pengampuData = pengampuSnapshot.data()!;
+  Future<void> test(String nisnSiswa) async {
+    DocumentSnapshot<Map<String, dynamic>> pengampuSnapshot =
+        await dataPengampuPindah();
+    Map<String, dynamic> pengampuData = pengampuSnapshot.data()!;
 
-        // String tahunajaran = pengampuData['tahunajaran'];
-        // String tahunAjaranPengampu = tahunajaran.replaceAll('/', '-');
-    // print('tempatmengaji ${dataFase['tempatmengaji']}');
+    // // DateTime now = DateTime.now();
+    // // String docIdPindah = DateFormat.yMEd()
+    // //     .add_jms()
+    // //     .format(now)
+    // //     .replaceAllMapped(RegExp(r'[ :,/AMPM]+'), (match) => '-');
 
+    // // print('docIdPindah = $docIdPindah');
 
-    // DateTime now = DateTime.now();
-    // String docIdPindah = DateFormat.Hms().format(now).replaceAll(":", "-");
-    // print('docIdPindah = $docIdPindah');
+    String tahunajaran = pengampuData['tahunajaran'];
+    String tahunAjaranPengampu = tahunajaran.replaceAll('/', '-');
+    //     // String tempatPengampuPindah = pengampuData['tempatmengaji'];
 
-    // print('pengampu lama = ${dataFase['namapengampu']}');
-    // print('pengampu baru = ${pengampuData['namapengampu']}');
-    // print('tempatmengaji baru = ${pengampuData['tempatmengaji']}');
-    // print('fase baru = ${pengampuData['fase']}');
-    
-        DateTime now = DateTime.now();
-        String docIdPindah = DateFormat.yMEd().add_jms().format(now).replaceAllMapped(RegExp(r'[ :,/AMPM]+'), (match) => '-');
+    //     DateTime now = DateTime.now();
+    //     String docIdPindah = DateFormat.yMd().format(now).replaceAll('/', '-');
 
-        print('docIdPindah = $docIdPindah');
+    //     QuerySnapshot<Map<String, dynamic>> snapDaftarHalaqoh =
+    //         await getDaftarHalaqoh().first;
+    //     Map<String, dynamic> siswaData = snapDaftarHalaqoh.docs.first.data();
+
+    await firestore
+        .collection('Sekolah')
+        .doc(idSekolah)
+        .collection('tahunajaran')
+        .doc(tahunAjaranPengampu)
+        .collection('semester')
+        .doc(pengampuData['namasemester'])
+        .collection('kelompokmengaji')
+        .doc(pengampuData['fase'])
+        .collection('pengampu')
+        .doc(dataFase['namapengampu'])
+        .collection('tempat')
+        .doc(dataFase['tempatmengaji'])
+        .collection('daftarsiswa')
+        .doc(nisnSiswa)
+        .get();
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getDataSiswaStreamBaru() async* {
@@ -818,46 +634,9 @@ class DaftarHalaqohController extends GetxController {
     // print('ini kelasnya : ${kelasSiswaC.text}');
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getDataSiswaStream() async* {
-    String tahunajaranya = await getTahunAjaranTerakhir();
-    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
-    // String idSemester = await getDataSemester();
-    yield* firestore
-        .collection('Sekolah')
-        .doc(idSekolah)
-        .collection('tahunajaran')
-        .doc(idTahunAjaran)
-        .collection('kelastahunajaran')
-        .doc(kelasSiswaC.text)
-        .collection('semester')
-        .doc(
-            'semester1') // ini nanti diganti otomatis // sudah di pasang -->> kalo sudah dihapus comment
-        .collection('daftarsiswasemester1')
-        .where('statuskelompok', isEqualTo: 'baru')
-        .snapshots();
-
-    // print('ini kelasnya : ${kelasSiswaC.text}');
-  }
-
   Future<void> halaqohUntukSiswaNext(String nisnSiswa) async {
     String tahunajaranya = await getTahunAjaranTerakhir();
     String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
-    String kelasNya = kelasSiswaC.text.substring(0, 1);
-    String faseNya = (kelasNya == '1' || kelasNya == '2')
-        ? "Fase A"
-        : (kelasNya == '3' || kelasNya == '4')
-            ? "Fase B"
-            : "Fase C";
-
-    // QuerySnapshot<Map<String, dynamic>> querySnapshotSiswa = await firestore
-    //     .collection('Sekolah')
-    //     .doc(idSekolah)
-    //     .collection('siswa')
-    //     .where('nisn', isEqualTo: nisnSiswa)
-    //     .get();
-    // if (querySnapshotSiswa.docs.isNotEmpty) {
-    //   Map<String, dynamic> dataSiswa = querySnapshotSiswa.docs.first.data();
-    //   String uidSiswa = dataSiswa['uid'];
 
     QuerySnapshot<Map<String, dynamic>> querySnapshotKelompok = await firestore
         .collection('Sekolah')
@@ -937,7 +716,7 @@ class DaftarHalaqohController extends GetxController {
           .collection('tempat')
           .doc(dataFase['tempatmengaji'])
           .set({
-        'nisn' : nisnSiswa,
+        'nisn': nisnSiswa,
         'tempatmengaji': dataFase['tempatmengaji'],
         'fase': dataFase['fase'],
         'tahunajaran': dataFase['tahunajaran'],
@@ -1053,37 +832,37 @@ class DaftarHalaqohController extends GetxController {
         'idsiswa': nisnSiswa,
       });
 
-      await firestore
-          .collection('Sekolah')
-          .doc(idSekolah)
-          .collection('pegawai')
-          .doc(idPengampu)
-          .collection('tahunajarankelompok')
-          .doc(idTahunAjaran)
-          .collection('semester')
-          .doc(dataFase['namasemester'])
-          .collection('kelompokmengaji')
-          .doc(dataFase['fase'])
-          .collection('tempat')
-          .doc(dataFase['tempatmengaji'])
-          .collection('daftarsiswa')
-          .doc(nisnSiswa)
-          .set({
-        'namasiswa': namaSiswa,
-        'nisn': nisnSiswa,
-        'kelas': kelasSiswaC.text,
-        'fase': dataFase['fase'],
-        'tempatmengaji': dataFase['tempatmengaji'],
-        'tahunajaran': dataFase['tahunajaran'],
-        'kelompokmengaji': dataFase['namapengampu'],
-        'namasemester': dataFase['namasemester'],
-        'namapengampu': dataFase['namapengampu'],
-        'idpengampu': idPengampu,
-        'emailpenginput': emailAdmin,
-        'idpenginput': idUser,
-        'tanggalinput': DateTime.now().toIso8601String(),
-        'idsiswa': nisnSiswa,
-      });
+      // await firestore
+      //     .collection('Sekolah')
+      //     .doc(idSekolah)
+      //     .collection('pegawai')
+      //     .doc(idPengampu)
+      //     .collection('tahunajarankelompok')
+      //     .doc(idTahunAjaran)
+      //     .collection('semester')
+      //     .doc(dataFase['namasemester'])
+      //     .collection('kelompokmengaji')
+      //     .doc(dataFase['fase'])
+      //     .collection('tempat')
+      //     .doc(dataFase['tempatmengaji'])
+      //     .collection('daftarsiswa')
+      //     .doc(nisnSiswa)
+      //     .set({
+      //   'namasiswa': namaSiswa,
+      //   'nisn': nisnSiswa,
+      //   'kelas': kelasSiswaC.text,
+      //   'fase': dataFase['fase'],
+      //   'tempatmengaji': dataFase['tempatmengaji'],
+      //   'tahunajaran': dataFase['tahunajaran'],
+      //   'kelompokmengaji': dataFase['namapengampu'],
+      //   'namasemester': dataFase['namasemester'],
+      //   'namapengampu': dataFase['namapengampu'],
+      //   'idpengampu': idPengampu,
+      //   'emailpenginput': emailAdmin,
+      //   'idpenginput': idUser,
+      //   'tanggalinput': DateTime.now().toIso8601String(),
+      //   'idsiswa': nisnSiswa,
+      // });
 
       halaqohUntukSiswaNext(nisnSiswa);
       ubahStatusSiswa(nisnSiswa);

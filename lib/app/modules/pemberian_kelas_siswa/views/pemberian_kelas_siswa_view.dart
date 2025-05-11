@@ -91,7 +91,7 @@ class PemberianKelasSiswaView extends GetView<PemberianKelasSiswaController> {
                             ),
                             // selectedItem: controller.kelasSiswaC.text,
                             selectedItem: controller.idPegawaiC.text,
-                            items: (f, cs) => controller.getDataWaliKelas(),
+                            items: (f, cs) => controller.getDataWaliKelasBaru(),
                             onChanged: (String? value) {
                               controller.waliKelasSiswaC.text = value!;
                               controller.idPegawaiC.text = value;
@@ -101,12 +101,14 @@ class PemberianKelasSiswaView extends GetView<PemberianKelasSiswaController> {
                                 fit: FlexFit.tight),
                           ); // Default return statement
                     }),
-                ElevatedButton(
-                    onPressed: () {
-                      controller.test();
-                      // print('waliKelasDoc = $waliKelasDoc');
-                    },
-                    child: Text('test')),
+
+                // ElevatedButton(
+                //     onPressed: () {
+                //       controller.test();
+                //       // print('waliKelasDoc = $waliKelasDoc');
+                //     },
+                //     child: Text('test')),
+
               ],
             ),
           ),

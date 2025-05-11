@@ -13,7 +13,7 @@ class DaftarSiswaPindahHalaqohView
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('DaftarSiswaPindahHalaqohView'),
+        title: const Text('Daftar Siswa Pindah Halaqoh'),
         centerTitle: true,
       ),
       body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
@@ -27,16 +27,12 @@ class DaftarSiswaPindahHalaqohView
               return Center(child: Text('Tidak ada siswa pindah halaqoh'));
             
             } if(snapshot.hasData) {
-              return ListView.separated(
-                
-                separatorBuilder: (context, index) {
-                  return Divider();
-                },
+              return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
-                  var datanya = snapshot.data?.docs;
+                  final datanya = snapshot.data!.docs[index].data();
                   return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         color: Colors.grey[300],
@@ -48,44 +44,37 @@ class DaftarSiswaPindahHalaqohView
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("nama siswa : ${datanya != null && datanya.isNotEmpty
-                            ? (datanya[0]['namasiswa'] ?? 'No Data')
+                            Text("nama siswa : ${datanya.isNotEmpty
+                            ? (datanya['namasiswa'] ?? 'No Data')
                             : '-'}"),
 
-                            Text(datanya != null && datanya.isNotEmpty
-                                ? (datanya[0]['tanggalpindah'] != null
-                                    ? DateFormat("dd-MM-yyyy").format(DateTime.parse(datanya[0]['tanggalpindah'] as String))
+                            Text(datanya.isNotEmpty
+                                ? (datanya['tanggalpindah'] != null
+                                    ? DateFormat("dd-MM-yyyy").format(DateTime.parse(datanya['tanggalpindah'] as String))
                                     : 'No Data')
                                 : 'No Data'),
                           ],
                         ),
                         SizedBox(height: 3),
-                        Text("kelas : ${datanya != null && datanya.isNotEmpty
-                            ? (datanya[0]['kelas'] ?? 'No Data')
+                        Text("kelas : ${datanya.isNotEmpty
+                            ? (datanya['kelas'] ?? 'No Data')
                             : '-'}"),
                         SizedBox(height: 3),
-                        Text("Fase : ${datanya != null && datanya.isNotEmpty
-                            ? (datanya[0]['fase'] ?? 'No Data')
+                        Text("Fase : ${datanya.isNotEmpty
+                            ? (datanya['fase'] ?? 'No Data')
                             : '-'}"),
-                        // SizedBox(height: 3),
-                        // Text("Fase : ${datanya != null && datanya.isNotEmpty
-                        //     ? (datanya[0]['tahunajaran'] ?? 'No Data')
-                        //     : '-'}"),
-                        // SizedBox(height: 3),
-                        // Text("Fase : ${datanya != null && datanya.isNotEmpty
-                        //     ? (datanya[0]['namasemester'] ?? 'No Data')
-                        //     : '-'}"),
+                        
                         SizedBox(height: 3),
-                        Text("Halaqoh lama : ${datanya != null && datanya.isNotEmpty
-                            ? (datanya[0]['tempathalaqohlama'] ?? 'No Data')
+                        Text("Halaqoh lama : ${datanya.isNotEmpty
+                            ? (datanya['tempathalaqohlama'] ?? 'No Data')
                             : '-'}"),
                         SizedBox(height: 3),
-                        Text("Halaqoh baru : ${datanya != null && datanya.isNotEmpty
-                            ? (datanya[0]['tempathalaqohbaru'] ?? 'No Data')
+                        Text("Halaqoh baru : ${datanya.isNotEmpty
+                            ? (datanya['tempathalaqohbaru'] ?? 'No Data')
                             : '-'}"),
                         SizedBox(height: 3),
-                        Text("alasan pindah : ${datanya != null && datanya.isNotEmpty
-                            ? (datanya[0]['alasanpindah'] ?? 'No Data')
+                        Text("alasan pindah : ${datanya.isNotEmpty
+                            ? (datanya['alasanpindah'] ?? 'No Data')
                             : '-'}"),
                       ],
                     ),

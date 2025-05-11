@@ -20,6 +20,19 @@ class Contoh extends GetView<HomeController> {
               child: CircularProgressIndicator(),
             );
           }
+          if (snapshot.data == null || snapshot.data!.data() == null) {
+            return Center(child: Column(
+              children: [
+                Text('Data tidak ditemukan'),
+                Text('Silahkan Logout terlebih dahulu, kemudian Login ulang'),
+                SizedBox(height: 15),
+                ElevatedButton(onPressed: ()
+                {Get.offAllNamed(Routes.HOME);
+                Get.snackbar('Login', 'Silahkan login ulang');
+                }, child: Text('Logout')),
+              ],
+            ));
+          }
           if (snapshot.hasData) {
             Map<String, dynamic> data = snapshot.data!.data()!;
             return Scaffold(
@@ -889,6 +902,7 @@ class Contoh extends GetView<HomeController> {
                                                             child:
                                                                 ElevatedButton(
                                                               onPressed: () {
+                                                                // ignore: unnecessary_null_comparison
                                                                 if(controller.kelasSiswaC.text.isEmpty || controller.kelasSiswaC.text == null) {
                                                                   Get.snackbar('Peringatan', 'Kelas belum dipilih');
                                                                 } else {

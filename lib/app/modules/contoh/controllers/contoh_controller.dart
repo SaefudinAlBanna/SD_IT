@@ -73,10 +73,11 @@ class ContohController extends GetxController {
           "materi": materiC.text,
           "nilai": nilaiC.text,
           "keteranganpengampu": keteranganGuruC.text,
-          "keteranganorangtua": "0"
+          "keteranganorangtua": "0",
+          "uidnilai": docIdNilai
         });
 
-        Get.back();
+        // Get.back();
         Get.snackbar('Informasi', 'Berhasil input nilai',
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.grey[350]);

@@ -48,11 +48,28 @@ class ProfileWidget extends GetView<HomeController> {
               StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                 stream: controller.getProfileBaru(),
                 builder: (context, snapshot) {
-                  if(snapshot.connectionState == ConnectionState.waiting) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   }
                   if (!context.mounted) {
                     return SizedBox.shrink(); // Prevent rebuilding if disposed
+                  }
+                  if (snapshot.data == null || snapshot.data!.data() == null) {
+                    return Center(
+                        child: Column(
+                      children: [
+                        Text('Data tidak ditemukan'),
+                        Text(
+                            'Silahkan Logout terlebih dahulu, kemudian Login ulang'),
+                        SizedBox(height: 15),
+                        ElevatedButton(
+                            onPressed: () {
+                              Get.offAllNamed(Routes.HOME);
+                              Get.snackbar('Login', 'Silahkan login ulang');
+                            },
+                            child: Text('Logout')),
+                      ],
+                    ));
                   }
                   if (snapshot.hasData) {
                     return ListTile(

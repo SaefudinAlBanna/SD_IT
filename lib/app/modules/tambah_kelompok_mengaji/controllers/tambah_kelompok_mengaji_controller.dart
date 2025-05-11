@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guru_project/app/routes/app_pages.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 
 class TambahKelompokMengajiController extends GetxController {
   TextEditingController idPegawaiC = TextEditingController();
@@ -116,43 +116,7 @@ class TambahKelompokMengajiController extends GetxController {
     });
     return kelasList;
   }
-
-  // --> C6 --> di dalam Get.bottomSheet
-  Future<QuerySnapshot<Map<String, dynamic>>> getDataSiswa() async {
-    String tahunajaranya = await getTahunAjaranTerakhir();
-    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
-    return await firestore
-        .collection('Sekolah')
-        .doc(idSekolah)
-        .collection('tahunajaran')
-        .doc(idTahunAjaran)
-        .collection('kelastahunajaran')
-        .doc(kelasSiswaC.text)
-        .collection('semester')
-        .doc(semesterC
-            .text) // ini nanti diganti otomatis // sudah di pasang -->> kalo sudah dihapus comment
-        .collection('daftarsiswasemester1')
-        .where('statuskelompok', isEqualTo: 'baru')
-        .get();
-  }
-
-  Stream<QuerySnapshot<Map<String, dynamic>>> getDataSiswaStream() async* {
-    String tahunajaranya = await getTahunAjaranTerakhir();
-    String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
-    yield* firestore
-        .collection('Sekolah')
-        .doc(idSekolah)
-        .collection('tahunajaran')
-        .doc(idTahunAjaran)
-        .collection('kelastahunajaran')
-        .doc(kelasSiswaC.text)
-        .collection('semester')
-        .doc(semesterC
-            .text) // ini nanti diganti otomatis // sudah di pasang -->> kalo sudah dihapus comment
-        .collection('daftarsiswasemester1')
-        .where('statuskelompok', isEqualTo: 'baru')
-        .snapshots();
-  }
+  
 
   Stream<QuerySnapshot<Map<String, dynamic>>> tampilSiswa() {
     return firestore
@@ -184,31 +148,12 @@ class TambahKelompokMengajiController extends GetxController {
         .collection('tempat')
         .get();
 
-    // DocumentSnapshot<Map<String, dynamic>> snapTempat =
-    //     await colTempat.doc(tempatC.text).get();
-
-    // if (snapTempat.exists && (snapTempat.data() == null || snapTempat.data()!.isEmpty)) {
       if(colTempat.docs.length != 0) {
-      // tempat pengampu sudah ada => tampilkan pesan tidak bisa
-      // print('snapTempat.exists : ${snapTempat.exists} ..-.. snapTempat.data()?.length : ${snapTempat.data()?.length}');
-      // print('snapTempat.exists : ${snapTempat.exists}');
-      // print('tempatC : ${tempatC.text} ');
-      print('tempatC : ${colTempat.docs.length} ');
+      // print('tempatC : ${colTempat.docs.length} ');
       Get.snackbar('Error',
           'Tidak bisa membuat kelompok, pengampu sudah punya kelompok');
     } else {
-      print('tempatC : ${colTempat.docs.length} ');
-      // tempat belum ada => buatkan kelompoknya
-      // await colTempat.doc(tempatC.text).set({});
-    
-      // print('snapTempat.exists : ${snapTempat.exists} ..-.. snapTempat.data()?.length : ${snapTempat.data()?.length}');
-      // Get.snackbar('Yes',
-      //     'Silahkan dibuatkan');
-
-      // print('snapTempat =$snapTempat');
-      // print('snapTempat.exists =${snapTempat.exists}');
-      // print('snapTempat.data() =${snapTempat.data()}');
-      // print('snapTempat.data()?.length =${snapTempat.data()?.length}');
+      // print('tempatC : ${colTempat.docs.length} ');
 
       try {
         QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
@@ -286,8 +231,8 @@ class TambahKelompokMengajiController extends GetxController {
   }
 
   Future<void> buatKelompok() async {
-    DateTime now = DateTime.now();
-    String docIdNilai = DateFormat.yMd().format(now).replaceAll('/', '-');
+    // DateTime now = DateTime.now();
+    // String docIdNilai = DateFormat.yMd().format(now).replaceAll('/', '-');
 
     String tahunajaranya = await getTahunAjaranTerakhir();
     String idTahunAjaran = tahunajaranya.replaceAll("/", "-");
@@ -432,7 +377,7 @@ class TambahKelompokMengajiController extends GetxController {
         // Get.offAllNamed(Routes.TAMBAH_SISWA_KELOMPOK, arguments: datanya);
         Get.back();
         Get.offAllNamed(Routes.KELOMPOK_HALAQOH, arguments: datanya);
-        print('ini data argumenXX = $datanya');
+        // print('ini data argumenXX = $datanya');
       } else if (datanya.isEmpty) {
         // print('ini yang kedua = $datanya');
         Get.snackbar('Error', 'data kosong, silahkan coba lagi');

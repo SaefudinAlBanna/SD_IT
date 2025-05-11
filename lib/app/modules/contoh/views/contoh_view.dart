@@ -47,6 +47,7 @@ class ContohView extends GetView<ContohController> {
                       ),
                     ],
                   ),
+                  SizedBox(width: 20),
                   Column(
                     children: [
                       Card(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../controllers/tambah_siswa_controller.dart';
 
@@ -111,7 +112,8 @@ class TambahSiswaView extends GetView<TambahSiswaController> {
                           lastDate: DateTime(2100),
                         ).then((value) {
                           controller.tanggalLahirSiswaController.text =
-                              value.toString();
+                              DateFormat('EEEE, dd MMMM, yyyy')
+                                         .format(value!);
                         });
                       },
                       icon: Icon(Icons.calendar_today),

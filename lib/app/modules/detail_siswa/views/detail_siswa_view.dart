@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../controllers/detail_siswa_controller.dart';
 
@@ -23,6 +24,15 @@ class DetailSiswaView extends GetView<DetailSiswaController> {
             }
             if (snapshotDetail.hasData) {
               final data = snapshotDetail.data!.docs.first.data();
+              String tglLahir;
+              try {
+                tglLahir = DateFormat('dd MMMM, yyyy').format(
+                  DateFormat('EEEE, dd MMMM, yyyy').parse(data['tanggalLahir']),
+                );
+              } catch (e) {
+                tglLahir = '-'; // Fallback value
+                // print('Error parsing date: $e');
+              }
               return SafeArea(
                 child: Column(
                   children: [
@@ -53,7 +63,7 @@ class DetailSiswaView extends GetView<DetailSiswaController> {
                             Container(
                               margin: EdgeInsets.symmetric(
                                   vertical: 15, horizontal: 15),
-                              height: Get.height,
+                              // height: Get.height,
                               decoration: BoxDecoration(
                                 color: Colors.grey[300],
                                 borderRadius: BorderRadius.circular(15),
@@ -67,20 +77,49 @@ class DetailSiswaView extends GetView<DetailSiswaController> {
                                     // InfoDetailSiswa(icon: Icon(Icons.airline_seat_recline_normal_rounded)),
                                     InfoDetailSiswa(
                                         data: data,
-                                        icon: Icon(Icons.access_alarm),
-                                        isi: 'agama'),
+                                        icon:
+                                            data['jenisKelamin'] == "Perempuan"
+                                                ? Icon(Icons.woman)
+                                                : Icon(Icons.man),
+                                        isi: 'jenisKelamin'.isNotEmpty
+                                            ? "jenisKelamin"
+                                            : "-"),
                                     InfoDetailSiswa(
                                         data: data,
-                                        icon: Icon(Icons.home_outlined),
+                                        icon: Icon(Icons.camera_front_rounded),
+                                        isi: 'nisn'.isNotEmpty ? "nisn" : "-"),
+                                    SizedBox(height: 10),
+                                    Row(
+                                      children: [
+                                        Icon(Icons.cake),
+                                        SizedBox(width: 10),
+                                        Text(tglLahir.isNotEmpty
+                                            ? tglLahir
+                                            : "-"),
+                                      ],
+                                    ),
+                                    InfoDetailSiswa(
+                                        data: data,
+                                        icon: Icon(Icons.mosque),
+                                        isi:
+                                            'agama'.isNotEmpty ? 'agama' : "-"),
+                                    InfoDetailSiswa(
+                                        data: data,
+                                        icon: Icon(Icons.home),
                                         isi: 'alamat'),
                                     InfoDetailSiswa(
                                         data: data,
-                                        icon: Icon(Icons.home_outlined),
-                                        isi: 'jenisKelamin'),
+                                        icon: Icon(Icons.phone_android),
+                                        // ignore: unnecessary_null_comparison, prefer_if_null_operators
+                                        isi: 'noHpOrangTua' != null
+                                            ? 'noHpOrangTua'
+                                            : 'noHpWali'),
                                     InfoDetailSiswa(
                                         data: data,
-                                        icon: Icon(Icons.home_outlined),
-                                        isi: 'nisn'),
+                                        icon: Icon(Icons.wc),
+                                        isi: 'namaIbu'.isNotEmpty
+                                            ? 'namaIbu'
+                                            : "-"),
                                   ],
                                 ),
                               ),

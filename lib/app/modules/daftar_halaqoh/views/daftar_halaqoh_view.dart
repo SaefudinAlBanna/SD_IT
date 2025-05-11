@@ -263,9 +263,10 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                           icon: const Icon(Icons.change_circle_outlined),
                           onPressed: () async {
                             if (controller.isLoading.isFalse) {
+                            String nisnSiswa = doc['nisn'];
                               await Get.defaultDialog(
                                 barrierDismissible: false,
-                                title: '${data['fase']}',
+                                title: '${doc['fase']}',
                                 content: SizedBox(
                                   height: 350,
                                   width: 400,
@@ -313,9 +314,8 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                                                     onPressed: () async {
                                                       if (controller
                                                           .isLoading.isFalse) {
-                                                        await controller
-                                                            .pindahkan();
-                                                        // await controller.pindahkan();
+                                                        await controller.pindahkan(nisnSiswa);
+                                                        // await controller.test(nisnSiswa);
                                                         controller
                                                             .getDaftarHalaqoh();
                                                         // controller.deleteUser(
@@ -339,7 +339,7 @@ class DaftarHalaqohView extends GetView<DaftarHalaqohController> {
                                                       : "LOADING...")),
                                               // ElevatedButton(
                                               //     onPressed: () =>
-                                              //         controller.test(),
+                                              //         controller.test(nisnSiswa),
                                               //     child: Text('test')),
                                             ],
                                           ),

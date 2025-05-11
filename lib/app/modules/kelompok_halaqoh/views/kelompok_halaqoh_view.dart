@@ -209,7 +209,14 @@ class KelompokHalaqohView extends GetView<KelompokHalaqohController> {
               }
             },
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 30),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Text('Daftar Siswa Halaqoh', style: TextStyle(
+              fontSize: 15, fontWeight: FontWeight.bold
+            ),),
+          ),
+          Divider(),
           Expanded(
             child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                 stream: controller.tampilkan(),
@@ -238,25 +245,26 @@ class KelompokHalaqohView extends GetView<KelompokHalaqohController> {
                           snapshotKelompok.data!.docs[index].data()['kelas'] ??
                               'No KELAS';
                       return ListTile(
-                        onTap: () {
-                          String getNama =
-                              snapshotKelompok.data!.docs[index].data()['nisn'];
-                          Get.toNamed(Routes.DETAIL_SISWA, arguments: getNama);
-                        },
+                        // onTap: () {
+                        //   String getNama =
+                        //       snapshotKelompok.data!.docs[index].data()['nisn'];
+                        //   Get.toNamed(Routes.DETAIL_SISWA, arguments: getNama);
+                        // },
                         title: Text(namaSiswa),
                         subtitle: Text(kelasSiswa),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            IconButton(
-                                onPressed: () {
-                                  String getNama = snapshotKelompok
-                                      .data!.docs[index]
-                                      .data()['nisn'];
-                                  Get.toNamed(Routes.DETAIL_SISWA,
-                                      arguments: getNama);
-                                },
-                                icon: Icon(Icons.info_outline_rounded)),
+                            // IconButton(
+                            //     onPressed: () {
+                            //       String getNama = snapshotKelompok
+                            //           .data!.docs[index]
+                            //           .data()['nisn'];
+                                      // print('getNama = $getNama');
+                                  // Get.toNamed(Routes.DETAIL_SISWA,
+                                  //     arguments: getNama);
+                                // },
+                                // icon: Icon(Icons.info_outline_rounded)),
                             // IconButton(
                             //   onPressed: () {
                             //     Get.toNamed(Routes.CONTOH, arguments: namaSiswa);
